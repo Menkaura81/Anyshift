@@ -27,12 +27,15 @@ def main():
     shifter.init()
 
     # Cool window design ;)    
+    print()
     print("    ___                _____ __    _ ______              ___  ____  ")
     print("   /   |  ____  __  __/ ___// /_  (_) __/ /_   _   __   <  / / __ \ ")
     print("  / /| | / __ \/ / / /\__ \/ __ \/ / /_/ __/  | | / /   / / / / / / ")
     print(" / ___ |/ / / / /_/ /___/ / / / / / __/ /_    | |/ /   / /_/ /_/ /  ")
     print("/_/  |_/_/ /_/\__, //____/_/ /_/_/_/  \__/    |___/   /_/(_)____/   ")
-    print("             /____/                            ©2022 Menkaura Soft  ")    
+    print("             /____/                           ©2022 Menkaura Soft   ")    
+    print()
+    print("Buy me a coffe if you like this app: https://bmc.link/Menkaura")
     print()
     print("Active shifter: ",shifter.get_name())
 
