@@ -2,6 +2,7 @@
 import pygame
 import keyboard
 import configparser
+import time
 
 up_key = 's'
 down_key = 'z'
@@ -108,10 +109,12 @@ def update_gear(gear_selected, actual_gear):
             act_gear += 1
             #aqui iria la simulacion de pulsacion de tecla
             keyboard.press_and_release(up_key)
+            time.sleep(0.25)
         if act_gear > gear_selected:
             act_gear -= 1
             #simulacion de pulsacion de tecla
             keyboard.press_and_release(down_key)
+            time.sleep(0.25)
     
     return act_gear
 
