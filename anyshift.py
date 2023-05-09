@@ -82,7 +82,15 @@ def main():
                 if shifter.get_button(reverse) == True: 
                     gear_selected = -1
                     actual_gear = update_gear(gear_selected, actual_gear)        
-                print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")            
+                print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r") 
+
+            # Can´t make this work. I want to dettect n key pressed and select neutral gear
+            #if event.type == pygame.KEYDOWN:
+            #    key = pygame.key.get_pressed()
+            #    if key[pygame.K_n]:
+            #        gear_selected = 0
+            #        actual_gear = update_gear(gear_selected, actual_gear)
+            #        print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
             if event.type == pygame.JOYBUTTONUP and neutral == 'True':
                 #print("Joystick button released.")
@@ -90,6 +98,7 @@ def main():
                 actual_gear = update_gear(gear_selected, actual_gear)
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
+            pygame.event.pump()
 
 def update_gear(gear_selected, actual_gear):
 
