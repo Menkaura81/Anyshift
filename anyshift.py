@@ -8,11 +8,19 @@ down_key = 'z'
 
 def main():
 
+    """FALTA IMPLEMENTAR EN EL CONFIG LA SELECCION DE BOTONES DEL JOYSTICK Y LEERLOS AQUI"""
     # Create a config objet and read config values
     config = configparser.ConfigParser()
     config.read('Anyshift.ini')
     neutral = config['SHIFTER']['neutral position']
     joy_id = config['SHIFTER']['joystick id']
+    first = int(config['SHIFTER']['first gear'])
+    second = int(config['SHIFTER']['second gear'])
+    third = int(config['SHIFTER']['third gear'])
+    fourth = int(config['SHIFTER']['fourth gear'])
+    fifth = int(config['SHIFTER']['fifth gear']) 
+    sixth = int(config['SHIFTER']['sixth gear'])
+    reverse = int(config['SHIFTER']['reverse button'])
     global up_key
     up_key = config['KEYS']['upshift']
     global down_key 
@@ -52,28 +60,28 @@ def main():
 
                 if event.type == pygame.JOYBUTTONDOWN:
                     #print("Joystick button pressed.")
-                    if shifter.get_button(0) == True:
+                    if shifter.get_button(first) == True:
                         gear_selected = 1
                         actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(1) == True:
+                    if shifter.get_button(second) == True:
                         gear_selected = 2
                         actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(2) == True:
+                    if shifter.get_button(third) == True:
                         gear_selected = 3
                         actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(3) == True:
+                    if shifter.get_button(fourth) == True:
                         gear_selected = 4
                         actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(4) == True:
+                    if shifter.get_button(fifth) == True:
                         gear_selected = 5
                         actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(5) == True:
+                    if shifter.get_button(sixth) == True:
                         gear_selected = 6
                         actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(6) == True:
-                        gear_selected = 7
-                        actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(7) == True: 
+                    #if shifter.get_button(6) == True:
+                    #    gear_selected = 7
+                    #    actual_gear = update_gear(gear_selected, actual_gear)
+                    if shifter.get_button(reverse) == True: 
                         gear_selected = -1
                         actual_gear = update_gear(gear_selected, actual_gear)        
                     print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")            
