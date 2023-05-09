@@ -5,6 +5,7 @@ import configparser
 import time
 #import ctypes I preffer the keyboard module 
 
+# Global variables
 up_key = 's'
 down_key = 'z'
 
@@ -48,8 +49,7 @@ def main():
     print("Buy me a coffe if you like this app: https://bmc.link/Menkaura")
     print()
     print("Active shifter: ",shifter.get_name())
-    
-    # Global variables
+        
     gear_selected = 0
     actual_gear = 0
         
@@ -61,7 +61,6 @@ def main():
                 done = True  # Flag that we are done so we exit this loop.
 
             if event.type == pygame.JOYBUTTONDOWN:
-                #print("Joystick button pressed.")
                 if shifter.get_button(first) == True:
                     gear_selected = 1
                     actual_gear = update_gear(gear_selected, actual_gear)
@@ -88,13 +87,14 @@ def main():
                     actual_gear = update_gear(gear_selected, actual_gear)        
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r") 
 
-            if event.type == pygame.JOYBUTTONUP and neutral == 'True':
-                #print("Joystick button released.")
+            # Change to neutral if the option is enabled
+            if event.type == pygame.JOYBUTTONUP and neutral == 'True': 
                 gear_selected = 0
                 actual_gear = update_gear(gear_selected, actual_gear)
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
-        if keyboard.is_pressed(neut_key):  # if key 'n' is pressed 
+        # Reset to neutral if this key is pressed 
+        if keyboard.is_pressed(neut_key):  
             gear_selected = 0
             actual_gear = update_gear(gear_selected, actual_gear)
             print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
