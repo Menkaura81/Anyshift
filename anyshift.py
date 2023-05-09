@@ -3,6 +3,7 @@ import pygame
 import keyboard
 import configparser
 import time
+#import ctypes I preffer the keyboard module 
 
 up_key = 's'
 down_key = 'z'
@@ -102,18 +103,20 @@ def main():
             pygame.event.pump()
 
 def update_gear(gear_selected, actual_gear):
-
+    
     act_gear = actual_gear
     while act_gear != gear_selected:
         if act_gear < gear_selected:
             act_gear += 1
-            #aqui iria la simulacion de pulsacion de tecla
             keyboard.press_and_release(up_key)
+            #ctypes.windll.user32.keybd_event(0x53, 0, 0, 0) # Key down
+            #ctypes.windll.user32.keybd_event(0x53, 0, 0x0002, 0) # key up
             time.sleep(0.25)
         if act_gear > gear_selected:
             act_gear -= 1
-            #simulacion de pulsacion de tecla
             keyboard.press_and_release(down_key)
+            #ctypes.windll.user32.keybd_event(0x5A, 0, 0, 0)
+            #ctypes.windll.user32.keybd_event(0x5A, 0, 0x0002, 0) # key up
             time.sleep(0.25)
     
     return act_gear
