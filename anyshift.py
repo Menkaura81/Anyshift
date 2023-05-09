@@ -48,6 +48,7 @@ def main():
     print()
     print("Active shifter: ",shifter.get_name())
     
+    # Global variables
     gear_selected = 0
     actual_gear = 0
         
@@ -100,7 +101,7 @@ def main():
                 actual_gear = update_gear(gear_selected, actual_gear)
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
-            pygame.event.pump()
+            # pygame.event.pump()  Really needed???
 
 def update_gear(gear_selected, actual_gear):
     
