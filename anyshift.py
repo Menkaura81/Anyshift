@@ -46,52 +46,50 @@ def main():
     print("Buy me a coffe if you like this app: https://bmc.link/Menkaura")
     print()
     print("Active shifter: ",shifter.get_name())
-
+    
     gear_selected = 0
     actual_gear = 0
-    #neutral = False  # This will be readed from ini to deactivate neutral position or not
-
+        
     done = False
     while not done:
-            # Event processing step.
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = True  # Flag that we are done so we exit this loop.
+        # Event processing step.
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True  # Flag that we are done so we exit this loop.
 
-                if event.type == pygame.JOYBUTTONDOWN:
-                    #print("Joystick button pressed.")
-                    if shifter.get_button(first) == True:
-                        gear_selected = 1
-                        actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(second) == True:
-                        gear_selected = 2
-                        actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(third) == True:
-                        gear_selected = 3
-                        actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(fourth) == True:
-                        gear_selected = 4
-                        actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(fifth) == True:
-                        gear_selected = 5
-                        actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(sixth) == True:
-                        gear_selected = 6
-                        actual_gear = update_gear(gear_selected, actual_gear)
-                    #if shifter.get_button(6) == True:
-                    #    gear_selected = 7
-                    #    actual_gear = update_gear(gear_selected, actual_gear)
-                    if shifter.get_button(reverse) == True: 
-                        gear_selected = -1
-                        actual_gear = update_gear(gear_selected, actual_gear)        
-                    print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")            
+            if event.type == pygame.JOYBUTTONDOWN:
+                #print("Joystick button pressed.")
+                if shifter.get_button(first) == True:
+                    gear_selected = 1
+                    actual_gear = update_gear(gear_selected, actual_gear)
+                if shifter.get_button(second) == True:
+                    gear_selected = 2
+                    actual_gear = update_gear(gear_selected, actual_gear)
+                if shifter.get_button(third) == True:
+                    gear_selected = 3
+                    actual_gear = update_gear(gear_selected, actual_gear)
+                if shifter.get_button(fourth) == True:
+                    gear_selected = 4
+                    actual_gear = update_gear(gear_selected, actual_gear)
+                if shifter.get_button(fifth) == True:
+                    gear_selected = 5
+                    actual_gear = update_gear(gear_selected, actual_gear)
+                if shifter.get_button(sixth) == True:
+                    gear_selected = 6
+                    actual_gear = update_gear(gear_selected, actual_gear)
+                #if shifter.get_button(6) == True:
+                #   gear_selected = 7
+                #   actual_gear = update_gear(gear_selected, actual_gear)
+                if shifter.get_button(reverse) == True: 
+                    gear_selected = -1
+                    actual_gear = update_gear(gear_selected, actual_gear)        
+                print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")            
 
-                if event.type == pygame.JOYBUTTONUP:
-                    if neutral == True:
-                        #print("Joystick button released.")
-                        gear_selected = 0
-                        actual_gear = update_gear(gear_selected)
-                        print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
+            if event.type == pygame.JOYBUTTONUP and neutral == 'True':
+                #print("Joystick button released.")
+                gear_selected = 0
+                actual_gear = update_gear(gear_selected, actual_gear)
+                print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
 
 def update_gear(gear_selected, actual_gear):
