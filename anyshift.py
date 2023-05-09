@@ -8,7 +8,6 @@ down_key = 'z'
 
 def main():
 
-    """FALTA IMPLEMENTAR EN EL CONFIG LA SELECCION DE BOTONES DEL JOYSTICK Y LEERLOS AQUI"""
     # Create a config objet and read config values
     config = configparser.ConfigParser()
     config.read('Anyshift.ini')
