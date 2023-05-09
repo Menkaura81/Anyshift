@@ -13,7 +13,7 @@ def main():
     # Create a config objet and read config values
     config = configparser.ConfigParser()
     config.read('Anyshift.ini')
-    neutral = config['SHIFTER']['neutral position']
+    neutral = config['SHIFTER']['neutral detection']
     joy_id = config['SHIFTER']['joystick id']
     first = int(config['SHIFTER']['first gear'])
     second = int(config['SHIFTER']['second gear'])
@@ -22,6 +22,7 @@ def main():
     fifth = int(config['SHIFTER']['fifth gear']) 
     sixth = int(config['SHIFTER']['sixth gear'])
     reverse = int(config['SHIFTER']['reverse button'])
+    neut_key = config['KEYS']['neutral keyboard key']
     global up_key
     up_key = config['KEYS']['upshift']
     global down_key 
@@ -87,22 +88,18 @@ def main():
                     actual_gear = update_gear(gear_selected, actual_gear)        
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r") 
 
-            # Can´t make this work. I want to dettect n key pressed and select neutral gear
-            #if event.type == pygame.KEYDOWN:
-            #    key = pygame.key.get_pressed()
-            #    if key[pygame.K_n]:
-            #        gear_selected = 0
-            #        actual_gear = update_gear(gear_selected, actual_gear)
-            #        print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
-
             if event.type == pygame.JOYBUTTONUP and neutral == 'True':
                 #print("Joystick button released.")
                 gear_selected = 0
                 actual_gear = update_gear(gear_selected, actual_gear)
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
-            # pygame.event.pump()  Really needed???
-
+        if keyboard.is_pressed(neut_key):  # if key 'n' is pressed 
+            gear_selected = 0
+            actual_gear = update_gear(gear_selected, actual_gear)
+            print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
+            
+         
 def update_gear(gear_selected, actual_gear):
     
     act_gear = actual_gear

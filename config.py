@@ -118,6 +118,7 @@ while not done:
 
 upshift = input("Wich key do you want to be pressed for upshifts?: ")
 downshift = input("Wich key do you want to be pressed for downshifts?: ")
+neut_key = input("Wich key do you want to be pressed for neutral?: ")
 
 # Neutral detection configuration
 neutral = ''
@@ -140,11 +141,12 @@ config['SHIFTER'] = {'Joystick id': joy,
                    'fourth gear': fourth_gear,
                    'fifth gear': fifth_gear,
                    'sixth gear': sixth_gear,
-                   'reverse button': reverse,
-                   'neutral position': neutral}
+                   'reverse button': reverse,                   
+                   'neutral detection': neutral}
 
 config['KEYS'] = {'upshift': upshift,
-                'downshift': downshift}
+                'downshift': downshift,
+                'neutral keyboard key': neut_key}
 
 # Write the file
 with open("Anyshift.ini", "w") as configfile:
