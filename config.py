@@ -31,9 +31,6 @@ done = False
 while not done:
         # Event processing step.
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True  # Flag that we are done so we exit this loop.
-
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
@@ -47,9 +44,6 @@ done = False
 while not done:
         # Event processing step.
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True  # Flag that we are done so we exit this loop.
-
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
@@ -63,9 +57,6 @@ done = False
 while not done:
         # Event processing step.
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True  # Flag that we are done so we exit this loop.
-
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
@@ -79,9 +70,6 @@ done = False
 while not done:
         # Event processing step.
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True  # Flag that we are done so we exit this loop.
-
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
@@ -95,9 +83,6 @@ done = False
 while not done:
         # Event processing step.
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True  # Flag that we are done so we exit this loop.
-
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
@@ -111,9 +96,6 @@ done = False
 while not done:
         # Event processing step.
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True  # Flag that we are done so we exit this loop.
-
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
@@ -127,9 +109,6 @@ done = False
 while not done:
         # Event processing step.
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True  # Flag that we are done so we exit this loop.
-
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
