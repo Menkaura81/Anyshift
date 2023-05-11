@@ -3,7 +3,43 @@ import pygame
 import keyboard
 import configparser
 import time
-#import ctypes I preffer the keyboard module 
+import ctypes
+
+# Bunch of stuff so that the script can send keystrokes to game #
+SendInput = ctypes.windll.user32.SendInput
+
+# C struct redefinitions 
+PUL = ctypes.POINTER(ctypes.c_ulong)
+class KeyBdInput(ctypes.Structure):
+    _fields_ = [("wVk", ctypes.c_ushort),
+                ("wScan", ctypes.c_ushort),
+                ("dwFlags", ctypes.c_ulong),
+                ("time", ctypes.c_ulong),
+                ("dwExtraInfo", PUL)]
+
+class HardwareInput(ctypes.Structure):
+    _fields_ = [("uMsg", ctypes.c_ulong),
+                ("wParamL", ctypes.c_short),
+                ("wParamH", ctypes.c_ushort)]
+
+class MouseInput(ctypes.Structure):
+    _fields_ = [("dx", ctypes.c_long),
+                ("dy", ctypes.c_long),
+                ("mouseData", ctypes.c_ulong),
+                ("dwFlags", ctypes.c_ulong),
+                ("time",ctypes.c_ulong),
+                ("dwExtraInfo", PUL)]
+
+class Input_I(ctypes.Union):
+    _fields_ = [("ki", KeyBdInput),
+                 ("mi", MouseInput),
+                 ("hi", HardwareInput)]
+
+class Input(ctypes.Structure):
+    _fields_ = [("type", ctypes.c_ulong),
+                ("ii", Input_I)]
+
+
 
 # Global variables
 up_key = 's'
@@ -106,18 +142,47 @@ def update_gear(gear_selected, actual_gear):
     while act_gear != gear_selected:
         if act_gear < gear_selected:
             act_gear += 1
-            keyboard.press_and_release(up_key)
-            #ctypes.windll.user32.keybd_event(0x53, 0, 0, 0) # Key down
-            #ctypes.windll.user32.keybd_event(0x53, 0, 0x0002, 0) # key up
-            time.sleep(0.25)
+            #keyboard.press_and_release(up_key)   # Lo mismo tengo que alternar entre los dos metodos para dosbox y emuladores. o dar la opcion de elegir
+            KeyPress_up()
+            #time.sleep(0.25)
         if act_gear > gear_selected:
             act_gear -= 1
-            keyboard.press_and_release(down_key)
-            #ctypes.windll.user32.keybd_event(0x5A, 0, 0, 0)
-            #ctypes.windll.user32.keybd_event(0x5A, 0, 0x0002, 0) # key up
-            time.sleep(0.25)
+            KeyPress_down()
+            #keyboard.press_and_release(down_key)
+            #time.sleep(0.25)   # A lo mejor para dosbox hay que reactivarlo
     
     return act_gear
+
+
+# Actuals Functions
+def PressKey(hexKeyCode):
+    extra = ctypes.c_ulong(0)
+    ii_ = Input_I()
+    ii_.ki = KeyBdInput( 0, hexKeyCode, 0x0008, 0, ctypes.pointer(extra) )
+    x = Input( ctypes.c_ulong(1), ii_ )
+    ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
+
+
+def ReleaseKey(hexKeyCode):
+    extra = ctypes.c_ulong(0)
+    ii_ = Input_I()
+    ii_.ki = KeyBdInput( 0, hexKeyCode, 0x0008 | 0x0002, 0, ctypes.pointer(extra) )
+    x = Input( ctypes.c_ulong(1), ii_ )
+    ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
+
+
+def KeyPress_up():
+    time.sleep(.02)
+    PressKey(0x1F) # press S
+    time.sleep(.02)
+    ReleaseKey(0x1F) #release s
+
+
+def KeyPress_down():
+    time.sleep(.02)
+    PressKey(0x2C) # press Z
+    time.sleep(.02)
+    ReleaseKey(0x2C) #release Z
 
 
 if __name__ == "__main__":
