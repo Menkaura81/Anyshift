@@ -60,6 +60,7 @@ def main():
     sixth = int(config['SHIFTER']['sixth gear'])
     reverse = int(config['SHIFTER']['reverse button'])
     neut_key = config['KEYS']['neutral keyboard key']
+    reset_key = config["KEYS"]['reset key']
     global up_key
     up_key = config['KEYS']['upshift']
     global down_key 
@@ -134,6 +135,10 @@ def main():
             gear_selected = 0
             actual_gear = update_gear(gear_selected, actual_gear)
             print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
+
+        if keyboard.is_pressed(reset_key):
+            actual_gear = gear_selected
+            print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
             
          
 def update_gear(gear_selected, actual_gear):
@@ -142,13 +147,13 @@ def update_gear(gear_selected, actual_gear):
     while act_gear != gear_selected:
         if act_gear < gear_selected:
             act_gear += 1
-            #keyboard.press_and_release(up_key)   # Lo mismo tengo que alternar entre los dos metodos para dosbox y emuladores. o dar la opcion de elegir
             KeyPress_up()
+            #keyboard.press_and_release(up_key)   # Deprecated method to send key strokes
             #time.sleep(0.25)
         if act_gear > gear_selected:
             act_gear -= 1
             KeyPress_down()
-            #keyboard.press_and_release(down_key)
+            #keyboard.press_and_release(down_key)  # Deprecated method to send key strokes
             #time.sleep(0.25)   # A lo mejor para dosbox hay que reactivarlo
     
     return act_gear
@@ -172,21 +177,21 @@ def ReleaseKey(hexKeyCode):
 
 
 def KeyPress_up():
-    time.sleep(.02)
+    time.sleep(.05)
     PressKey(0x1F) # press S
-    time.sleep(.02)
+    time.sleep(.05)
     ReleaseKey(0x1F) #release s
 
 
 def KeyPress_down():
-    time.sleep(.02)
+    time.sleep(.05)
     PressKey(0x2C) # press Z
-    time.sleep(.02)
+    time.sleep(.05)
     ReleaseKey(0x2C) #release Z
 
 
 if __name__ == "__main__":
     main()
-    # If you forget this line, the program will 'hang'
+    # If you forget this line, the program will hang
     # on exit if running from IDLE.
     pygame.quit()
