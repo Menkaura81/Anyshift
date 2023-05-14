@@ -119,7 +119,6 @@ while not done:
 upshift = input("Wich key do you want to be pressed for upshifts?: ")
 downshift = input("Wich key do you want to be pressed for downshifts?: ")
 neut_key = input("Wich key do you want to use for neutral?: ")
-reset_key = input("Wich key do you want to use for reset?: ")
 
 # Neutral detection configuration
 neutral = ''

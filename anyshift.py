@@ -44,13 +44,15 @@ class Input(ctypes.Structure):
 # Global variables
 up_key = 's'
 down_key = 'z'
+presskey_timer = 0
+releasekey_timer = 0
 
 def main():
 
     # Create a config objet and read config values
     config = configparser.ConfigParser()
     config.read('Anyshift.ini')
-    neutral = config['SHIFTER']['neutral detection']
+    neutral = config['OPTIONS']['neutral detection']
     joy_id = config['SHIFTER']['joystick id']
     first = int(config['SHIFTER']['first gear'])
     second = int(config['SHIFTER']['second gear'])
@@ -60,11 +62,14 @@ def main():
     sixth = int(config['SHIFTER']['sixth gear'])
     reverse = int(config['SHIFTER']['reverse button'])
     neut_key = config['KEYS']['neutral keyboard key']
-    reset_key = config["KEYS"]['reset key']
     global up_key
     up_key = config['KEYS']['upshift']
     global down_key 
     down_key = config['KEYS']['downshift']
+    global presskey_timer
+    presskey_timer = float(config['OPTIONS']['presskey_timer'])
+    global releasekey_timer
+    releasekey_timer = float(config['OPTIONS']['releasekey_timer'])
     
     # Initialize joystick module
     pygame.joystick.init()
@@ -73,7 +78,7 @@ def main():
     # Create a joystick object and initialize it
     shifter = pygame.joystick.Joystick(int(joy_id))
     shifter.init()
-
+    
     # Cool window design ;)    
     print()
     print("    ___                _____ __    _ ______              ___  ____  ")
@@ -130,17 +135,13 @@ def main():
                 actual_gear = update_gear(gear_selected, actual_gear)
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
-        # Reset to neutral if this key is pressed 
+        # Select neutral if this key is pressed 
         if keyboard.is_pressed(neut_key):  
             gear_selected = 0
             actual_gear = update_gear(gear_selected, actual_gear)
             print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
-        if keyboard.is_pressed(reset_key):
-            actual_gear = gear_selected
-            print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
-            
-         
+        
 def update_gear(gear_selected, actual_gear):
     
     act_gear = actual_gear
@@ -177,16 +178,16 @@ def ReleaseKey(hexKeyCode):
 
 
 def KeyPress_up():
-    time.sleep(.05)
+    time.sleep(presskey_timer)
     PressKey(0x1F) # press S
-    time.sleep(.05)
+    time.sleep(releasekey_timer)
     ReleaseKey(0x1F) #release s
 
 
 def KeyPress_down():
-    time.sleep(.05)
+    time.sleep(presskey_timer)
     PressKey(0x2C) # press Z
-    time.sleep(.05)
+    time.sleep(releasekey_timer)
     ReleaseKey(0x2C) #release Z
 
 
