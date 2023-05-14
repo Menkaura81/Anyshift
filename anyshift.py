@@ -39,13 +39,12 @@ class Input(ctypes.Structure):
     _fields_ = [("type", ctypes.c_ulong),
                 ("ii", Input_I)]
 
-
-
 # Global variables
 up_key = 's'
 down_key = 'z'
 presskey_timer = 0
 releasekey_timer = 0
+
 
 def main():
 
@@ -130,7 +129,7 @@ def main():
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r") 
 
             # Change to neutral if the option is enabled
-            if event.type == pygame.JOYBUTTONUP and neutral == 'True': 
+            if event.type == pygame.JOYBUTTONUP and neutral == 'True':
                 gear_selected = 0
                 actual_gear = update_gear(gear_selected, actual_gear)
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
@@ -141,7 +140,7 @@ def main():
             actual_gear = update_gear(gear_selected, actual_gear)
             print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
-        
+       
 def update_gear(gear_selected, actual_gear):
     
     act_gear = actual_gear
