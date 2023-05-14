@@ -2,6 +2,46 @@
 import pygame
 import configparser
 
+# Dictionary for converting input keys to hex values
+keys = {
+'1': '0x02',
+'2': '0x03',
+'3': '0x04',
+'4': '0x05',
+'5': '0x06',
+'6': '0x07',
+'7': '0x08',
+'8': '0x09',
+'9': '0x0A',
+'0': '0x0B',
+'q': '0x10',
+'w': '0x11',		
+'e': '0x12',	
+'r': '0x13',	
+'t': '0x14',	
+'y': '0x15',	
+'u': '0x16',	
+'i': '0x17',	
+'o': '0x18',	
+'p': '0x19',	
+'a': '0x1E',	
+'s': '0x1F',	
+'d': '0x20',	
+'f': '0x21',	
+'g': '0x22',	
+'h': '0x23',	
+'j': '0x24',	
+'k': '0x25',	
+'l': '0x26',	
+'z': '0x2C',	
+'x': '0x2D',	
+'c': '0x2E',	
+'v': '0x2F',	
+'b': '0x30',	
+'n': '0x31',	
+'m': '0x32'	
+}
+
 # Initialize joystick module
 pygame.joystick.init()
 pygame.init()  
@@ -116,9 +156,15 @@ while not done:
                         print(f"Button {reverse} saved for reverse")
                         done = True                                                                      
 
-upshift = input("Wich key do you want to be pressed for upshifts?: ")
-downshift = input("Wich key do you want to be pressed for downshifts?: ")
+up = input("Wich key do you want to be pressed for upshifts?: ")
+down = input("Wich key do you want to be pressed for downshifts?: ")
 neut_key = input("Wich key do you want to use for neutral?: ")
+
+# Convert input keys to hex values
+if up in keys:
+    upshift = keys[up]
+if down in keys:
+    downshift = keys[down]
 
 # Neutral detection configuration
 neutral = ''
@@ -142,12 +188,17 @@ config['SHIFTER'] = {'Joystick id': joy,
                    'fifth gear': fifth_gear,
                    'sixth gear': sixth_gear,
                    'reverse button': reverse,                   
-                   'neutral detection': neutral}
+                   }
 
 config['KEYS'] = {'upshift': upshift,
                 'downshift': downshift,
-                'neutral keyboard key': neut_key,
-                'reset key': reset_key}
+                'neutral keyboard key': neut_key
+                 }   
+
+config['OPTIONS'] = {'neutral detection': neutral,
+                    'presskey_timer': 0.2,  
+                    'releasekey_timer': 0.5
+                    }
 
 # Write the file
 with open("Anyshift.ini", "w") as configfile:

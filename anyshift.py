@@ -148,18 +148,17 @@ def update_gear(gear_selected, actual_gear):
         if act_gear < gear_selected:
             act_gear += 1
             KeyPress_up()
-            #keyboard.press_and_release(up_key)   # Deprecated method to send key strokes
-            #time.sleep(0.25)
+            #keyboard.press_and_release(up_key)  # Deprecated method to send key strokes
+            #time.sleep(0.25)  # Deprecated method to send key
         if act_gear > gear_selected:
             act_gear -= 1
             KeyPress_down()
             #keyboard.press_and_release(down_key)  # Deprecated method to send key strokes
-            #time.sleep(0.25)   # A lo mejor para dosbox hay que reactivarlo
+            #time.sleep(0.25)  #  Deprecated method to send key strokes
     
     return act_gear
 
 
-# Actuals Functions
 def PressKey(hexKeyCode):
     extra = ctypes.c_ulong(0)
     ii_ = Input_I()
@@ -178,16 +177,16 @@ def ReleaseKey(hexKeyCode):
 
 def KeyPress_up():
     time.sleep(presskey_timer)
-    PressKey(0x1F) # press S
+    PressKey(int(up_key, 16)) # press 
     time.sleep(releasekey_timer)
-    ReleaseKey(0x1F) #release s
+    ReleaseKey(int(up_key, 16)) #release 
 
 
 def KeyPress_down():
     time.sleep(presskey_timer)
-    PressKey(0x2C) # press Z
+    PressKey(int(down_key, 16)) # press 
     time.sleep(releasekey_timer)
-    ReleaseKey(0x2C) #release Z
+    ReleaseKey(int(down_key, 16)) #release 
 
 
 if __name__ == "__main__":
