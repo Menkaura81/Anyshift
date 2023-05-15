@@ -57,7 +57,10 @@ for i in range(num_joy):
     joy.quit()
 
 # Promp user for desired joystick
-joy = int(input("Wich joystick do you want to use as shifter?: "))
+joy = '111'
+while len(joy) != 1 or (ord(joy) < 48 or ord(joy) > 57) or int(joy) > num_joy:
+     joy = input("Wich joystick do you want to use as shifter?: ")
+joy = int(joy)
 
 # Initialize selected joystick
 shifter = pygame.joystick.Joystick(int(joy))
@@ -158,15 +161,15 @@ while not done:
 
 # Selection for up, down and neutral keys with input security checks
 up = 'F'
-while len(up) > 1 or (ord(up) < 97 or ord(up) > 122):
+while len(up) != 1 or ((ord(up) < 97 or ord(up) > 122) and (ord(up) < 48 or ord(up) > 57)):
     up = input("Wich key do you want to be pressed for upshifts?: ")
     up = up.lower()
 down = 'R'
-while len(down) > 1 or (ord(down) < 97 or ord(down) > 122) or down == up:
+while len(down) != 1 or ((ord(down) < 97 or ord(down) > 122) and (ord(down) < 48 or ord(down) > 57)) or down == up:
     down = input("Wich key do you want to be pressed for downshifts?: ")
     down = down.lower()    
 neut_key = 'F'
-while len(neut_key) > 1 or (ord(neut_key) < 97 or ord(neut_key) > 122) or neut_key == up or neut_key == down:
+while len(neut_key) != 1 or ((ord(neut_key) < 97 or ord(neut_key) > 122) and (ord(neut_key) < 48 or ord(neut_key) > 57)) or neut_key == up or neut_key == down:
     neut_key = input("Wich key do you want to use for neutral?: ")
     neut_key = neut_key.lower()
 
