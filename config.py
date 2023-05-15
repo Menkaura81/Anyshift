@@ -156,9 +156,19 @@ while not done:
                         print(f"Button {reverse} saved for reverse")
                         done = True                                                                      
 
-up = input("Wich key do you want to be pressed for upshifts?: ")
-down = input("Wich key do you want to be pressed for downshifts?: ")
-neut_key = input("Wich key do you want to use for neutral?: ")
+# Selection for up, down and neutral keys with input security checks
+up = 'F'
+while len(up) > 1 or (ord(up) < 97 or ord(up) > 122):
+    up = input("Wich key do you want to be pressed for upshifts?: ")
+    up = up.lower()
+down = 'R'
+while len(down) > 1 or (ord(down) < 97 or ord(down) > 122) or down == up:
+    down = input("Wich key do you want to be pressed for downshifts?: ")
+    down = down.lower()    
+neut_key = 'F'
+while len(neut_key) > 1 or (ord(neut_key) < 97 or ord(neut_key) > 122) or neut_key == up or neut_key == down:
+    neut_key = input("Wich key do you want to use for neutral?: ")
+    neut_key = neut_key.lower()
 
 # Convert input keys to hex values
 if up in keys:
@@ -170,7 +180,7 @@ if down in keys:
 neutral = ''
 while neutral != 'n' and neutral != 'no' and neutral != 'y' and neutral != 'yes':
     neutral = input("Do you want to detect neutral position? (y/n): ")
-neutral = neutral.lower()
+    neutral = neutral.lower()
 if neutral == 'y' or neutral == 'yes':
     neutral = True
 else:
