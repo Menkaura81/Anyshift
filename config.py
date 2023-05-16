@@ -149,7 +149,7 @@ while not done:
 # Selection for seventh gear
 seven_gears = ''
 while seven_gears != 'n' and seven_gears != 'no' and seven_gears != 'y' and seven_gears != 'yes':
-    seven_gears = input("Does the selected joystick has seven gears? (y/n): ")
+    seven_gears = input("Does the selected joystick has seven gears?. Do you want to use it? (y/n): ")
     seven_gears = seven_gears.lower()
 if seven_gears == 'y' or seven_gears == 'yes':
     print("Put the shifter in position for seventh gear")

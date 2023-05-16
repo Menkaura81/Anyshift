@@ -67,9 +67,9 @@ def main():
     global down_key 
     down_key = config['KEYS']['downshift']
     global presskey_timer
-    presskey_timer = float(config['OPTIONS']['presskey_timer'])
+    presskey_timer = float(config['OPTIONS']['presskey timer'])
     global releasekey_timer
-    releasekey_timer = float(config['OPTIONS']['releasekey_timer'])
+    releasekey_timer = float(config['OPTIONS']['releasekey timer'])
     
     
     # Initialize joystick module
