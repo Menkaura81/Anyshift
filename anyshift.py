@@ -123,16 +123,18 @@ def main():
                 #if shifter.get_button(6) == True:
                 #   gear_selected = 7
                 #   actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(reverse) == True: 
+                if shifter.get_button(reverse) == True:                     
                     gear_selected = -1
                     actual_gear = update_gear(gear_selected, actual_gear)        
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r") 
 
-            # Change to neutral if the option is enabled
+            # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
             if event.type == pygame.JOYBUTTONUP and neutral == 'True':
-                gear_selected = 0
-                actual_gear = update_gear(gear_selected, actual_gear)
-                print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
+                time.sleep(0.3)
+                if not pygame.event.peek(pygame.JOYBUTTONDOWN):
+                    gear_selected = 0
+                    actual_gear = update_gear(gear_selected, actual_gear)
+                    print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
         # Select neutral if this key is pressed 
         if keyboard.is_pressed(neut_key):  
@@ -191,6 +193,4 @@ def KeyPress_down():
 
 if __name__ == "__main__":
     main()
-    # If you forget this line, the program will hang
-    # on exit if running from IDLE.
     pygame.quit()
