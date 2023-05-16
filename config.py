@@ -146,6 +146,27 @@ while not done:
                         print(f"Button {sixth_gear} saved for sixth gear")
                         done = True
 
+# Selection for seventh gear
+seven_gears = ''
+while seven_gears != 'n' and seven_gears != 'no' and seven_gears != 'y' and seven_gears != 'yes':
+    seven_gears = input("Does the selected joystick has seven gears? (y/n): ")
+    seven_gears = seven_gears.lower()
+if seven_gears == 'y' or seven_gears == 'yes':
+    print("Put the shifter in position for seventh gear")
+    seven_gears = True
+    done = False
+    while not done:
+        # Event processing step.
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                for i in range(num_buttons):
+                    if shifter.get_button(i) == True:
+                        seventh_gear = i
+                        print(f"Button {seventh_gear} saved for sixth gear")
+                        done = True
+else:
+    seven_gears = False                        
+
 # Selection for reverse
 print("Put the shifter in position for reverse")
 done = False
@@ -200,7 +221,8 @@ config['SHIFTER'] = {'Joystick id': joy,
                    'fourth gear': fourth_gear,
                    'fifth gear': fifth_gear,
                    'sixth gear': sixth_gear,
-                   'reverse button': reverse,                   
+                   'seventh gear': seventh_gear,
+                   'reverse button': reverse                   
                    }
 
 config['KEYS'] = {'upshift': upshift,
@@ -208,9 +230,10 @@ config['KEYS'] = {'upshift': upshift,
                 'neutral keyboard key': neut_key
                  }   
 
-config['OPTIONS'] = {'neutral detection': neutral,
-                    'presskey_timer': 0.2,  
-                    'releasekey_timer': 0.5
+config['OPTIONS'] = {'seven gears': seven_gears,
+                    'neutral detection': neutral,
+                    'presskey timer': 0.2,  
+                    'releasekey timer': 0.5
                     }
 
 # Write the file

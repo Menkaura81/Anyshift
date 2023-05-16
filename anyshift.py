@@ -45,12 +45,12 @@ down_key = 'z'
 presskey_timer = 0
 releasekey_timer = 0
 
-
 def main():
 
     # Create a config objet and read config values
     config = configparser.ConfigParser()
     config.read('Anyshift.ini')
+    seven_gears = config['OPTIONS']['seven gears']
     neutral = config['OPTIONS']['neutral detection']
     joy_id = config['SHIFTER']['joystick id']
     first = int(config['SHIFTER']['first gear'])
@@ -59,6 +59,7 @@ def main():
     fourth = int(config['SHIFTER']['fourth gear'])
     fifth = int(config['SHIFTER']['fifth gear']) 
     sixth = int(config['SHIFTER']['sixth gear'])
+    seventh = int(config['SHIFTER']['seventh gear'])
     reverse = int(config['SHIFTER']['reverse button'])
     neut_key = config['KEYS']['neutral keyboard key']
     global up_key
@@ -69,6 +70,7 @@ def main():
     presskey_timer = float(config['OPTIONS']['presskey_timer'])
     global releasekey_timer
     releasekey_timer = float(config['OPTIONS']['releasekey_timer'])
+    
     
     # Initialize joystick module
     pygame.joystick.init()
@@ -120,9 +122,9 @@ def main():
                 if shifter.get_button(sixth) == True:
                     gear_selected = 6
                     actual_gear = update_gear(gear_selected, actual_gear)
-                #if shifter.get_button(6) == True:
-                #   gear_selected = 7
-                #   actual_gear = update_gear(gear_selected, actual_gear)
+                if shifter.get_button(seventh) == True and seven_gears == 'True':
+                    gear_selected = 7
+                    actual_gear = update_gear(gear_selected, actual_gear)
                 if shifter.get_button(reverse) == True:                     
                     gear_selected = -1
                     actual_gear = update_gear(gear_selected, actual_gear)        
