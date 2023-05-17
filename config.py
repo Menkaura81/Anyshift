@@ -1,6 +1,10 @@
 """Config app. This will write an .ini file with the desired config of AnyShift"""
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 import configparser
+import time
+from sys import exit
 
 # Dictionary for converting input keys to hex values
 keys = {
@@ -48,7 +52,14 @@ pygame.init()
 
 # Number of joystick connected to the pc
 num_joy = pygame.joystick.get_count()
-print(f"There are {num_joy} joysticks conected to the pc")
+if num_joy == 0:
+    print("No joysticks connected to the pc") 
+    print("Please connect joystick an then run the config util again")
+    time.sleep(5)
+    exit(1)
+else: 
+    print(f"There are {num_joy} joysticks conected to the pc")
+    
 
 # Print every joystick and its id
 for i in range(num_joy):
@@ -68,6 +79,7 @@ shifter.init()
 
 num_buttons = shifter.get_numbuttons()  # For the range of the loop when selecting buttons
 
+reserved = []
 # Selection for first gear
 print("Put the shifter in position for first gear")
 done = False
@@ -78,6 +90,7 @@ while not done:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
                         first_gear = i
+                        reserved.append(i)
                         print(f"Button {first_gear} saved for first gear")
                         done = True
 
@@ -90,10 +103,16 @@ while not done:
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
-                        second_gear = i
-                        print(f"Button {second_gear} saved for second gear")
-                        done = True
-
+                        if i not in reserved:
+                            second_gear = i
+                            reserved.append(i)
+                            print(f"Button {second_gear} saved for second gear")
+                            done = True
+                        else:
+                            print(f"Conflict detected button already in use: {reserved}")
+                            print("Put the shifter in position for second gear")
+                            break
+                    
 # Selection for third gear
 print("Put the shifter in position for third gear")
 done = False
@@ -103,9 +122,15 @@ while not done:
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
-                        third_gear = i
-                        print(f"Button {third_gear} saved for third gear")
-                        done = True
+                        if i not in reserved:
+                            third_gear = i
+                            reserved.append(i)
+                            print(f"Button {third_gear} saved for third gear")
+                            done = True
+                        else:
+                            print(f"Conflict detected button already in use: {reserved}")
+                            print("Put the shifter in position for third gear")
+                            break
 
 # Selection for fourth gear
 print("Put the shifter in position for fourth gear")
@@ -116,9 +141,15 @@ while not done:
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
-                        fourth_gear = i
-                        print(f"Button {fourth_gear} saved for fourth gear")
-                        done = True
+                        if i not in reserved:
+                            fourth_gear = i
+                            reserved.append(i)
+                            print(f"Button {fourth_gear} saved for fourth gear")
+                            done = True
+                        else:
+                            print(f"Conflict detected button already in use: {reserved}")
+                            print("Put the shifter in position for fourth gear")
+                            break
 
 # Selection for fifth gear
 print("Put the shifter in position for fifth gear")
@@ -129,9 +160,15 @@ while not done:
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
-                        fifth_gear = i
-                        print(f"Button {fifth_gear} saved for fifth gear")
-                        done = True  
+                        if i not in reserved:
+                            fifth_gear = i
+                            reserved.append(i)
+                            print(f"Button {fifth_gear} saved for fifth gear")
+                            done = True
+                        else:
+                            print(f"Conflict detected button already in use: {reserved}")
+                            print("Put the shifter in position for fifth gear")
+                            break
 
 # Selection for sixth gear
 print("Put the shifter in position for sixth gear")
@@ -142,9 +179,15 @@ while not done:
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
-                        sixth_gear = i
-                        print(f"Button {sixth_gear} saved for sixth gear")
-                        done = True
+                        if i not in reserved:
+                            sixth_gear = i
+                            reserved.append(i)
+                            print(f"Button {sixth_gear} saved for sixth gear")
+                            done = True
+                        else:
+                            print(f"Conflict detected button already in use: {reserved}")
+                            print("Put the shifter in position for sixth gear")
+                            break
 
 # Selection for seventh gear
 seven_gears = ''
@@ -161,9 +204,15 @@ if seven_gears == 'y' or seven_gears == 'yes':
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
-                        seventh_gear = i
-                        print(f"Button {seventh_gear} saved for sixth gear")
-                        done = True
+                        if i not in reserved:
+                            seventh_gear = i
+                            reserved.append(i)
+                            print(f"Button {seventh_gear} saved for seventh gear")
+                            done = True
+                        else:
+                            print(f"Conflict detected button already in use: {reserved}")
+                            print("Put the shifter in position for seventh gear")
+                            break
 else:
     seven_gears = False                        
 
@@ -176,10 +225,16 @@ while not done:
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
-                        reverse = i
-                        print(f"Button {reverse} saved for reverse")
-                        done = True                                                                      
-
+                        if i not in reserved:
+                            reverse = i
+                            reserved.append(i)
+                            print(f"Button {reverse} saved for reverse")
+                            done = True
+                        else:
+                            print(f"Conflict detected button already in use: {reserved}")
+                            print("Put the shifter in position for reverse")
+                            break                                                           
+            
 # Selection for up, down and neutral keys with input security checks
 up = 'F'
 while len(up) != 1 or ((ord(up) < 97 or ord(up) > 122) and (ord(up) < 48 or ord(up) > 57)):

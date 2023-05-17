@@ -1,4 +1,6 @@
 """Main Anyshift executable"""
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 import keyboard
 import configparser
@@ -91,7 +93,7 @@ def main():
     print()
     print("Buy me a coffe if you like this app: https://bmc.link/Menkaura")
     print()
-    print("Active shifter: ",shifter.get_name())
+    print("Active shifter: ", shifter.get_name())
         
     gear_selected = 0
     actual_gear = 0
