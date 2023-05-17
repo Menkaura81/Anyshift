@@ -6,6 +6,7 @@ import pygame
 import pygame
 import configparser
 import keyboard
+import sys
 
 
 def save_data():
@@ -80,7 +81,7 @@ def joystick_activation():
 def run_any():
     
     mypath = os.path.abspath(os.path.dirname(__file__))
-    os.system( f'"{mypath}/anyshift.exe"' )    
+    os.system( f'"{mypath}/anyshift.exe"' )      
          
 
 # Get list of joystick ids and save them into joys list

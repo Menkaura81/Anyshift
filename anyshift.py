@@ -49,12 +49,14 @@ class Input(ctypes.Structure):
     _fields_ = [("type", ctypes.c_ulong),
                 ("ii", Input_I)]
 
-
 # Global variables
 up_key = 's'
 down_key = 'z'
+rev_key = 'c'
 presskey_timer = 0
 releasekey_timer = 0
+rev_button = 'False' 
+neutral = 'False'  
 
 
 def main():
@@ -63,6 +65,9 @@ def main():
     config = configparser.ConfigParser()
     config.read('Anyshift.ini')
     seven_gears = config['OPTIONS']['seven gears']
+    global rev_button
+    rev_button = config['OPTIONS']['reverse is button']
+    global neutral
     neutral = config['OPTIONS']['neutral detection']
     joy_id = config['SHIFTER']['joystick id']
     first = int(config['SHIFTER']['first gear'])
@@ -72,12 +77,14 @@ def main():
     fifth = int(config['SHIFTER']['fifth gear'])
     sixth = int(config['SHIFTER']['sixth gear'])
     seventh = int(config['SHIFTER']['seventh gear'])
-    reverse = int(config['SHIFTER']['reverse button'])
-    neut_key = config['KEYS']['neutral keyboard key']
+    reverse = int(config['SHIFTER']['reverse'])
+    neut_key = config['KEYS']['neutral key']
     global up_key
     up_key = config['KEYS']['upshift']
     global down_key
     down_key = config['KEYS']['downshift']
+    global rev_key
+    rev_key = config['KEYS']['reverse']
     global presskey_timer
     presskey_timer = float(config['OPTIONS']['presskey timer'])
     global releasekey_timer
@@ -159,19 +166,24 @@ def main():
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
 def update_gear(gear_selected, actual_gear):
 
-    act_gear = actual_gear
-    while act_gear != gear_selected:
-        if act_gear < gear_selected:
-            act_gear += 1
-            KeyPress_up()
-            # keyboard.press_and_release(up_key)  # Deprecated method to send key strokes
-            # time.sleep(0.25)  # Deprecated method to send key
-        if act_gear > gear_selected:
-            act_gear -= 1
-            KeyPress_down()
-            # keyboard.press_and_release(down_key)  # Deprecated method to send key strokes
-            # time.sleep(0.25)  #  Deprecated method to send key strokes
-
+    # Press key selected for reverse. Check neutral option so it makes the correct gear changes #####¡HAS A BUG ON PRINTING GEAR ON SCREEN!!!!!!!
+    if rev_button == 'True' and gear_selected == -1:
+        KeyPress_rev()
+        if neutral == 'False':
+            act_gear = 0
+        else:
+            act_gear = -1
+    else:     
+        KeyRelease_rev()
+        act_gear = actual_gear
+        while act_gear != gear_selected:
+            if act_gear < gear_selected:
+                act_gear += 1
+                KeyPress_up()                
+            if act_gear > gear_selected:
+                act_gear -= 1
+                KeyPress_down()
+                
     return act_gear
 
 
@@ -205,6 +217,16 @@ def KeyPress_down():
     time.sleep(releasekey_timer)
     ReleaseKey(int(down_key, 16))  # release
 
+
+def KeyPress_rev():
+    time.sleep(presskey_timer)
+    PressKey(int(rev_key, 16))  # press
+
+
+def KeyRelease_rev():
+    time.sleep(releasekey_timer)
+    ReleaseKey(int(rev_key, 16))  # release
+    
 
 if __name__ == "__main__":
     main()

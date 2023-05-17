@@ -235,8 +235,26 @@ down = 'R'
 while len(down) != 1 or ((ord(down) < 97 or ord(down) > 122) and (ord(down) < 48 or ord(down) > 57)) or down == up:
     down = input("Wich key do you want to be pressed for downshifts?: ")
     down = down.lower()
+
+# Reverse configuration
+rev_bool = ''
+while rev_bool != 'n' and rev_bool != 'no' and rev_bool != 'y' and rev_bool != 'yes':
+    print("Some games do not have a reverse gear, instead is a button press")
+    rev_bool = input("Do you want reverse position to press a button?: ")
+    rev_bool = rev_bool.lower()
+if rev_bool == 'y' or rev_bool == 'yes':
+    rev_bool = True
+else:
+    rev_bool = False
+
+rev = 'R'
+if rev_bool == True:
+    while len(rev) != 1 or ((ord(rev) < 97 or ord(rev) > 122) and (ord(rev) < 48 or ord(rev) > 57)) or rev == up or rev == down:
+        rev = input("Wich key do you want to be pressed for reverse?: ")
+        rev = rev.lower()
+
 neut_key = 'F'
-while len(neut_key) != 1 or ((ord(neut_key) < 97 or ord(neut_key) > 122) and (ord(neut_key) < 48 or ord(neut_key) > 57)) or neut_key == up or neut_key == down:
+while len(neut_key) != 1 or ((ord(neut_key) < 97 or ord(neut_key) > 122) and (ord(neut_key) < 48 or ord(neut_key) > 57)) or neut_key == up or neut_key == down or neut_key == rev:
     neut_key = input("Wich key do you want to use for neutral?: ")
     neut_key = neut_key.lower()
 
@@ -245,6 +263,8 @@ if up in keys:
     upshift = keys[up]
 if down in keys:
     downshift = keys[down]
+if rev in keys:
+    rev_key = keys[rev]
 
 # Neutral detection configuration
 neutral = ''
@@ -255,6 +275,7 @@ if neutral == 'y' or neutral == 'yes':
     neutral = True
 else:
     neutral = False
+
 
 # Create object config
 config = configparser.ConfigParser()
@@ -268,16 +289,18 @@ config['SHIFTER'] = {'Joystick id': joy,
                      'fifth gear': fifth_gear,
                      'sixth gear': sixth_gear,
                      'seventh gear': seventh_gear,
-                     'reverse button': reverse
+                     'reverse': reverse
                      }
 
 config['KEYS'] = {'upshift': upshift,
                   'downshift': downshift,
-                  'neutral keyboard key': neut_key
+                  'reverse': rev_key,
+                  'neutral key': neut_key
                   }
 
 config['OPTIONS'] = {'seven gears': seven_gears,
                      'neutral detection': neutral,
+                     'reverse is button': rev_bool,
                      'presskey timer': 0.2,
                      'releasekey timer': 0.5
                      }
