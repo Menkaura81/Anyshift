@@ -107,14 +107,13 @@ joystick_frame.grid(row = 0, column = 0, padx= 20, pady = 5)
 joystick_id_combobox = ttk.Combobox(joystick_frame, values = joys)
 joystick_id_combobox.grid(row = 0, column = 0)
 
+# Select joystick button
+joy_button = tkinter.Button(frame, text = "Activate selected joystick", command = joystick_activation)
+joy_button.grid(row = 1, column = 0)
 
 # Joystick buttons selection
 gears_selection_frame = tkinter.LabelFrame(frame, text = "Joystick Buttons")
-gears_selection_frame.grid(row = 1, column = 0, padx= 20, pady = 5)
-
-# Select joystick button
-joy_button = tkinter.Button(gears_selection_frame, text = "Activate selected joystick", command = joystick_activation)
-joy_button.grid(row = 0, column = 1)
+gears_selection_frame.grid(row = 2, column = 0, padx= 20, pady = 5)
 
 first_gear_label = tkinter.Label(gears_selection_frame, text = "1")
 first_gear_label.grid(row = 2, column = 0)
@@ -170,7 +169,7 @@ reverse_gear_entry.grid(row = 5, column = 3)
 # Keys selection
 
 keys_selection_frame = tkinter.LabelFrame(frame, text = "Key Selection")
-keys_selection_frame.grid(row = 2, column = 0, padx= 20, pady = 5)
+keys_selection_frame.grid(row = 3, column = 0, padx= 20, pady = 5)
 
 upshift_key_label = tkinter.Label(keys_selection_frame, text = "Upshift")
 upshift_key_label.grid(row = 0, column = 0)
@@ -193,7 +192,7 @@ for widget in keys_selection_frame.winfo_children():
 # Options
 
 options_selection_frame = tkinter.LabelFrame(frame, text = "Options")
-options_selection_frame.grid(row = 3, column = 0, padx = 20, pady = 5)
+options_selection_frame.grid(row = 4, column = 0, padx = 20, pady = 5)
 
 neutral_var = tkinter.StringVar(value="False")
 neutral_check = tkinter.Checkbutton(options_selection_frame, text= "Detect Neutral",
@@ -207,11 +206,11 @@ seven_check.grid(row=1, column=0)
 
 # Save data button
 button = tkinter.Button(frame, text="Save config", command= save_data)
-button.grid(row=4, column=0, sticky="news", padx=20, pady = 5)
+button.grid(row=5, column=0, sticky="news", padx=20, pady = 5)
 
 # Run Button
 run_button = tkinter.Button(frame, text="Run Anyshift", command= run_any)
-run_button.grid(row=5, column=0, sticky="news", padx=20, pady = 5)
+run_button.grid(row=6, column=0, sticky="news", padx=20, pady = 5)
 
 
 window.mainloop()
