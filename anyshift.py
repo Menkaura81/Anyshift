@@ -56,7 +56,8 @@ rev_key = 'c'
 presskey_timer = 0
 releasekey_timer = 0
 rev_button = 'False' 
-neutral = 'False'  
+neutral = 'False'
+first_time = True  
 
 
 def main():
@@ -182,18 +183,22 @@ def update_gear(gear_selected, actual_gear):
                 if act_gear > gear_selected:
                     act_gear -= 1
                     KeyPress_down()
-        else:  # Game doesn´t detect neutral, so we skip gear 0    ¡¡¡¡¡¡HAS A BUG FOR THE FIRST TIME WE PUT FIRST GEAR. It doesn´t make the key press!!!!!!
+        else:  # Game doesn´t detect neutral, so we skip gear 0    
             act_gear = actual_gear
-            while act_gear != gear_selected:
+            while act_gear != gear_selected:  
                 if act_gear < gear_selected:
                     if act_gear == 0:
                         act_gear += 1
+                        global first_time
+                        if first_time == True:  # To prevent the bug where it doesn´t change the first time you use de shifter
+                            KeyPress_up()
+                            first_time = False  
                     else:    
                         act_gear += 1
                         KeyPress_up()                
                 if act_gear > gear_selected:
                     if act_gear == 0:
-                        act_gear -= 1
+                        act_gear -= 1                                           
                     else:
                         act_gear -= 1
                         KeyPress_down()
