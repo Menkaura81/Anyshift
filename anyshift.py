@@ -146,6 +146,7 @@ def main():
                 if shifter.get_button(reverse) == True:
                     gear_selected = -1
                     actual_gear = update_gear(gear_selected, actual_gear)
+                
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
             # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
@@ -166,24 +167,37 @@ def main():
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
 def update_gear(gear_selected, actual_gear):
 
-    # Press key selected for reverse. Check neutral option so it makes the correct gear changes #####¡HAS A BUG ON PRINTING GEAR ON SCREEN!!!!!!!
+    # Press key selected for reverse
     if rev_button == 'True' and gear_selected == -1:
-        KeyPress_rev()
-        if neutral == 'False':
-            act_gear = 0
-        else:
-            act_gear = -1
-    else:     
-        KeyRelease_rev()
-        act_gear = actual_gear
-        while act_gear != gear_selected:
-            if act_gear < gear_selected:
-                act_gear += 1
-                KeyPress_up()                
-            if act_gear > gear_selected:
-                act_gear -= 1
-                KeyPress_down()
-                
+        KeyPress_rev() 
+        act_gear = -1
+    else:  # Reverse is a gear, not a button   
+        KeyRelease_rev()  # Release de reverse key just in case we came from reverse is a button mode
+        if neutral == 'True':  # Normal operation with gear 0 for neutral
+            act_gear = actual_gear
+            while act_gear != gear_selected:
+                if act_gear < gear_selected:
+                    act_gear += 1
+                    KeyPress_up()                
+                if act_gear > gear_selected:
+                    act_gear -= 1
+                    KeyPress_down()
+        else:  # Game doesn´t detect neutral, so we skip gear 0    ¡¡¡¡¡¡HAS A BUG FOR THE FIRST TIME WE PUT FIRST GEAR. It doesn´t make the key press!!!!!!
+            act_gear = actual_gear
+            while act_gear != gear_selected:
+                if act_gear < gear_selected:
+                    if act_gear == 0:
+                        act_gear += 1
+                    else:    
+                        act_gear += 1
+                        KeyPress_up()                
+                if act_gear > gear_selected:
+                    if act_gear == 0:
+                        act_gear -= 1
+                    else:
+                        act_gear -= 1
+                        KeyPress_down()
+                            
     return act_gear
 
 
