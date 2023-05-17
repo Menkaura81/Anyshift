@@ -1,0 +1,8 @@
+# Ignore folders
+/build
+/dist
+
+# Ignore files
+
+*.ini
+*.spec

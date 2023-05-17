@@ -1,10 +1,10 @@
 """Config app. This will write an .ini file with the desired config of AnyShift"""
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-import pygame
-import configparser
-import time
-from sys import exit
+import pygame  # Joystick support
+import configparser  # Read and write ini files
+import time  # Delays
+from sys import exit  # Finish execution in some cases
 
 # Dictionary for converting input keys to hex values
 keys = {
