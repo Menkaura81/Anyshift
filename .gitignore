@@ -6,3 +6,6 @@
 
 *.ini
 *.spec
+*.ico
+cmd.py
+presets.py

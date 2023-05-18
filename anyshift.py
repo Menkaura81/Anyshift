@@ -9,6 +9,10 @@ import time  # Delays
 import ctypes  # Kernel level key presses
 
 
+# Define console windows size (rows, lines)
+#os.system('mode 70,13')
+os.system("mode con cols=70 lines=13")
+
 # Bunch of stuff so that the script can send keystrokes to game #
 SendInput = ctypes.windll.user32.SendInput
 
@@ -57,14 +61,16 @@ presskey_timer = 0
 releasekey_timer = 0
 rev_button = 'False' 
 neutral = 'False'
-first_time = True  
-
+first_time = True 
+nascar_mode = 'False'
 
 def main():
 
     # Create a config objet and read config values
     config = configparser.ConfigParser()
     config.read('Anyshift.ini')
+    global nascar_mode
+    nascar_mode = config['OPTIONS']['nascar racing mode']
     seven_gears = config['OPTIONS']['seven gears']
     global rev_button
     rev_button = config['OPTIONS']['reverse is button']
@@ -99,6 +105,8 @@ def main():
     shifter = pygame.joystick.Joystick(int(joy_id))
     shifter.init()
 
+    
+    
     # Cool window design ;)
     print()
     print("    ___                _____ __    _ ______              ___  ____  ")
@@ -112,6 +120,7 @@ def main():
     print()
     print("Active shifter: ", shifter.get_name())
 
+    
     gear_selected = 0
     actual_gear = 0
 
@@ -168,40 +177,78 @@ def main():
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
 def update_gear(gear_selected, actual_gear):
 
-    # Press key selected for reverse
-    if rev_button == 'True' and gear_selected == -1:
-        KeyPress_rev() 
-        act_gear = -1
-    else:  # Reverse is a gear, not a button   
-        KeyRelease_rev()  # Release de reverse key just in case we came from reverse is a button mode
-        if neutral == 'True':  # Normal operation with gear 0 for neutral
-            act_gear = actual_gear
-            while act_gear != gear_selected:
-                if act_gear < gear_selected:
-                    act_gear += 1
-                    KeyPress_up()                
-                if act_gear > gear_selected:
-                    act_gear -= 1
-                    KeyPress_down()
-        else:  # Game doesn´t detect neutral, so we skip gear 0    
-            act_gear = actual_gear
-            while act_gear != gear_selected:  
-                if act_gear < gear_selected:
-                    if act_gear == 0:
-                        act_gear += 1
-                        global first_time
-                        if first_time == True:  # To prevent the bug where it doesn´t change the first time you use de shifter
-                            KeyPress_up()
-                            first_time = False  
-                    else:    
+    global first_time
+
+    if nascar_mode == 'True':
+        if rev_button == 'True' and gear_selected == -1:
+            while actual_gear != 1:
+                KeyPress_down()
+                actual_gear -= 1
+            KeyPress_rev() 
+            act_gear = 1
+        else:  # Reverse is a gear, not a button   
+            KeyRelease_rev()  # Release de reverse key just in case we came from reverse is a button mode
+            if neutral == 'True':  # Normal operation with gear 0 for neutral
+                act_gear = actual_gear
+                while act_gear != gear_selected:
+                    if act_gear < gear_selected:
                         act_gear += 1
                         KeyPress_up()                
-                if act_gear > gear_selected:
-                    if act_gear == 0:
-                        act_gear -= 1                                           
-                    else:
+                    if act_gear > gear_selected:
                         act_gear -= 1
                         KeyPress_down()
+            else:  # Game doesn´t detect neutral, so we skip gear 0    
+                act_gear = actual_gear
+                while act_gear != gear_selected:  
+                    if act_gear < gear_selected:
+                        if act_gear == 0:
+                            act_gear += 1
+                            if first_time == True:  # To prevent the bug where it doesn´t change the first time you use the shifter
+                                KeyPress_up()
+                                first_time = False  
+                        else:
+                            act_gear += 1
+                            KeyPress_up()                
+                    if act_gear > gear_selected:
+                        if act_gear == 0:
+                            act_gear -= 1                                           
+                        else:
+                            act_gear -= 1
+                            KeyPress_down()
+    else:
+        # Press key selected for reverse
+        if rev_button == 'True' and gear_selected == -1:
+            KeyPress_rev() 
+            act_gear = -1
+        else:  # Reverse is a gear, not a button   
+            KeyRelease_rev()  # Release de reverse key just in case we came from reverse is a button mode
+            if neutral == 'True':  # Normal operation with gear 0 for neutral
+                act_gear = actual_gear
+                while act_gear != gear_selected:
+                    if act_gear < gear_selected:
+                        act_gear += 1
+                        KeyPress_up()                
+                    if act_gear > gear_selected:
+                        act_gear -= 1
+                        KeyPress_down()
+            else:  # Game doesn´t detect neutral, so we skip gear 0    
+                act_gear = actual_gear
+                while act_gear != gear_selected:  
+                    if act_gear < gear_selected:
+                        if act_gear == 0:
+                            act_gear += 1
+                            if first_time == True:  # To prevent the bug where it doesn´t change the first time you use the shifter
+                                KeyPress_up()
+                                first_time = False  
+                        else:
+                            act_gear += 1
+                            KeyPress_up()                
+                    if act_gear > gear_selected:
+                        if act_gear == 0:
+                            act_gear -= 1                                           
+                        else:
+                            act_gear -= 1
+                            KeyPress_down()
                             
     return act_gear
 

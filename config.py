@@ -7,6 +7,9 @@ import configparser  # Read and write ini files
 import time  # Delays
 from sys import exit  # Finish execution in some cases
 
+# Define console windows size (rows, lines)
+os.system("mode con cols=70 lines=13")
+
 # Dictionary for converting input keys to hex values
 keys = {
     '1': '0x02',
@@ -51,6 +54,8 @@ keys = {
 pygame.joystick.init()
 pygame.init()
 
+
+
 # Number of joystick connected to the pc
 num_joy = pygame.joystick.get_count()
 if num_joy == 0:
@@ -80,6 +85,7 @@ num_buttons = shifter.get_numbuttons()  # For the range of the loop when selecti
 reserved = []  # For storing already used buttons
 
 # Selection for first gear
+os.system('cls')
 print("Put the shifter in position for first gear")
 done = False
 while not done:
@@ -225,8 +231,10 @@ while not done:
                         print(f"Conflict detected button already in use: {reserved}")
                         print("Put the shifter in position for reverse")
                         break
+time.sleep(0.5)
 
 # Selection for up, down and neutral keys with input security checks
+os.system('cls')
 up = 'F'
 while len(up) != 1 or ((ord(up) < 97 or ord(up) > 122) and (ord(up) < 48 or ord(up) > 57)):
     up = input("Wich key do you want to be pressed for upshifts?: ")
@@ -237,10 +245,11 @@ while len(down) != 1 or ((ord(down) < 97 or ord(down) > 122) and (ord(down) < 48
     down = down.lower()
 
 # Reverse configuration
+os.system('cls')
 rev_bool = ''
 while rev_bool != 'n' and rev_bool != 'no' and rev_bool != 'y' and rev_bool != 'yes':
     print("Some games do not have a reverse gear, instead is a button press")
-    rev_bool = input("Do you want reverse position to press a button?: ")
+    rev_bool = input("Do you want reverse position to press a key? (y/n): ")
     rev_bool = rev_bool.lower()
 if rev_bool == 'y' or rev_bool == 'yes':
     rev_bool = True
@@ -301,6 +310,7 @@ config['KEYS'] = {'upshift': upshift,
 config['OPTIONS'] = {'seven gears': seven_gears,
                      'neutral detection': neutral,
                      'reverse is button': rev_bool,
+                     'nascar racing mode': 'False',
                      'presskey timer': 0.2,
                      'releasekey timer': 0.5
                      }
