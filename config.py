@@ -64,7 +64,7 @@ def joystick_selection():
     num_joy = pygame.joystick.get_count()
     if num_joy == 0:
         print("No joysticks connected to the pc")
-        print("Please connect joystick an then run the config util again")
+        print("Please connect joystick and then run the config util again")
         time.sleep(5)
         exit(1)
     else:
@@ -78,7 +78,7 @@ def joystick_selection():
 
     # Promp user for desired joystick
     joy = '111'
-    while len(joy) != 1 or (ord(joy) < 48 or ord(joy) > 57) or int(joy) > num_joy:
+    while len(joy) != 1 or (ord(joy) < 48 or ord(joy) > 57) or int(joy) > (num_joy -1):
         joy = input("Wich joystick do you want to use as shifter?: ")
     joy = int(joy)
 
