@@ -15,24 +15,24 @@ First of all you have to configure the game keys for upshift and downshift. Then
 
 GRAN TURISMO 4 pcsx2
 
-Tested with pcsx2 1.6.0 and NTSC american version of the game (supports native 1080 resolution and 60 fps). Support force feedback, 900º wheel rotation and independent pedals
+Tested with pcsx2 1.6.0 and NTSC american version of the game (supports native 1080 resolution and 60 fps). Support force feedback, 900º wheel rotation and independent pedals.
 You have to set your keys in the gamepad control setup of the emulator:
     L2 = Downshift (Default key s)
     R2 = Upshift (Default key z)
     Triangle = reverse key (Default key c)
-Select manual shifting ingame
-On the rolling starts you have to select the right position on the shifter before crossing start line to avoid desynchronization
-Neutral not detected and reverse is a button
+Select manual shifting ingame.
+On the rolling starts you have to select the right position on the shifter before crossing start line to avoid desynchronization.
+Neutral not detected and reverse is a button.
 
 ENTHUSIA pcsx2
 
-Tested with pcsx2 1.6.0 and PAL version of the game. Support force feedback, 900º wheel rotation and independent pedals
+Tested with pcsx2 1.6.0 and PAL version of the game. Support force feedback, 900º wheel rotation and independent pedals. 
 You have to set your keys in the gamepad control setup of the emulator:
     L2 = Downshift (Default key s)
     R2 = Upshift (Default key z)
-Select manual shifting ingame
-You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization.
-Reverse is a gear
+Select manual shifting ingame. 
+You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
+Reverse is a gear.
 
 GRAN TURISMO duckstation
 
@@ -42,53 +42,53 @@ You have to set your keys in the neGcon control setup of the emulator:
     DPad Right = Upshift (Default key s)
     DPad Lef = Downshift (Default key z)
     B = Reverse (Default key c)
-Select manual shifting ingame
-You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization
-Neutral not detected and reverse is a button
+Select manual shifting ingame. 
+You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
+Neutral not detected and reverse is a button.
 
 NASCAR RACING DosBox
 
-Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combined pedals mode in your wheel config app
-Recomended wheel rotation degrees 400º
+Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combined pedals mode in your wheel config app. 
+Recomended wheel rotation degrees 400º. 
 You can choose controls ingame. Default keys are:
     S = Upshift
     Z = Downshift
     C = Reverse
-You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization
-Reverse is a button and Nascar Mode required to work properly
-Game glitches a bit if you leave a gear selected in the menus
+You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
+Reverse is a button and Nascar Mode required to work properly. 
+Game glitches a bit if you leave a gear selected in the menus. 
 
 NASCAR RACING 2 DosBox
 
-Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app.
+Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app. 
 You can choose controls ingame. Default keys are:
     A = Upshift
     Z = Downshift
     C = Reverse
-You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization.
-Reverse is a button and Nascar Mode required to work properly.
-Use S key to display gears hud
+You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
+Reverse is a button and Nascar Mode required to work properly. 
+Use S key to display gears hud. 
 
 COLIN MCRAE RALLY pc
 
-Tested with base game on Windows 11. Support force feedback and independent pedals.
-Recomended wheel rotation degrees 540º
+Tested with base game on Windows 11. Support force feedback and independent pedals. 
+Recomended wheel rotation degrees 540º. 
 Change controls ingame. Default keys in given profile:
     S = Upshift
     Z = Downshift
-Select manual shifting ingame
-Select first gear just after the start countdown finnish otherwise game will glitch and select reverse.
-Neutral detected and reverse is a gear
+Select manual shifting ingame. 
+Select first gear just after the start countdown finnish otherwise game will glitch and select reverse. 
+Neutral detected and reverse is a gear. 
 
 INDIANAPOLIS 500
 
-Tested with model 2 emu. Support force feedback and independent pedals.
-Recomended wheel rotation degrees 400º
-Configure controls in the emulator
+Tested with model 2 emu. Support force feedback and independent pedals. 
+Recomended wheel rotation degrees 400º. 
+Configure controls in the emulator. 
     Button 2 = Downshift (Default s)
     Button 3 = Upshift (Default z)
-Select right position on the shifter before you gain control on the car to avoid desynchronization.
-Neutral not detected and no reverse gear.
+Select right position on the shifter before you gain control on the car to avoid desynchronization. 
+Neutral not detected and no reverse gear. 
 
 
 ### References 
