@@ -10,8 +10,7 @@ import ctypes  # Kernel level key presses
 
 
 # Define console windows size (rows, lines)
-#os.system('mode 70,13')
-os.system("mode con cols=70 lines=13")
+#os.system("mode con cols=70 lines=13")
 
 # Bunch of stuff so that the script can send keystrokes to game #
 SendInput = ctypes.windll.user32.SendInput
