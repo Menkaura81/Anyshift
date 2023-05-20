@@ -118,12 +118,11 @@ def main():
     print("Buy me a coffe if you like this app: https://bmc.link/Menkaura")
     print()
     print("Active shifter: ", shifter.get_name())
-
     
-    gear_selected = 0
+    gear_selected = 0 
     actual_gear = 0
 
-    # Joystick read loop
+    # Joystick read loop  
     done = False
     while not done:
         for event in pygame.event.get():
@@ -136,7 +135,7 @@ def main():
                     actual_gear = update_gear(gear_selected, actual_gear)
                 if shifter.get_button(second) == True:
                     gear_selected = 2
-                    actual_gear = update_gear(gear_selected, actual_gear)
+                    actual_gear = update_gear(gear_selected, actual_gear) 
                 if shifter.get_button(third) == True:
                     gear_selected = 3
                     actual_gear = update_gear(gear_selected, actual_gear)
@@ -148,10 +147,11 @@ def main():
                     actual_gear = update_gear(gear_selected, actual_gear)
                 if shifter.get_button(sixth) == True:
                     gear_selected = 6
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(seventh) == True and seven_gears == 'True':
-                    gear_selected = 7
-                    actual_gear = update_gear(gear_selected, actual_gear)
+                    actual_gear = update_gear(gear_selected, actual_gear)  
+                if seven_gears == 'True':  # To avoid invalid button error
+                    if shifter.get_button(seventh) == True:
+                        gear_selected = 7
+                        actual_gear = update_gear(gear_selected, actual_gear)
                 if shifter.get_button(reverse) == True:
                     gear_selected = -1
                     actual_gear = update_gear(gear_selected, actual_gear)
@@ -204,7 +204,7 @@ def update_gear(gear_selected, actual_gear):
                             act_gear += 1
                             if first_time == True:  # To prevent the bug where it doesn´t change the first time you use the shifter
                                 KeyPress_up()
-                                first_time = False  
+                                first_time = False   
                         else:
                             act_gear += 1
                             KeyPress_up()                
@@ -295,4 +295,4 @@ def KeyRelease_rev():
 
 if __name__ == "__main__":
     main()
-    pygame.quit()
+    

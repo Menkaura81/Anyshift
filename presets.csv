@@ -1,2 +1,7 @@
-id, name, upshift, downshift, reverse, netral key, seven gears, neutral detection, reverse is button, nascar racing mode, presskey timer, releasekey timer
-0, Gran Turismo pcsx2, 
+id,name,upshift,downshift,reverse,neutral key,seven gears,neutral detection,reverse is button,nascar racing mode,presskey timer,releasekey timer,
+0,Gran Turismo pcsx2,s,z,c,n,True,False,True,False,0.1,0,3,
+1,Enthusia pcsx2,s,z,c,n,True,False,False,False,0.1,0.3,
+2,Nascar Racing dosbox,s,z,c,n,False,False,True,True,0.2,0.2,
+3,Nascar Racing 2 dosbox,a,z,c,n,False,False,True,True,0.2,0.2,
+4,Colin McRae Rally pc,s,z,c,n,False,True,False,False,0.1,0.2,
+5,Indanapolis 500 model2 emu,s,z,c,n,False,False,False,False,0.1,0.2,

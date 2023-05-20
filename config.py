@@ -6,6 +6,7 @@ import pygame  # Joystick support
 import configparser  # Read and write ini files
 import time  # Delays
 from sys import exit  # Finish execution in some cases
+import csv
 
 
 def main():
@@ -29,13 +30,16 @@ def main():
     sixth_gear = gears[5]
 
     # Options for use seven gears and save selection
-    seventh_gear = 'null'
+    seventh_gear = 88 # random value so it doesn´t conflict with other settings if not configured 
     seven_gears = configure_seven()
     if seven_gears == True:
         seventh_gear, gears = seventh_selection(joy, gears)
 
     # Remaining reverse gear selection
     reverse = reverse_selection(joy, gears)
+
+    # Ask for game preset load
+    presets(joy, first_gear, second_gear, third_gear, fourth_gear, fifth_gear, sixth_gear, seventh_gear, reverse)
 
     # Key wanted to be pressed for shifts selection
     keys = keys_selection()
@@ -265,6 +269,88 @@ def reverse_selection(joy, gears):
     return reverse
 
 
+def presets(joy, first_gear, second_gear, third_gear, fourth_gear, fifth_gear, sixth_gear, seventh_gear, reverse):
+    
+    os.system('cls')
+    preset = ''
+    while preset != 'n' and preset != 'no' and preset != 'y' and preset != 'yes':
+        preset = input("Do you want to load a saved game preset? (y/n): ")
+        preset = preset.lower()
+    if preset == 'y' or preset == 'yes':
+        # Load csv in a list of dictionaries
+        with open("presets.csv", "r") as file:
+            reader = csv.DictReader(file)
+            juegos = []
+            counter = 0
+            for row in reader:  # Load csv in a list of dictionaries
+                print(row['id'], row['name'])
+                juegos.append(row)
+                counter += 1
+        
+            id = -1
+            while int(id) < 0 or int(id) > counter:
+                id = input("What profile do you want to load?: ")
+
+            # Load variables from dictionary
+            upshift = hex_convert(juegos[int(id)]['upshift'])  # Read and converted to hex
+            downshift = hex_convert(juegos[int(id)]['downshift'])
+            rev_key = hex_convert(juegos[int(id)]['reverse'])
+            neut_key = juegos[int(id)]['neutral key']
+            seven_gears = juegos[int(id)]['seven gears']
+            neutral = juegos[int(id)]['neutral detection']
+            rev_bool = juegos[int(id)]['reverse is button']
+            nascar = juegos[int(id)]['nascar racing mode']
+            presskey_timer = juegos[int(id)]['presskey timer']
+            releasekey_timer = juegos[int(id)]['releasekey timer']
+
+        # Create object config
+        config = configparser.ConfigParser(allow_no_value=True)
+
+        # Set configuration
+        config['SHIFTER'] = {'; This is the id number of the joystick you want to use': None,
+                             'Joystick id': joy,
+                             '; Joystick buttons for each gear': None,
+                             'first gear': first_gear,
+                             'second gear': second_gear,
+                             'third gear': third_gear,
+                             'fourth gear': fourth_gear,
+                             'fifth gear': fifth_gear,
+                             'sixth gear': sixth_gear,
+                             'seventh gear': seventh_gear,
+                             'reverse': reverse
+                            }
+
+        config['KEYS'] = {'; Upshift, downshift and reverse key in hex code': None,
+                          'upshift': upshift,
+                          'downshift': downshift,
+                          'reverse': rev_key,
+                          '; Neutral key is not necessary to be in hex code': None,
+                          'neutral key': neut_key
+                         }
+
+        config['OPTIONS'] = {'; True if you have a shifter with seven gears. Seventh gear button must be configured or anyshift will crash ': None,
+                             'seven gears': seven_gears,
+                             '; True if you want to change to neutral if no gear is selected in shifter. Most old games doesnt support this': None,
+                             'neutral detection': neutral,
+                             '; True if the game uses a separated button for reverse. Gran Turismo or Nascar Racing for example': None,
+                             'reverse is button': rev_bool,
+                             '; Unique mode for old papyrus games where the game remember the gear you were in when you changed to': None,
+                             '; reverse. This will change all way down to first gear and then press reverse to avoid desynchronization': None,
+                             'nascar racing mode': nascar,
+                             '; Delays for key presses and releases. Tinker with this if game doesnt detect key presses': None,
+                             'presskey timer': presskey_timer,
+                             'releasekey timer': releasekey_timer,
+                            } 
+
+        # Write the file
+        with open("Anyshift.ini", "w") as configfile:
+            config.write(configfile)
+
+        exit(0)
+    else:
+        return
+
+
 def keys_selection():
 
     keys = []
@@ -315,6 +401,7 @@ def reverse_is_button(keys):
         while len(rev) != 1 or ((ord(rev) < 97 or ord(rev) > 122) and (ord(rev) < 48 or ord(rev) > 57)) or rev in keys:
             rev = input("Wich key do you want to be pressed for reverse?: ")
             rev = rev.lower()
+    rev = hex_convert(rev)
 
     return rev_bool, rev
 
@@ -385,33 +472,43 @@ def save_configuration(joy, first_gear, second_gear, third_gear, fourth_gear, fi
                        reverse, rev_bool, rev_key, upshift, downshift, neut_key, neutral):
 
     # Create object config
-    config = configparser.ConfigParser()
+    config = configparser.ConfigParser(allow_no_value=True)
 
     # Set configuration
-    config['SHIFTER'] = {'Joystick id': joy,
-                         'first gear': first_gear,
-                         'second gear': second_gear,
-                         'third gear': third_gear,
-                         'fourth gear': fourth_gear,
-                         'fifth gear': fifth_gear,
-                         'sixth gear': sixth_gear,
-                         'seventh gear': seventh_gear,
-                         'reverse': reverse
-                         }
+    config['SHIFTER'] = {'; This is the id number of the joystick you want to use': None,
+                          'Joystick id': joy,
+                          '; Joystick buttons for each gear': None,
+                          'first gear': first_gear,
+                          'second gear': second_gear,
+                          'third gear': third_gear,
+                          'fourth gear': fourth_gear,
+                          'fifth gear': fifth_gear,
+                          'sixth gear': sixth_gear,
+                          'seventh gear': seventh_gear,
+                          'reverse': reverse
+                        }
 
-    config['KEYS'] = {'upshift': upshift,
+    config['KEYS'] = {'; Upshift, downshift and reverse key in hex code': None,
+                      'upshift': upshift,
                       'downshift': downshift,
                       'reverse': rev_key,
+                      '; Neutral key is not necessary to be in hex code': None,
                       'neutral key': neut_key
-                      }
+                     }
 
-    config['OPTIONS'] = {'seven gears': seven_gears,
+    config['OPTIONS'] = {'; True if you have a shifter with seven gears. Seventh gear button must be configured or anyshift will crash ': None,
+                         'seven gears': seven_gears,
+                         '; True if you want to change to neutral if no gear is selected in shifter. Most old games doesnt support this': None,
                          'neutral detection': neutral,
+                         '; True if the game uses a separated button for reverse. Gran Turismo or Nascar Racing for example': None,
                          'reverse is button': rev_bool,
-                         'nascar racing mode': 'False',  # Those values must be set in the.ini directly
-                         'presskey timer': 0.2,
-                         'releasekey timer': 0.5
-                         }
+                         '; Unique mode for old papyrus games where the game remember the gear you were in when you changed to': None,
+                         '; reverse. This will change all way down to first gear and then press reverse to avoid desynchronization': None,
+                         'nascar racing mode': False,
+                         '; Delays for key presses and releases. Tinker with this if game doesnt detect key presses': None,
+                         'presskey timer': 0.1,
+                         'releasekey timer': 0.3,
+                        } 
 
     # Write the file
     with open("Anyshift.ini", "w") as configfile:
