@@ -10,7 +10,7 @@ First of all you have to configure the game keys for upshift and downshift. Then
 You can uncompress Anyshift in any directory you want. Included in the .rar comes an ini file that can be edited manually but it is preferable that you run 'config.exe' so you know exactly wich id has your shifter assigned. You can choose wich joystick is used to select gears, wich keys are pressed for upshift and downshift, and if you want the gear to be neutral if there is no gear selected in the shifter (this won´t work in old games, but i included the option, just in case). 
 
 
-###Setups for games
+### Setups for games
 
 GRAN TURISMO 4 pcsx2
 
