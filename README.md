@@ -77,6 +77,16 @@ You have to select the right position on the shifter (first gear) before going t
 Reverse is a button and Nascar Mode required to work properly. 
 Use S key to display gears hud. 
 
+GRAND PRIX 2 DosBox
+
+Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app.
+Controls are forced ingame:
+    SPACE = Upshift (0x39)
+    ALT = Downshift (0x38)
+Neutral detected and reverse is a gear.
+I´m having problems with a "spin position" on the gearbox so this profile isn´t included in current release. Also it only changes up if you are accelerating. 
+I will try memory adresses read and write on this one.
+
 COLIN MCRAE RALLY pc
 
 Tested with base game on Windows 11. Support force feedback and independent pedals. 
