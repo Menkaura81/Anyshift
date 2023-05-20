@@ -3,6 +3,8 @@
 
 Anyshift is a software written in Python. It uses pygame (https://www.pygame.org/news) joystick  module to read inputs from the selected device, applies the shifter to sequential logic changes and send keyboard presses so you can use your H-Shifter with your favorite old racing game.
 
+if you enjoy this app, you can buy me a coffee to keep coding cool apps: https://www.buymeacoffee.com/Menkaura
+
 ### How to use AnyShift
 
 First of all you have to configure the game keys for upshift and downshift. Then you have to run Anyshift_config.exe to configure button imputs from your shifter. Then choose the same keys in anyshift than you did in the game. There are more options to choose depending on the game you want to use anyshift with. We´ll cover the later.

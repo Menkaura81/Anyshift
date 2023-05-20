@@ -1,4 +1,5 @@
 """Main Anyshift executable"""
+"""THIS CODE IS A MESS. NEED TO BE CLEANED A LOT"""
 
 import os  # Hide pygame welcome message
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
