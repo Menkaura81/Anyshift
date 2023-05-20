@@ -1,7 +1,7 @@
 # Anyshift
 ## A python app to convert joystick inputs into key strokes so you can play vintage driving games with a H-Shifter
 
-Anyshift is a software written in Python. It uses pygame (https://www.pygame.org/news) joystick  module to read inputs from the selected device, applies the shifter to sequential logic changes and send keyboard presses so you can use your H-Shifter with your favorite old racing game.
+Anyshift is a software written in Python. It uses pygame joystick module to read inputs from the selected device, applies the shifter to sequential logic changes and send keyboard presses so you can use your H-Shifter with your favorite old racing game.
 
 if you enjoy this app, you can buy me a coffee to keep coding cool apps: https://www.buymeacoffee.com/Menkaura
 
@@ -10,6 +10,14 @@ if you enjoy this app, you can buy me a coffee to keep coding cool apps: https:/
 You can uncompress Anyshift in any directory you want. Included in the zip comes an ini file that can be edited manually but it is preferable that you run 'Anyshift_config.exe' so you know exactly wich id has your shifter assigned. You can choose wich joystick is used to select gears, wich keys are pressed for upshift and downshift, and if you want the gear to be neutral if there is no gear selected in the shifter (this won´t work in old games, but i included the option, just in case). 
 
 First of all you have to configure the game keys for upshift and downshift. Then you have to run Anyshift_config.exe to configure button imputs from your shifter. Then choose the same keys in anyshift than you did in the game. There are more options to choose depending on the game you want to use anyshift with. We´ll cover them later.
+
+Two video examples of Anyshift running:
+
+Gran Turismo 4:
+https://www.youtube.com/watch?v=ijPjmBfR4QU
+
+Nascar Racing:
+https://www.youtube.com/watch?v=WRI1p6f5Af8
 
 ### Setups for games
 
