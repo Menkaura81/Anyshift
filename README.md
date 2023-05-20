@@ -30,12 +30,24 @@ You have to set your keys in the gamepad control setup of the emulator:
     L2 = Downshift (Default key s)
     R2 = Upshift (Default key z)
 Select manual shifting ingame
-You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization
+You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization.
 Reverse is a gear
+
+GRAN TURISMO duckstation
+
+Tested with duckstation and PAL version of the game. Doesn´t support force feedback. You need negcon controller settings to use steering wheel. Pedals must be combined.
+Recomended wheel rotation degrees 720º
+You have to set your keys in the neGcon control setup of the emulator:
+    DPad Right = Upshift (Default key s)
+    DPad Lef = Downshift (Default key z)
+    B = Reverse (Default key c)
+Select manual shifting ingame
+You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization
+Neutral not detected and reverse is a button
 
 NASCAR RACING DosBox
 
-Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app
+Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combined pedals mode in your wheel config app
 Recomended wheel rotation degrees 400º
 You can choose controls ingame. Default keys are:
     S = Upshift
@@ -80,7 +92,7 @@ Neutral not detected and no reverse gear.
 
 ### References 
 
-https://stackoverflow.com/questions/6620637/writing-comments-to-files-with-configparser  -- Managing comments in configparser
+https://stackoverflow.com/questions/6620637/writing-comments-to-files-with-configparser  -- Comments in configparser
 https://linuxhint.com/string-to-hexadecimal-in-python/ -- To convert strings to hex
 https://www.scaler.com/topics/how-to-clear-screen-in-python/ -- Clear console command
 https://www.reddit.com/r/learnpython/comments/22tke1/use_python_to_send_keystrokes_to_games_in_windows/  -- Send key strokes to games using ctypes
