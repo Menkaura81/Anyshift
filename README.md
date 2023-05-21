@@ -83,9 +83,9 @@ Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set comb
 Controls are forced ingame:
     SPACE = Upshift (0x39)
     ALT = Downshift (0x38)
-Neutral detected and reverse is a gear.
-I´m having problems with a "spin position" on the gearbox so this profile isn´t included in current release. Also it only changes up if you are accelerating. 
-I will try memory adresses read and write on this one.
+Neutral detected and reverse is a gear. Memory write mode True. Seven gear is used for the "spin" gearbox position.
+Not compatible with key presses mode. Added the option of write to memory gear values. Still not fully functional. 
+Memory option not supported for more games, i added it only because this is the game of my childhood, the one got me hooked with simracing.
 
 COLIN MCRAE RALLY pc
 
