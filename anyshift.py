@@ -1,4 +1,4 @@
-"""Main Anyshift executable"""
+"""Anyshift with memory address write feature. Stil WIP"""
 """THIS CODE IS A MESS. NEED TO BE CLEANED A LOT"""
 
 import os  # Hide pygame welcome message
@@ -8,6 +8,8 @@ import keyboard  # Key presses
 import configparser  # Read ini files
 import time  # Delays
 import ctypes  # Kernel level key presses
+import pyMeow as pm  # Read and write memmory addresses
+from ReadWriteMemory import ReadWriteMemory
 
 
 # Define console windows size (rows, lines)
@@ -76,6 +78,9 @@ def main():
     rev_button = config['OPTIONS']['reverse is button']
     global neutral
     neutral = config['OPTIONS']['neutral detection']
+    mem_mode = config['OPTIONS']['memory write mode']
+    db_base_addr = config['OPTIONS']['dosbox version base address']
+    offset = config['OPTIONS']['memory value offset']
     joy_id = config['SHIFTER']['joystick id']
     first = int(config['SHIFTER']['first gear'])
     second = int(config['SHIFTER']['second gear'])
@@ -99,13 +104,10 @@ def main():
 
     # Initialize joystick module
     pygame.joystick.init()
-    pygame.init()
-
+    
     # Create a joystick object and initialize it
     shifter = pygame.joystick.Joystick(int(joy_id))
-    shifter.init()
-
-    
+    shifter.init()    
     
     # Cool window design ;)
     print()
@@ -123,57 +125,119 @@ def main():
     gear_selected = 0 
     actual_gear = 0
 
-    # Joystick read loop  
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True  # Flag that we are done so we exit this loop.
+    # Open DosBox process
+    rwm = ReadWriteMemory()
+    process = rwm.get_process_by_name('DOSBox.exe')
+    process.open()
+    # DosBox base address. Get from the pointer we have
+    x_pointer = process.get_pointer(int(db_base_addr, 16)) 
 
-            if event.type == pygame.JOYBUTTONDOWN:
-                if shifter.get_button(first) == True:
-                    gear_selected = 1
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(second) == True:
-                    gear_selected = 2
-                    actual_gear = update_gear(gear_selected, actual_gear) 
-                if shifter.get_button(third) == True:
-                    gear_selected = 3
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(fourth) == True:
-                    gear_selected = 4
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(fifth) == True:
-                    gear_selected = 5
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(sixth) == True:
-                    gear_selected = 6
-                    actual_gear = update_gear(gear_selected, actual_gear)  
-                if seven_gears == 'True':  # To avoid invalid button error
-                    if shifter.get_button(seventh) == True:
-                        gear_selected = 7
+    # Gear address is the base address plus the offset. This is the value we found in Cheat Engine
+    gear_address = process.read(x_pointer) + int(offset, 16)
+
+    
+    if mem_mode == 'False':
+        # Joystick read loop  
+        done = False
+        while not done:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    done = True  # Flag that we are done so we exit this loop.
+
+                if event.type == pygame.JOYBUTTONDOWN:
+                    if shifter.get_button(first) == True:
+                        gear_selected = 1
                         actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(reverse) == True:
-                    gear_selected = -1
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                
-                print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
-
-            # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
-            if event.type == pygame.JOYBUTTONUP and neutral == 'True':
-                time.sleep(0.3)
-                if not pygame.event.peek(pygame.JOYBUTTONDOWN):
-                    gear_selected = 0
-                    actual_gear = update_gear(gear_selected, actual_gear)
+                    if shifter.get_button(second) == True:
+                        gear_selected = 2
+                        actual_gear = update_gear(gear_selected, actual_gear) 
+                    if shifter.get_button(third) == True:
+                        gear_selected = 3
+                        actual_gear = update_gear(gear_selected, actual_gear)
+                    if shifter.get_button(fourth) == True:
+                        gear_selected = 4
+                        actual_gear = update_gear(gear_selected, actual_gear)
+                    if shifter.get_button(fifth) == True:
+                        gear_selected = 5
+                        actual_gear = update_gear(gear_selected, actual_gear)
+                    if shifter.get_button(sixth) == True:
+                        gear_selected = 6
+                        actual_gear = update_gear(gear_selected, actual_gear)  
+                    if seven_gears == 'True':  # To avoid invalid button error
+                        if shifter.get_button(seventh) == True:
+                            gear_selected = 7
+                            actual_gear = update_gear(gear_selected, actual_gear)
+                    if shifter.get_button(reverse) == True:
+                        gear_selected = -1
+                        actual_gear = update_gear(gear_selected, actual_gear)
                     print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
-        # Select neutral if this key is pressed
-        if keyboard.is_pressed(neut_key):
-            gear_selected = 0
-            actual_gear = update_gear(gear_selected, actual_gear)
-            print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
+                # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
+                if event.type == pygame.JOYBUTTONUP and neutral == 'True':
+                    time.sleep(0.3)
+                    if not pygame.event.peek(pygame.JOYBUTTONDOWN):
+                        gear_selected = 0
+                        actual_gear = update_gear(gear_selected, actual_gear)
+                        print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
+            # Select neutral if this key is pressed
+            if keyboard.is_pressed(neut_key):
+                gear_selected = 0
+                actual_gear = update_gear(gear_selected, actual_gear)
+                print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")    
+    else:
+        # Open process
+        process = pm.open_process("DOSBox.exe")
+        address = gear_address       
+        # Loop
+        done = False
+        while not done:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    done = True  # Flag that we are done so we exit this loop.
 
+                if event.type == pygame.JOYBUTTONDOWN:
+                    if shifter.get_button(first) == True:
+                        pm.w_byte(process, address, 1)
+                        gear_selected = 1
+                    if shifter.get_button(second) == True:
+                        pm.w_byte(process, address, 2)
+                        gear_selected = 2
+                    if shifter.get_button(third) == True:
+                        pm.w_byte(process, address, 3)
+                        gear_selected = 3
+                    if shifter.get_button(fourth) == True:
+                        pm.w_byte(process, address, 4)
+                        gear_selected = 4
+                    if shifter.get_button(fifth) == True:
+                        pm.w_byte(process, address, 5)
+                        gear_selected = 5
+                    if shifter.get_button(sixth) == True:
+                        pm.w_byte(process, address, 6)
+                        gear_selected = 6  
+                    if seven_gears == 'True':  # To avoid invalid button error
+                        if shifter.get_button(seventh) == True:
+                            pm.w_byte(process, address, 7)
+                            gear_selected = 7
+                    if shifter.get_button(reverse) == True:
+                        pm.w_byte(process, address, -1)
+                        gear_selected = -1                
+                    print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+
+                # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
+                if event.type == pygame.JOYBUTTONUP and neutral == 'True':
+                    time.sleep(0.3)
+                    if not pygame.event.peek(pygame.JOYBUTTONDOWN):
+                        pm.w_byte(process, address, 0)
+                        gear_selected = 0
+                        print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+
+            # Select neutral if this key is pressed
+            if keyboard.is_pressed(neut_key):
+                gear_selected = 0
+                print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+                    
+                
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
 def update_gear(gear_selected, actual_gear):
 
@@ -295,5 +359,7 @@ def KeyRelease_rev():
     
 
 if __name__ == "__main__":
+    pygame.init()
     main()
+    pygame.quit()
     
