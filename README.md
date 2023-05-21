@@ -65,6 +65,7 @@ You can choose controls ingame. Default keys are:
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a button and Nascar Mode required to work properly. 
 Game glitches a bit if you leave a gear selected in the menus. 
+Memory offset for gears = 0x23A1D2
 
 NASCAR RACING 2 DosBox
 
@@ -126,5 +127,6 @@ https://linuxhint.com/string-to-hexadecimal-in-python/ -- To convert strings to 
 https://www.scaler.com/topics/how-to-clear-screen-in-python/ -- Clear console command
 https://www.reddit.com/r/learnpython/comments/22tke1/use_python_to_send_keystrokes_to_games_in_windows/  -- Send key strokes to games using ctypes
 https://www.pygame.org/docs/ref/joystick.html -- Pygame joystick library 
-
+https://stackoverflow.com/questions/63442491/get-data-at-address-from-cheat-engine-with-python  -- Get data address from cheat engine
+https://pypi.org/project/ReadWriteMemory/  - Read and write memory
 
