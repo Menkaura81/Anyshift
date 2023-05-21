@@ -302,6 +302,7 @@ def presets(joy, first_gear, second_gear, third_gear, fourth_gear, fifth_gear, s
             nascar = juegos[int(id)]['nascar racing mode']
             presskey_timer = juegos[int(id)]['presskey timer']
             releasekey_timer = juegos[int(id)]['releasekey timer']
+            mem_mode = juegos[int(id)]['memory write mode']
 
         # Create object config
         config = configparser.ConfigParser(allow_no_value=True)
@@ -337,10 +338,14 @@ def presets(joy, first_gear, second_gear, third_gear, fourth_gear, fifth_gear, s
                              '; Unique mode for old papyrus games where the game remember the gear you were in when you changed to': None,
                              '; reverse. This will change all way down to first gear and then press reverse to avoid desynchronization': None,
                              'nascar racing mode': nascar,
+                             '; Instead of key presses it writes data to memory. I only included it because of Grand Prix 2': None,
+                             '; Each game has different memory values. No offical support for this one': None,
+                             'memory write mode': mem_mode,
+                             'memory address for gears': 3124512454,
                              '; Delays for key presses and releases. Tinker with this if game doesnt detect key presses': None,
                              'presskey timer': presskey_timer,
                              'releasekey timer': releasekey_timer,
-                            } 
+                            }  
 
         # Write the file
         with open("Anyshift.ini", "w") as configfile:
@@ -505,6 +510,10 @@ def save_configuration(joy, first_gear, second_gear, third_gear, fourth_gear, fi
                          '; Unique mode for old papyrus games where the game remember the gear you were in when you changed to': None,
                          '; reverse. This will change all way down to first gear and then press reverse to avoid desynchronization': None,
                          'nascar racing mode': False,
+                         '; Instead of key presses it writes data to memory. I only included it because of Grand Prix 2': None,
+                         '; Each game has different memory values. No offical support for this one': None,
+                         'memory write mode': False,
+                         'memory address for gears': 3124512454,
                          '; Delays for key presses and releases. Tinker with this if game doesnt detect key presses': None,
                          'presskey timer': 0.1,
                          'releasekey timer': 0.3,

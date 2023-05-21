@@ -1,3 +1,5 @@
+"""GUI for Anyshift config util. Still WIP"""
+
 import tkinter
 from tkinter import ttk
 import os

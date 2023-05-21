@@ -114,7 +114,7 @@ def main():
     print("  / /| | / __ \/ / / /\__ \/ __ \/ / /_/ __/  | | / /   / / / / / / ")
     print(" / ___ |/ / / / /_/ /___/ / / / / / __/ /_    | |/ /   / /_/ /_/ /  ")
     print("/_/  |_/_/ /_/\__, //____/_/ /_/_/_/  \__/    |___/   /_/(_)____/   ")
-    print("             /____/                           ©2022 Menkaura Soft   ")
+    print("             /____/                           ©2023 Menkaura Soft   ")
     print()
     print("Buy me a coffe if you like this app: https://bmc.link/Menkaura")
     print()
