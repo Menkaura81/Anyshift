@@ -303,6 +303,8 @@ def presets(joy, first_gear, second_gear, third_gear, fourth_gear, fifth_gear, s
             presskey_timer = juegos[int(id)]['presskey timer']
             releasekey_timer = juegos[int(id)]['releasekey timer']
             mem_mode = juegos[int(id)]['memory write mode']
+            db_base_addr = juegos[int(id)]['dosbox base address']
+            offset = juegos[int(id)]['offset'] 
 
         # Create object config
         config = configparser.ConfigParser(allow_no_value=True)
@@ -341,7 +343,10 @@ def presets(joy, first_gear, second_gear, third_gear, fourth_gear, fifth_gear, s
                              '; Instead of key presses it writes data to memory. I only included it because of Grand Prix 2': None,
                              '; Each game has different memory values. No offical support for this one': None,
                              'memory write mode': mem_mode,
-                             'memory address for gears': 3124512454,
+                             '; DosBox version base address. Ex: 0.74 = 0x01D3A1A0 ': None,
+                             'DosBox Version base address': db_base_addr,
+                             '; Memory value offset from base addres ': None,
+                             'Memory value offset': offset,
                              '; Delays for key presses and releases. Tinker with this if game doesnt detect key presses': None,
                              'presskey timer': presskey_timer,
                              'releasekey timer': releasekey_timer,
@@ -513,7 +518,10 @@ def save_configuration(joy, first_gear, second_gear, third_gear, fourth_gear, fi
                          '; Instead of key presses it writes data to memory. I only included it because of Grand Prix 2': None,
                          '; Each game has different memory values. No offical support for this one': None,
                          'memory write mode': False,
-                         'memory address for gears': 3124512454,
+                         '; DosBox version base address. Ex: 0.74 = 0x01D3A1A0 ': None,
+                         'DosBox Version base address': 0,
+                         '; Memory value offset from base addres ': None,
+                         'Memory value offset': 0,
                          '; Delays for key presses and releases. Tinker with this if game doesnt detect key presses': None,
                          'presskey timer': 0.1,
                          'releasekey timer': 0.3,

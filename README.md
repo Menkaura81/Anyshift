@@ -90,11 +90,11 @@ Reverse is a button and Nascar Mode required to work properly.
 GRAND PRIX 2 DosBox
 
 Only works with Dosbox 0.74. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app.
-Controls are forced ingame:
-    SPACE = Upshift (0x39)
-    ALT = Downshift (0x38)
+Not compatible with key presses mode. Added the option of write to memory gear values. Still not fully functional.
+DosBox 0.74 base address = 0x01D3A1A0
+Memory offset for gears = 0x291BF0
 Neutral detected and reverse is a gear. Memory write mode True. Seven gear is used for the "spin" gearbox position.
-Not compatible with key presses mode. Added the option of write to memory gear values. Still not fully functional. 
+ 
 Memory option not supported for more games, i added it only because this is the game of my childhood, the one got me hooked with simracing.
 
 COLIN MCRAE RALLY pc
