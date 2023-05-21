@@ -126,16 +126,17 @@ def main():
     actual_gear = 0
     # Open DosBox process
     rwm = ReadWriteMemory()
-    try:
-        process = rwm.get_process_by_name('DOSBox.exe')
-        process.open()
-    except:
-        print("DOSBox not found. Launch it before Anyshift")
-        time.sleep(3)
-    # DosBox base address. Get from the pointer we have
-    x_pointer = process.get_pointer(int(db_base_addr, 16)) 
-    # Gear address is the base address plus the offset. This is the value we found in Cheat Engine
-    gear_address = process.read(x_pointer) + int(offset, 16)
+    if mem_mode == 'True':
+        try:
+            process = rwm.get_process_by_name('DOSBox.exe')
+            process.open()        
+            # DosBox base address. Get from the pointer we have
+            x_pointer = process.get_pointer(int(db_base_addr, 16)) 
+            # Gear address is the base address plus the offset. This is the value we found in Cheat Engine
+            gear_address = process.read(x_pointer) + int(offset, 16)
+        except:
+            print("DOSBox not found. Launch it before Anyshift")
+            time.sleep(3)
     
     if mem_mode == 'False':
         # Joystick read loop  
