@@ -77,9 +77,19 @@ You have to select the right position on the shifter (first gear) before going t
 Reverse is a button and Nascar Mode required to work properly. 
 Use S key to display gears hud. 
 
+INDYCAR RACING DosBox
+
+Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app. 
+You can choose controls ingame. Default keys are:
+    A = Upshift
+    Z = Downshift
+    T = Reverse
+You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
+Reverse is a button and Nascar Mode required to work properly. 
+
 GRAND PRIX 2 DosBox
 
-Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app.
+Only works with Dosbox 0.74. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app.
 Controls are forced ingame:
     SPACE = Upshift (0x39)
     ALT = Downshift (0x38)
