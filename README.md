@@ -7,9 +7,15 @@ if you enjoy this app, you can buy me a coffee to keep me awake coding cool apps
 
 ### How to use AnyShift
 
-You can uncompress Anyshift in any directory you want. Included in the zip comes an ini file that can be edited manually but it is preferable that you run 'Anyshift_config.exe' so you know exactly wich id has your shifter assigned. You can choose wich joystick is used to select gears, wich keys are pressed for upshift and downshift, and if you want the gear to be neutral if there is no gear selected in the shifter (this won´t work in old games, but i included the option, just in case). 
+You can uncompress Anyshift in any directory you want. Included in the zip comes an ini file that can be edited manually but it is preferable that you run 'Anyshift_config.exe' so you know exactly wich id has your shifter assigned. 
 
-First of all you have to configure the game keys for upshift and downshift. Then you have to run Anyshift_config.exe to configure button imputs from your shifter. Then choose the same keys in anyshift than you did in the game. There are more options to choose depending on the game you want to use anyshift with. We´ll cover them later.
+Anyshift works in two modes:
+    1 Simulated key pressed mode
+    2 Memory write mode
+
+In MEMORY WRITE MODE, values for gears are written directly to memory when you select a gear in the shifter. In this mode is impossible that Anyshift desynchronize with the game, but as every version of an emulator use distinct base memory addresses, and every game manages memory at his own way, this mode is only supported in DOSBox 0.74 (not 0.74-2 or 0.74-3) and with the listed games in the presets csv. You can find offsets for another games and if the game works like any of the supported games your offset will work, but i can´t support changes in code for the vast amount of games created for PC. I hope you undestand. As Anyshift is open source, you can try to make your game work changing the code. I encourage you to do it, and please share your results in the repository.
+
+In SIMULATED KEY PRESSED MODE, you can choose wich joystick is used to select gears and wich keys are pressed for upshift, downshift and reverse. Anyshift can desynchronize with the game some times, but you can use the keyboard keys to resync. In this mode you have to configure the game keys for upshift and downshift. Then you have to run Anyshift_config.exe to configure button imputs from your shifter. Then choose the same keys in anyshift than you did in the game. There are more options to choose depending on the game you want to use anyshift with. We´ll cover them later.
 
 Two video examples of Anyshift running:
 
@@ -18,6 +24,26 @@ https://www.youtube.com/watch?v=ijPjmBfR4QU
 
 Nascar Racing:
 https://www.youtube.com/watch?v=WRI1p6f5Af8
+
+### Options explained
+
+If you take a look at anyshift.ini you can see a lot of options. Let´s explain them
+
+First section [SHIFTER] is simple. Here you can find the windows id for the selected shifter and the number of the shifter button for each gear.
+
+In [KEYS] you will find the hex values for the keys you selected in anyshift_config. Neutral key is in character, because this key is used in a way that doesn´t need hex code to work
+
+And now the interesting part... [OPTIONS]. Let´s take a look at each option:
+
+    - seven gears: This value is True if the shifter has seven gears positions
+    - neutral detection: Is true if the game detects neutral position and can disengage gears (ex: Grand Prix 2 or Colin McRae Rally 2)
+    - reverse is button: True if the game uses an idependent button for reverse (ex: Gran Turismo or Nascar Racing)
+    - nascar racing mode: True to make anyshift follow old Papyrus games (no neutral and the game remember the gear you where in when you push reverse button)
+    - memory write mode: True to change to memory write mode
+    - dosbox version base address: The value of the base address of DOSBox
+    - memory value offset: The ofset of the memory address for gears in the game from the base address of DOSBox
+    - presskey timer: Value of the delay when pressing a key
+    - releasekey timer: Same for release the key. Change this value if game doesn´t detect the simulated key presses
 
 ### Setups for games
 
@@ -65,6 +91,7 @@ You can choose controls ingame. Default keys are:
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a button and Nascar Mode required to work properly. 
 Game glitches a bit if you leave a gear selected in the menus. 
+Can also work with memory write mode
 Memory offset for gears = 0x23A1D2
 
 NASCAR RACING 2 DosBox
@@ -91,12 +118,11 @@ Reverse is a button and Nascar Mode required to work properly.
 GRAND PRIX 2 DosBox
 
 Only works with Dosbox 0.74. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app.
-Not compatible with key presses mode. Added the option of write to memory gear values. Still not fully functional.
+Only works in memory write mode, not compatible with key presses mode. 
 DosBox 0.74 base address = 0x01D3A1A0
 Memory offset for gears = 0x291BF0
-Neutral detected and reverse is a gear. Memory write mode True. Seven gear is used for the "spin" gearbox position.
- 
-Memory option not supported for more games, i added it only because this is the game of my childhood, the one got me hooked with simracing.
+Neutral detected and reverse is a gear. Memory write mode True. Seven gear is used for the "spin" gearbox position. 
+Memory option is not supported, i added it only because GP2 is the game of my childhood, the one got me hooked with simracing.
 
 COLIN MCRAE RALLY pc
 

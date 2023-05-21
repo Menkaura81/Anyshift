@@ -1,4 +1,4 @@
-"""Anyshift with memory address write feature. Stil WIP"""
+"""Anyshift with memory address write feature. Still WIP"""
 """THIS CODE IS A MESS. NEED TO BE CLEANED A LOT"""
 
 import os  # Hide pygame welcome message
@@ -126,8 +126,12 @@ def main():
     actual_gear = 0
     # Open DosBox process
     rwm = ReadWriteMemory()
-    process = rwm.get_process_by_name('DOSBox.exe')
-    process.open()
+    try:
+        process = rwm.get_process_by_name('DOSBox.exe')
+        process.open()
+    except:
+        print("DOSBox not found. Launch it before Anyshift")
+        time.sleep(3)
     # DosBox base address. Get from the pointer we have
     x_pointer = process.get_pointer(int(db_base_addr, 16)) 
     # Gear address is the base address plus the offset. This is the value we found in Cheat Engine
@@ -234,7 +238,7 @@ def main():
                 if keyboard.is_pressed(neut_key):
                     gear_selected = 0
                     print(f"Gear in joystick: {gear_selected}   ",  end="\r")
-        else:
+        else:  # Nascar mode is True
             # Open process
             process = pm.open_process("DOSBox.exe")
             address = gear_address       
@@ -258,10 +262,19 @@ def main():
                         if shifter.get_button(fourth) == True:
                             pm.w_byte(process, address, 3)
                             gear_selected = 4
+                        if shifter.get_button(fifth) == True:
+                            pm.w_byte(process, address, 4)
+                            gear_selected = 5
+                        if shifter.get_button(sixth) == True:
+                            pm.w_byte(process, address, 5)
+                            gear_selected = 6
                         if shifter.get_button(reverse) == True:
                             KeyPress_rev()
                             gear_selected = -1                
-                        print(f"Gear in joystick: {gear_selected}   ",  end="\r")            
+                        print(f"Gear in joystick: {gear_selected}   ",  end="\r") 
+
+                    if event.type == pygame.JOYBUTTONUP :
+                        KeyRelease_rev()  # Release de reverse key just in case we came from reverse              
                 
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
 def update_gear(gear_selected, actual_gear):
