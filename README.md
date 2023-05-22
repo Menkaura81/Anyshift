@@ -51,9 +51,11 @@ GRAN TURISMO 4 pcsx2
 
 Tested with pcsx2 1.6.0 and NTSC american version of the game (supports native 1080 resolution and 60 fps). Support force feedback, 900º wheel rotation and independent pedals.
 You have to set your keys in the gamepad control setup of the emulator:
-    L2 = Downshift (Default key s)
-    R2 = Upshift (Default key z)
-    Triangle = reverse key (Default key c)
+
+    - L2 = Downshift (Default key s)
+    - R2 = Upshift (Default key z)
+    - Triangle = reverse key (Default key c)
+
 Select manual shifting ingame.
 On the rolling starts you have to select the right position on the shifter before crossing start line to avoid desynchronization.
 Neutral not detected and reverse is a button.
@@ -62,8 +64,10 @@ ENTHUSIA pcsx2
 
 Tested with pcsx2 1.6.0 and PAL version of the game. Support force feedback, 900º wheel rotation and independent pedals. 
 You have to set your keys in the gamepad control setup of the emulator:
-    L2 = Downshift (Default key s)
-    R2 = Upshift (Default key z)
+
+    - L2 = Downshift (Default key s)
+    - R2 = Upshift (Default key z)
+
 Select manual shifting ingame. 
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a gear.
@@ -73,9 +77,11 @@ GRAN TURISMO duckstation
 Tested with duckstation and PAL version of the game. Doesn´t support force feedback. You need negcon controller settings to use steering wheel. Pedals must be combined.
 Recomended wheel rotation degrees 720º
 You have to set your keys in the neGcon control setup of the emulator:
-    DPad Right = Upshift (Default key s)
-    DPad Lef = Downshift (Default key z)
-    B = Reverse (Default key c)
+
+    - DPad Right = Upshift (Default key s)
+    - DPad Lef = Downshift (Default key z)
+    - B = Reverse (Default key c)
+
 Select manual shifting ingame. 
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Neutral not detected and reverse is a button.
@@ -85,9 +91,11 @@ NASCAR RACING DosBox
 Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combined pedals mode in your wheel config app. 
 Recomended wheel rotation degrees 400º. 
 You can choose controls ingame. Default keys are:
-    S = Upshift
-    Z = Downshift
-    C = Reverse
+
+    - S = Upshift
+    - Z = Downshift
+    - C = Reverse
+
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a button and Nascar Mode required to work properly. 
 Game glitches a bit if you leave a gear selected in the menus. 
@@ -98,9 +106,11 @@ NASCAR RACING 2 DosBox
 
 Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app. 
 You can choose controls ingame. Default keys are:
-    A = Upshift
-    Z = Downshift
-    C = Reverse
+    
+    - A = Upshift
+    - Z = Downshift
+    - C = Reverse
+
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a button and Nascar Mode required to work properly. 
 Use S key to display gears hud. 
@@ -109,18 +119,22 @@ INDYCAR RACING DosBox
 
 Tested with dosbox 0.74-3. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app. 
 You can choose controls ingame. Default keys are:
-    A = Upshift
-    Z = Downshift
-    T = Reverse
+    
+    - A = Upshift
+    - Z = Downshift
+    - T = Reverse
+
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a button and Nascar Mode required to work properly. 
 
 GRAND PRIX 2 DosBox
 
 Only works with Dosbox 0.74. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app.
-Only works in memory write mode, not compatible with key presses mode. 
-DosBox 0.74 base address = 0x01D3A1A0
-Memory offset for gears = 0x291BF0
+Only works in memory write mode, not compatible with key presses mode.
+
+    - DosBox 0.74 base address = 0x01D3A1A0
+    - Memory offset for gears = 0x291BF0
+
 Neutral detected and reverse is a gear. Memory write mode True. Seven gear is used for the "spin" gearbox position. 
 Memory option is not supported, i added it only because GP2 is the game of my childhood, the one got me hooked with simracing.
 
@@ -129,8 +143,10 @@ COLIN MCRAE RALLY pc
 Tested with base game on Windows 11. Support force feedback and independent pedals. 
 Recomended wheel rotation degrees 540º. 
 Change controls ingame. Default keys in given profile:
-    S = Upshift
-    Z = Downshift
+
+    - S = Upshift
+    - Z = Downshift
+
 Select manual shifting ingame. 
 Select first gear just after the start countdown finnish otherwise game will glitch and select reverse. 
 Neutral detected and reverse is a gear. 
@@ -140,11 +156,12 @@ INDIANAPOLIS 500
 Tested with model 2 emu. Support force feedback and independent pedals. 
 Recomended wheel rotation degrees 400º. 
 Configure controls in the emulator. 
-    Button 2 = Downshift (Default s)
-    Button 3 = Upshift (Default z)
+    
+    - Button 2 = Downshift (Default s)
+    - Button 3 = Upshift (Default z)
+
 Select right position on the shifter before you gain control on the car to avoid desynchronization. 
 Neutral not detected and no reverse gear. 
-
 
 ### References 
 
@@ -155,4 +172,3 @@ https://www.reddit.com/r/learnpython/comments/22tke1/use_python_to_send_keystrok
 https://www.pygame.org/docs/ref/joystick.html -- Pygame joystick library 
 https://stackoverflow.com/questions/63442491/get-data-at-address-from-cheat-engine-with-python  -- Get data address from cheat engine
 https://pypi.org/project/ReadWriteMemory/  - Read and write memory
-
