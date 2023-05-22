@@ -165,10 +165,10 @@ Neutral not detected and no reverse gear.
 
 ### References 
 
-https://stackoverflow.com/questions/6620637/writing-comments-to-files-with-configparser  -- Comments in configparser
-https://linuxhint.com/string-to-hexadecimal-in-python/ -- To convert strings to hex
-https://www.scaler.com/topics/how-to-clear-screen-in-python/ -- Clear console command
-https://www.reddit.com/r/learnpython/comments/22tke1/use_python_to_send_keystrokes_to_games_in_windows/  -- Send key strokes to games using ctypes
-https://www.pygame.org/docs/ref/joystick.html -- Pygame joystick library 
-https://stackoverflow.com/questions/63442491/get-data-at-address-from-cheat-engine-with-python  -- Get data address from cheat engine
-https://pypi.org/project/ReadWriteMemory/  - Read and write memory
+- https://stackoverflow.com/questions/6620637/writing-comments-to-files-with-configparser  -- Comments in configparser
+- https://linuxhint.com/string-to-hexadecimal-in-python/ -- To convert strings to hex
+- https://www.scaler.com/topics/how-to-clear-screen-in-python/ -- Clear console command
+- https://www.reddit.com/r/learnpython/comments/22tke1/use_python_to_send_keystrokes_to_games_in_windows/  -- Send key strokes to games using ctypes
+- https://www.pygame.org/docs/ref/joystick.html -- Pygame joystick library 
+- https://stackoverflow.com/questions/63442491/get-data-at-address-from-cheat-engine-with-python  -- Get data address from cheat engine
+- https://pypi.org/project/ReadWriteMemory/  - Read and write memory
