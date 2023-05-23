@@ -81,17 +81,17 @@ def load_preset():
     rev_bool = tkinter.StringVar(value = options['rev_button'])
     rev_check = tkinter.Checkbutton(options_selection_frame, text= "Reverse is a button",
                                   variable=rev_bool, onvalue="True", offvalue="False")
-    rev_check.grid(row=2, column=0)
+    rev_check.grid(row=0, column=1)
 
     global nascar
     nascar = tkinter.StringVar(value = options['nascar'])
     nascar_check = tkinter.Checkbutton(options_selection_frame, text= "Nascar mode",
                                   variable=nascar, onvalue="True", offvalue="False")
-    nascar_check.grid(row=3, column=0)
+    nascar_check.grid(row=1, column=1)
 
     global mem_var
     mem_var = tkinter.StringVar(value = options['mem_mode'])
-    mem_check = tkinter.Checkbutton(memory_selection_frame, text= "Active",
+    mem_check = tkinter.Checkbutton(memory_selection_frame, text= "Memory mode",
                                   variable=mem_var, onvalue="True", offvalue="False")                                  
     mem_check.grid(row=0, column=0)
             
@@ -103,7 +103,7 @@ def save_preset():
 
     id = len(juegos)
     #print(presets_combobox.currentText())    TODO NAME OF PRESET
-    name = "pru"
+    name = save_name_entry.get()
     preset.append(id)
     preset.append(name)
     preset.append(upshift_key_entry.get().lower())
@@ -119,8 +119,6 @@ def save_preset():
     preset.append(offset_key_entry.get())
     preset.append(press_key_entry.get())
     preset.append(release_key_entry.get())
-
-    print(preset) 
 
     with open('presets.csv', 'a') as file: 
         # Pass this file object to csv.writer()
@@ -939,7 +937,7 @@ joystick_id_combobox.grid(row = 0, column = 0)
 
 # Joystick buttons selection
 gears_selection_frame = tkinter.LabelFrame(frame, text = "Joystick Buttons")
-gears_selection_frame.grid(row = 1, column = 0, padx= 20, pady = 5)
+gears_selection_frame.grid(row = 1, column = 0)
 
 first_gear_button = tkinter.Button(gears_selection_frame, text = "1", command = select_first)
 first_gear_button.grid(row = 2, column = 0)
@@ -984,7 +982,7 @@ reverse_gear_value.grid(row = 5, column = 3)
 # Keys selection
 
 keys_selection_frame = tkinter.LabelFrame(frame, text = "Key Selection")
-keys_selection_frame.grid(row = 2, column = 0, padx= 20, pady = 5)
+keys_selection_frame.grid(row = 2, column = 0)
 
 upshift_key_label = tkinter.Label(keys_selection_frame, text = "Upshift")
 upshift_key_label.grid(row = 0, column = 0)
@@ -992,23 +990,23 @@ upshift_key_entry = tkinter.Entry(keys_selection_frame, width= 2)
 upshift_key_entry.insert(0, options['up_key'])
 upshift_key_entry.grid(row = 0, column = 1)
 
-neutral_key_label = tkinter.Label(keys_selection_frame, text = "Neutral")
-neutral_key_label.grid(row = 1, column = 0)
-neutral_key_entry = tkinter.Entry(keys_selection_frame, width= 2)
-neutral_key_entry.insert(0, options['neut_key'])
-neutral_key_entry.grid(row = 1, column = 1)
-
 downshift_key_label = tkinter.Label(keys_selection_frame, text = "Downshift")
-downshift_key_label.grid(row = 2, column = 0)
+downshift_key_label.grid(row = 1, column = 0)
 downshift_key_entry = tkinter.Entry(keys_selection_frame, width= 2)
 downshift_key_entry.insert(0, options['down_key'])
-downshift_key_entry.grid(row = 2, column = 1)
+downshift_key_entry.grid(row = 1, column = 1)
+
+neutral_key_label = tkinter.Label(keys_selection_frame, text = "Neutral")
+neutral_key_label.grid(row = 0, column = 2)
+neutral_key_entry = tkinter.Entry(keys_selection_frame, width= 2)
+neutral_key_entry.insert(0, options['neut_key'])
+neutral_key_entry.grid(row = 0, column = 3)
 
 reverse_key_label = tkinter.Label(keys_selection_frame, text = "Reverse")
-reverse_key_label.grid(row = 3, column = 0)
+reverse_key_label.grid(row = 1, column = 2)
 reverse_key_entry = tkinter.Entry(keys_selection_frame, width= 2)
 reverse_key_entry.insert(0, options['rev_key'])
-reverse_key_entry.grid(row = 3, column = 1)
+reverse_key_entry.grid(row = 1, column = 3)
 
 for widget in keys_selection_frame.winfo_children():
     widget.grid_configure(pady = 5)
@@ -1031,20 +1029,20 @@ seven_check.grid(row=1, column=0)
 rev_bool = tkinter.StringVar(value = options['rev_button'])
 rev_check = tkinter.Checkbutton(options_selection_frame, text= "Reverse is a button",
                                   variable=rev_bool, onvalue="True", offvalue="False")
-rev_check.grid(row=2, column=0)
+rev_check.grid(row=0, column=1)
 
 nascar = tkinter.StringVar(value = options['nascar_mode'])
 nascar_check = tkinter.Checkbutton(options_selection_frame, text= "Nascar mode",
                                   variable=nascar, onvalue="True", offvalue="False")
-nascar_check.grid(row=3, column=0)
+nascar_check.grid(row=1, column=1)
 
 # Mem mode
 
-memory_selection_frame = tkinter.LabelFrame(frame, text = "Memory mode")
+memory_selection_frame = tkinter.LabelFrame(frame)
 memory_selection_frame.grid(row = 4, column = 0, padx = 20, pady = 5)
 
 mem_var = tkinter.StringVar(value = options['mem_mode'])
-mem_check = tkinter.Checkbutton(memory_selection_frame, text= "Active",
+mem_check = tkinter.Checkbutton(memory_selection_frame, text= "Memory mode",
                                   variable=mem_var, onvalue="True", offvalue="False")                                  
 mem_check.grid(row=0, column=0)
 
@@ -1062,23 +1060,20 @@ offset_key_entry.grid(row = 2, column = 1)
 
 # Timers
 
-timers_selection_frame = tkinter.LabelFrame(frame, text = "Delay values")
-timers_selection_frame.grid(row = 5, column = 0, padx = 20, pady = 5)
-
-press_key_label = tkinter.Label(timers_selection_frame, text = "Press key delay")
-press_key_label.grid(row = 0, column = 0)
-press_key_entry = tkinter.Entry(timers_selection_frame, width= 4)
+press_key_label = tkinter.Label(memory_selection_frame, text = "Press key delay")
+press_key_label.grid(row = 1, column = 2)
+press_key_entry = tkinter.Entry(memory_selection_frame, width= 4)
 press_key_entry.insert(0, options['presskey_timer'])
-press_key_entry.grid(row = 0, column = 1)
+press_key_entry.grid(row = 1, column = 3)
 
-release_key_label = tkinter.Label(timers_selection_frame, text = "Release key delay")
-release_key_label.grid(row = 1, column = 0)
-release_key_entry = tkinter.Entry(timers_selection_frame, width= 4)
+release_key_label = tkinter.Label(memory_selection_frame, text = "Release key delay")
+release_key_label.grid(row = 2, column = 2)
+release_key_entry = tkinter.Entry(memory_selection_frame, width= 4)
 release_key_entry.insert(0, options['releasekey_timer'])
-release_key_entry.grid(row = 1, column = 1)
+release_key_entry.grid(row = 2, column = 3)
 
 # Profiles
-profiles_selection_frame = tkinter.LabelFrame(frame, text = "Saved profiles")
+profiles_selection_frame = tkinter.LabelFrame(frame, text = "Profiles")
 profiles_selection_frame.grid(row = 6, column = 0, padx = 20, pady = 5)
 
 # Presets buttons
@@ -1092,14 +1087,18 @@ with open("presets.csv", "r") as file:
         lista.append(row['name'])
 
 presets_combobox = ttk.Combobox(profiles_selection_frame, values = lista, width = 30)
-presets_combobox.grid(row = 0, column = 0) 
+presets_combobox.grid(row = 0, column = 1) 
 
 
 button = tkinter.Button(profiles_selection_frame, text="Load profile", command= load_preset)
-button.grid(row=1, column=0, sticky="news", padx=20, pady = 5)
+button.grid(row=0, column=0, sticky="news", padx=20, pady = 5)
 
 button = tkinter.Button(profiles_selection_frame, text="Save profile", command= save_preset)  
-button.grid(row=2, column=0, sticky="news", padx=20, pady = 5)
+button.grid(row=1, column=0, sticky="news", padx=20, pady = 5)
+
+save_name_entry = tkinter.Entry(profiles_selection_frame, width= 33)
+save_name_entry.grid(row = 1, column = 1)
+
 
 # Save data button
 button = tkinter.Button(frame, text="Remember current options", command= write_ini)
