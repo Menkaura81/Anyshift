@@ -4,7 +4,7 @@
 
 # Ignore files
 
-*.ini
+
 *.spec
 *.ico
 cmd.py
