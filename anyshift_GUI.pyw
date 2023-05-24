@@ -1,7 +1,7 @@
 """GUI for Anyshift config util. Still WIP"""
 
 import tkinter  # GUI
-#from tkinter import *
+from tkinter import *  # Toplevel window
 from tkinter import ttk  # GUI combobox
 import pygame  # Joystick input
 import configparser  # Write and read ini files
