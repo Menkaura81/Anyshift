@@ -613,16 +613,17 @@ def joystick_loop_mem():
     # Create a joystick object and initialize it
     shifter = pygame.joystick.Joystick(int(options['joy_id']))
     shifter.init()
-    
+        
     # Open DosBox process and check for process opened
     rwm = ReadWriteMemory()
     try:
-        process = rwm.get_process_by_name('DOSBox.exe')
+        process = rwm.get_process_by_name('pcsx2.exe')
         process.open()        
         # DosBox base address. Got from the pointer we have
         x_pointer = process.get_pointer(int(options['db_base_addr'], 16)) 
         # Gear address is the base address plus the offset. This is the value we found in Cheat Engine
-        gear_address = process.read(x_pointer) + int(options['offset'], 16)
+        #gear_address = process.read(x_pointer) + int(options['offset'], 16)
+        gear_address = 566292764
     except:
         error_window = Toplevel(window)        
         error_window.title("Error")
