@@ -626,7 +626,7 @@ def joystick_loop_mem():
     # Open DosBox process and check for process opened
     rwm = ReadWriteMemory()
     try:
-        process = rwm.get_process_by_name('pcsx2.exe')
+        process = rwm.get_process_by_name(options['process'])
         process.open()        
         # DosBox base address. Got from the pointer we have
         x_pointer = process.get_pointer(int(options['db_base_addr'], 16)) 
