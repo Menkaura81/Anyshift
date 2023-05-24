@@ -3,14 +3,15 @@
 import tkinter  # GUI
 from tkinter import *  # Toplevel window
 from tkinter import ttk  # GUI combobox
+import os  # Hide pygame welcome message
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame  # Joystick input
 import configparser  # Write and read ini files
 import keyboard  # key presses
 import csv  # Load and write csv files
 import time  # Delays
 import ctypes  # Kernel level key presses
-import pyMeow as pm  # Read and write memmory addresses
-from ReadWriteMemory import ReadWriteMemory  # Get memory locations
+from ReadWriteMemory import ReadWriteMemory  # Memory writing
 
 
 # Global variables
@@ -613,7 +614,7 @@ def joystick_loop_mem():
     shifter = pygame.joystick.Joystick(int(options['joy_id']))
     shifter.init()
     
-    # Open DosBox process
+    # Open DosBox process and check for process opened
     rwm = ReadWriteMemory()
     try:
         process = rwm.get_process_by_name('DOSBox.exe')
@@ -636,7 +637,8 @@ def joystick_loop_mem():
         return
 
     # Open process
-    process = pm.open_process("DOSBox.exe")
+    #process = rwm.get_process_by_name('DOSBox.exe')
+    #process.open()
     address = gear_address
      
     if options['nascar_mode'] == 'False':
@@ -648,29 +650,29 @@ def joystick_loop_mem():
                     done = True  # Flag that we are done so we exit this loop.
                 if event.type == pygame.JOYBUTTONDOWN:
                     if shifter.get_button(options['first']) == True:
-                        pm.w_byte(process, address, 1)
+                        process.write(address, 1)
                         gear_selected = 1
                     if shifter.get_button(options['second']) == True:
-                        pm.w_byte(process, address, 2)
+                        process.write(address, 2)
                         gear_selected = 2
                     if shifter.get_button(options['third']) == True:
-                        pm.w_byte(process, address, 3)
+                        process.write(address, 3)
                         gear_selected = 3
                     if shifter.get_button(options['fourth']) == True:
-                        pm.w_byte(process, address, 4)
+                        process.write(address, 4)
                         gear_selected = 4
                     if shifter.get_button(options['fifth']) == True:
-                        pm.w_byte(process, address, 5)
+                        process.write(address, 5)
                         gear_selected = 5
                     if shifter.get_button(options['sixth']) == True:
-                        pm.w_byte(process, address, 6)
+                        process.write(address, 6)
                         gear_selected = 6  
                     if options['seven_gears'] == 'True':  # To avoid invalid button error
                         if shifter.get_button(options['seventh']) == True:
-                            pm.w_byte(process, address, 7)
+                            process.write(address, 7)
                             gear_selected = 7
                     if shifter.get_button(options['reverse']) == True:
-                        pm.w_byte(process, address, -1)
+                        process.write(address, -1)
                         gear_selected = -1                
                     print(f"Gear in joystick: {gear_selected}   ",  end="\r")
 
@@ -678,7 +680,7 @@ def joystick_loop_mem():
                 if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True':
                     time.sleep(0.3)
                     if not pygame.event.peek(pygame.JOYBUTTONDOWN):
-                        pm.w_byte(process, address, 0)
+                        process.write(address, 0)
                         gear_selected = 0
                         print(f"Gear in joystick: {gear_selected}   ",  end="\r")
 
@@ -689,7 +691,7 @@ def joystick_loop_mem():
 
             if keyboard.is_pressed('End'):
                 done = True
-    else:  # Nascar mode is True
+    else:  # Nascar mode is True    Memory Locations doesn´t seem to be correct
         # Loop
         done = False
         while not done:
@@ -699,31 +701,31 @@ def joystick_loop_mem():
 
                 if event.type == pygame.JOYBUTTONDOWN:
                     if shifter.get_button(options['first']) == True:
-                        pm.w_byte(process, address, 0)
+                        process.write(address, 0)
                         gear_selected = 1
                     if shifter.get_button(options['second']) == True:
-                        pm.w_byte(process, address, 1)
+                        process.write(address, 1)
                         gear_selected = 2
                     if shifter.get_button(options['third']) == True:
-                        pm.w_byte(process, address, 2)
+                        process.write(address, 2)
                         gear_selected = 3
                     if shifter.get_button(options['fourth']) == True:
-                        pm.w_byte(process, address, 3)
+                        process.write(address, 3)
                         gear_selected = 4
                     if shifter.get_button(options['fifth']) == True:
-                        pm.w_byte(process, address, 4)
+                        process.write(address, 4)
                         gear_selected = 5
                     if shifter.get_button(options['sixth']) == True:
-                        pm.w_byte(process, address, 5)
+                        process.write(address, 5)
                         gear_selected = 6
                     if shifter.get_button(options['reverse']) == True:
-                        KeyPress_rev(options)
+                        KeyPress_rev()
                         gear_selected = -1                
                     print(f"Gear in joystick: {gear_selected}   ",  end="\r") 
 
                 if event.type == pygame.JOYBUTTONUP :
                     KeyRelease_rev()  # Release de reverse key just in case we came from reverse
-            if keyboard.is_pressed('Esc'):
+            if keyboard.is_pressed('End'):
                 done = True
     pygame.quit()
     run_button.config(text="Run Anyshift")    

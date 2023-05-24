@@ -99,8 +99,6 @@ You can choose controls ingame. Default keys are:
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a button and Nascar Mode required to work properly. 
 Game glitches a bit if you leave a gear selected in the menus. 
-Can also work with memory write mode
-Memory offset for gears = 0x23A1D2
 
 NASCAR RACING 2 DosBox
 
@@ -129,6 +127,7 @@ Reverse is a button and Nascar Mode required to work properly.
 
 GRAND PRIX 2 DosBox
 
+Only works in practice mode. In race mode, DOSBox crash
 Only works with Dosbox 0.74. Doesn´t support force feedback and you must set combine pedals mode in your wheel config app.
 Only works in memory write mode, not compatible with key presses mode.
 
