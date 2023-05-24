@@ -1,18 +1,16 @@
 """GUI for Anyshift config util. Still WIP"""
 
-import tkinter
-from tkinter import *
-from tkinter import ttk
-import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-import pygame
-import configparser
-import keyboard
-import csv
+import tkinter  # GUI
+#from tkinter import *
+from tkinter import ttk  # GUI combobox
+import pygame  # Joystick input
+import configparser  # Write and read ini files
+import keyboard  # key presses
+import csv  # Load and write csv files
 import time  # Delays
 import ctypes  # Kernel level key presses
 import pyMeow as pm  # Read and write memmory addresses
-from ReadWriteMemory import ReadWriteMemory
+from ReadWriteMemory import ReadWriteMemory  # Get memory locations
 
 
 # Global variables
@@ -100,16 +98,71 @@ def load_preset():
 def save_preset():
     
     preset = []
+    keys = []
 
     id = len(juegos)
     #print(presets_combobox.currentText())    TODO NAME OF PRESET
     name = save_name_entry.get()
     preset.append(id)
     preset.append(name)
-    preset.append(upshift_key_entry.get().lower())
-    preset.append(downshift_key_entry.get().lower())
-    preset.append(reverse_key_entry.get().lower())
-    preset.append(neutral_key_entry.get().lower()) 
+
+    upshift = upshift_key_entry.get()[:1].lower()
+    if ord(upshift) >= 97 and ord(upshift) <= 122:
+        preset.append(upshift)
+        keys.append(upshift)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Upshift key error. Only one char (a to z)")
+        error_label.grid(row = 0, column = 0)
+        return
+    print(keys)
+    downshift = downshift_key_entry.get().lower()
+    print(downshift)
+    if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
+        preset.append(downshift)
+        keys.append(downshift)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Downshift key error. Repeated or not a to z char")
+        error_label.grid(row = 0, column = 0)
+        return
+    print(keys)
+    reverse = reverse_key_entry.get().lower() 
+    if ord(reverse) >= 97 and ord(reverse) <= 122 and reverse not in keys:
+        preset.append(reverse)
+        keys.append(reverse)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Reverse key error. Repeated or not a to z char")
+        error_label.grid(row = 0, column = 0) 
+        return
+    print(keys)
+    neutral = neutral_key_entry.get().lower()
+    if ord(neutral) >= 97 and ord(neutral) <= 122 and neutral not in keys:
+        preset.append(neutral)
+        keys.append(neutral)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Neutral key error. Only one char (a to z)")
+        error_label.grid(row = 0, column = 0) 
+        return
+    print(keys)
     preset.append(seven_var.get())
     preset.append(neutral_var.get())
     preset.append(rev_bool.get())
@@ -922,6 +975,7 @@ read_ini()
 # Create tkinter windows object
 window = tkinter.Tk()
 window.title("Anyshift Config")
+window.iconbitmap("any_ico.ico")
 
 # Create frame
 frame = tkinter.Frame(window)
@@ -931,9 +985,19 @@ frame.pack()
 joystick_frame = tkinter.LabelFrame(frame, text = "Joystick id")
 joystick_frame.grid(row = 0, column = 0, padx= 20, pady = 5)
 
-joystick_id_combobox = ttk.Combobox(joystick_frame, values = joys)
-joystick_id_combobox.current(options['joy_id'])
-joystick_id_combobox.grid(row = 0, column = 0)
+# No joystick connected check
+try:
+    joystick_id_combobox = ttk.Combobox(joystick_frame, values = joys)
+    joystick_id_combobox.current(options['joy_id'])
+    joystick_id_combobox.grid(row = 0, column = 0)
+except:
+    error_label = tkinter.Label(joystick_frame, text = "No devices connected.")
+    error_label.grid(row = 0, column = 0)
+    error_label = tkinter.Label(joystick_frame, text = "Connect at least one device")
+    error_label.grid(row = 1, column = 0)
+    error_label = tkinter.Label(joystick_frame, text = "and launch Anyshift again")
+    error_label.grid(row = 2, column = 0)
+        
 
 # Joystick buttons selection
 gears_selection_frame = tkinter.LabelFrame(frame, text = "Joystick Buttons")
