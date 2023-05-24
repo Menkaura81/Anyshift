@@ -1,7 +1,7 @@
 id,name,upshift,downshift,reverse,neutral key,seven gears,neutral detection,reverse is button,nascar racing mode,memory write mode,process name,base address,offset,presskey timer,releasekey timer,
 0,Gran Turismo 4 pcsx2,s,z,c,n,True,False,True,False,False,-,0,0,0.05,0.3,
 1,Gran Turismo 4 pcsx2 mem mode,s,z,c,n,True,False,True,False,True,pcsx2.exe,0x21C0F11C,0,0.05,0.3,
-2,Enthusia pcsx2,s,z,c,n,True,False,False,False,False,pcsx2.exe,0,0,0.05,0.3,
+2,Enthusia pcsx2,s,z,c,n,True,False,False,False,False,-,0,0,0.05,0.3,
 3,Gran Turismo duckstation,s,z,c,n,False,False,True,False,False,-,0,0,0.05,0.2,
 4,Nascar Racing dosbox,s,z,c,n,False,False,True,True,False,-,0,0,0.05,0.2,
 5,Nascar Racing 2 dosbox,a,z,c,n,False,False,True,True,False,-,0,0,0.05,0.2,
