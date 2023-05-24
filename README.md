@@ -40,8 +40,9 @@ And now the interesting part... [OPTIONS]. Let´s take a look at each option:
     - reverse is button: True if the game uses an idependent button for reverse (ex: Gran Turismo or Nascar Racing)
     - nascar racing mode: True to make anyshift follow old Papyrus games (no neutral and the game remember the gear you where in when you push reverse button)
     - memory write mode: True to change to memory write mode
-    - dosbox version base address: The value of the base address of DOSBox
-    - memory value offset: The ofset of the memory address for gears in the game from the base address of DOSBox
+    - process name: Name of the process of the game
+    - base address: The value of the base address of the executable
+    - memory value offset: The ofset of the memory address for gears in the game from the base address 
     - presskey timer: Value of the delay when pressing a key
     - releasekey timer: Same for release the key. Change this value if game doesn´t detect the simulated key presses
 

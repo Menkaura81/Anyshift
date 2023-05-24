@@ -56,7 +56,10 @@ def load_preset():
     release_key_entry.delete(0, 5)
     release_key_entry.insert(0, options['releasekey_timer'])
     options['mem_mode'] = juegos[index]['memory write mode']
-    options['db_base_addr'] = juegos[index]['dosbox base address']
+    options['process'] = juegos[index]['process name']
+    process_key_entry.delete(0, 12)
+    process_key_entry.insert(0, options['process'])
+    options['db_base_addr'] = juegos[index]['base address']
     dosbase_key_entry.delete(0, 12)
     dosbase_key_entry.insert(0, options['db_base_addr'])
     options['offset'] = juegos[index]['offset'] 
@@ -169,6 +172,7 @@ def save_preset():
     preset.append(rev_bool.get())
     preset.append(nascar.get())
     preset.append(mem_var.get())
+    preset.append(process_key_entry.get())
     preset.append(dosbase_key_entry.get())
     preset.append(offset_key_entry.get())
     preset.append(press_key_entry.get())
@@ -211,6 +215,8 @@ def read_options_from_windows():
     options['rev_button'] = rev_bool.get()
     options['nascar_mode'] = nascar.get()
     options['mem_mode'] = mem_var.get()
+    process = process_key_entry.get()
+    options['process'] = process
     db_base_addr = dosbase_key_entry.get()
     options['db_base_addr'] = db_base_addr
     offset = offset_key_entry.get()
@@ -234,7 +240,8 @@ def read_ini():
     options['rev_button'] = config['OPTIONS']['reverse is button']
     options['neutral'] = config['OPTIONS']['neutral detection']
     options['mem_mode'] = config['OPTIONS']['memory write mode']
-    options['db_base_addr'] = config['OPTIONS']['dosbox version base address']
+    options['process'] = config['OPTIONS']['process name']
+    options['db_base_addr'] = config['OPTIONS']['base address']
     options['offset'] = config['OPTIONS']['memory value offset']
     options['joy_id'] = config['SHIFTER']['joystick id']
     options['first'] = int(config['SHIFTER']['first gear'])
@@ -299,8 +306,10 @@ def write_ini():
                          '; Instead of key presses it writes data to memory. I only included it because of Grand Prix 2': None,
                          '; Each game has different memory values. No offical support for this one': None,
                          'memory write mode': options['mem_mode'],
-                         '; DosBox version base address. Ex: 0.74 = 0x01D3A1A0 ': None,
-                         'DosBox Version base address': options['db_base_addr'],
+                         '; Name of the process of the game': None,
+                         'Process name': options['process'],
+                         '; Base address. Ex: 0.74 = 0x01D3A1A0 ': None,
+                         'Base address': options['db_base_addr'],
                          '; Memory value offset from base addres ': None,
                          'Memory value offset': options['offset'],
                          '; Delays for key presses and releases. Tinker with this if game doesnt detect key presses': None,
@@ -621,25 +630,26 @@ def joystick_loop_mem():
         process.open()        
         # DosBox base address. Got from the pointer we have
         x_pointer = process.get_pointer(int(options['db_base_addr'], 16)) 
-        # Gear address is the base address plus the offset. This is the value we found in Cheat Engine
-        #gear_address = process.read(x_pointer) + int(options['offset'], 16)
-        gear_address = 566292764
+        
+        if options['process'] == 'pcsx2.exe':
+            # In pcsx2 1.6 is allways de same address
+            gear_address = x_pointer
+        else:
+            # In dosbox gear address is the base address plus the offset. This is the value we found in Cheat Engine
+            gear_address = process.read(x_pointer) + int(options['offset'], 16)        
     except:
         error_window = Toplevel(window)        
         error_window.title("Error")
         error_window.config(width=200, height=50)
         error_frame = tkinter.Frame(error_window)
         error_frame.pack()
-        error_label = tkinter.Label(error_frame, text = "DOSBox not found. Open it before Anyshift")
+        error_label = tkinter.Label(error_frame, text = "Process not found. Open it before Anyshift")
         error_label.grid(row = 0, column = 0)
 
         run_button.config(text="Run Anyshift")
         pygame.quit()
         return
 
-    # Open process
-    #process = rwm.get_process_by_name('DOSBox.exe')
-    #process.open()
     address = gear_address
      
     if options['nascar_mode'] == 'False':
@@ -673,9 +683,15 @@ def joystick_loop_mem():
                             process.write(address, 7)
                             gear_selected = 7
                     if shifter.get_button(options['reverse']) == True:
-                        process.write(address, -1)
-                        gear_selected = -1                
+                        if options['rev_button'] == 'False':
+                            process.write(address, -1)
+                            gear_selected = -1
+                        else:
+                            KeyPress_rev()
+                            gear_selected = -1                 
                     print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+                if event.type == pygame.JOYBUTTONUP:        
+                    KeyRelease_rev()  # Release de reverse key just in case we came from reverse
 
                 # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
                 if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True':
@@ -684,6 +700,9 @@ def joystick_loop_mem():
                         process.write(address, 0)
                         gear_selected = 0
                         print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+                
+                
+
 
             # Select neutral if this key is pressed
             if keyboard.is_pressed(options['neut_key']):
@@ -1113,31 +1132,37 @@ mem_check = tkinter.Checkbutton(memory_selection_frame, text= "Memory mode",
                                   variable=mem_var, onvalue="True", offvalue="False")                                  
 mem_check.grid(row=0, column=0)
 
-dosbase_key_label = tkinter.Label(memory_selection_frame, text = "DOSBox base address")
-dosbase_key_label.grid(row = 1, column = 0)
+process_label = tkinter.Label(memory_selection_frame, text = "Process name")
+process_label.grid(row = 1, column = 0)
+process_key_entry = tkinter.Entry(memory_selection_frame, width= 12)
+process_key_entry.insert(0, options['process'])
+process_key_entry.grid(row = 1, column = 1)
+
+dosbase_key_label = tkinter.Label(memory_selection_frame, text = "Base address")
+dosbase_key_label.grid(row = 2, column = 0)
 dosbase_key_entry = tkinter.Entry(memory_selection_frame, width= 12)
 dosbase_key_entry.insert(0, options['db_base_addr'])
-dosbase_key_entry.grid(row = 1, column = 1)
+dosbase_key_entry.grid(row = 2, column = 1)
 
 offset_key_label = tkinter.Label(memory_selection_frame, text = "Memory address offset")
-offset_key_label.grid(row = 2, column = 0)
+offset_key_label.grid(row = 3, column = 0)
 offset_key_entry = tkinter.Entry(memory_selection_frame, width= 12)
 offset_key_entry.insert(0, options['offset'])
-offset_key_entry.grid(row = 2, column = 1)
+offset_key_entry.grid(row = 3, column = 1)
 
 # Timers
 
 press_key_label = tkinter.Label(memory_selection_frame, text = "Press key delay")
-press_key_label.grid(row = 1, column = 2)
+press_key_label.grid(row = 2, column = 2)
 press_key_entry = tkinter.Entry(memory_selection_frame, width= 4)
 press_key_entry.insert(0, options['presskey_timer'])
-press_key_entry.grid(row = 1, column = 3)
+press_key_entry.grid(row = 2, column = 3)
 
 release_key_label = tkinter.Label(memory_selection_frame, text = "Release key delay")
-release_key_label.grid(row = 2, column = 2)
+release_key_label.grid(row = 3, column = 2)
 release_key_entry = tkinter.Entry(memory_selection_frame, width= 4)
 release_key_entry.insert(0, options['releasekey_timer'])
-release_key_entry.grid(row = 2, column = 3)
+release_key_entry.grid(row = 3, column = 3)
 
 # Profiles
 profiles_selection_frame = tkinter.LabelFrame(frame, text = "Profiles")
