@@ -61,6 +61,8 @@ Select manual shifting ingame.
 On the rolling starts you have to select the right position on the shifter before crossing start line to avoid desynchronization.
 Neutral not detected and reverse is a button.
 
+Supports memory write mode. Just launch anyshift and enjoy
+
 ENTHUSIA pcsx2
 
 Tested with pcsx2 1.6.0 and PAL version of the game. Support force feedback, 900º wheel rotation and independent pedals. 
