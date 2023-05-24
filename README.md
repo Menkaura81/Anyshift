@@ -7,7 +7,7 @@ if you enjoy this app, you can buy me a coffee to keep me awake coding cool apps
 
 ### How to use AnyShift
 
-You can uncompress Anyshift in any directory you want. Included in the zip comes an ini file that can be edited manually but it is preferable that you run 'Anyshift_config.exe' so you know exactly wich id has your shifter assigned. 
+You can uncompress Anyshift in any directory you want. Run Anyshift.exe and load a preset or create your own. Then click on Run Anyshift and it will start working. While Anyshift is active, config windows will be freezed (only this window, rest of your system will work ok), you can stop anyshift and back to config window by pressing "End" key.
 
 Anyshift works in two modes:
     1 Simulated key pressed mode

@@ -119,7 +119,7 @@ def save_preset():
         error_label = tkinter.Label(error_frame, text = "Upshift key error. Only one char (a to z)")
         error_label.grid(row = 0, column = 0)
         return
-    print(keys)
+    
     downshift = downshift_key_entry.get().lower()
     print(downshift)
     if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
@@ -134,7 +134,7 @@ def save_preset():
         error_label = tkinter.Label(error_frame, text = "Downshift key error. Repeated or not a to z char")
         error_label.grid(row = 0, column = 0)
         return
-    print(keys)
+    
     reverse = reverse_key_entry.get().lower() 
     if ord(reverse) >= 97 and ord(reverse) <= 122 and reverse not in keys:
         preset.append(reverse)
@@ -148,7 +148,7 @@ def save_preset():
         error_label = tkinter.Label(error_frame, text = "Reverse key error. Repeated or not a to z char")
         error_label.grid(row = 0, column = 0) 
         return
-    print(keys)
+    
     neutral = neutral_key_entry.get().lower()
     if ord(neutral) >= 97 and ord(neutral) <= 122 and neutral not in keys:
         preset.append(neutral)
@@ -162,7 +162,7 @@ def save_preset():
         error_label = tkinter.Label(error_frame, text = "Neutral key error. Only one char (a to z)")
         error_label.grid(row = 0, column = 0) 
         return
-    print(keys)
+    
     preset.append(seven_var.get())
     preset.append(neutral_var.get())
     preset.append(rev_bool.get())
