@@ -213,15 +213,71 @@ def read_options_from_windows():
         if joys[i] == active_joystick:
             active_joystick_id = i
 
+    # Check if we have repeated keys
+    error = False
+    keys = []
+    upshift = upshift_key_entry.get()[:1].lower()
+    if ord(upshift) >= 97 and ord(upshift) <= 122:
+        keys.append(upshift)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Upshift key error. Only one char (a to z)")
+        error_label.grid(row = 0, column = 0)
+        error = True
+        return error
     
+    downshift = downshift_key_entry.get().lower()
+    if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
+        keys.append(downshift)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Downshift key error. Repeated or not a to z char")
+        error_label.grid(row = 0, column = 0)
+        error = True
+        return error
+    
+    neut_key = neutral_key_entry.get().lower()
+    if ord(neut_key) >= 97 and ord(neut_key) <= 122 and neut_key not in keys:
+        keys.append(neut_key)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Neutral key error. Only one char (a to z)")
+        error_label.grid(row = 0, column = 0) 
+        error = True
+        return error
+
+    rev_key = reverse_key_entry.get().lower() 
+    if ord(rev_key) >= 97 and ord(rev_key) <= 122 and rev_key not in keys:
+        keys.append(rev_key)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Reverse key error. Repeated or not a to z char")
+        error_label.grid(row = 0, column = 0) 
+        error = True
+        return error
+        
+    # Save the data to options
     options['joy'] = active_joystick_id
-    upshift = upshift_key_entry.get()
     options['up_key'] =  hex_convert(upshift.lower())
     neut_key = neutral_key_entry.get()
     options['neut_key'] = neut_key
-    downshift = downshift_key_entry.get()
     options['down_key'] = hex_convert(downshift.lower())
-    rev_key = reverse_key_entry.get()
     options['rev_key'] = rev_key = hex_convert(rev_key.lower())
     options['seven_gears'] = seven_var.get()
     options['neutral'] = neutral_var.get()
@@ -238,6 +294,8 @@ def read_options_from_windows():
     options['presskey_timer'] = presskey_timer
     releasekey_timer = release_key_entry.get()
     options['releasekey_timer'] = releasekey_timer
+    
+    return error  # True if repeated keys, false if not
 
 
 # READ OPTIONS FROM INI FILE
@@ -276,13 +334,64 @@ def read_ini():
 # WRITE INI FILE WITH THE OPTIONS DISPLAYED IN WINDOWS
 def write_ini():
     
-    read_options_from_windows()
+    error = read_options_from_windows()  # If keys are repeated will display 2 new error windows. error check prevent this
+    if error == True:
+        return
 
     # Those are readed again because in options[] they are stored as hex
-    upshift = upshift_key_entry.get()
-    downshift = downshift_key_entry.get()
-    rev_key = reverse_key_entry.get()   
-
+    keys = []
+    upshift = upshift_key_entry.get()[:1].lower()
+    if ord(upshift) >= 97 and ord(upshift) <= 122:
+        keys.append(upshift)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Upshift key error. Only one char (a to z)")
+        error_label.grid(row = 0, column = 0)
+        return
+    
+    downshift = downshift_key_entry.get().lower()
+    if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
+        keys.append(downshift)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Downshift key error. Repeated or not a to z char")
+        error_label.grid(row = 0, column = 0)
+        return
+    
+    rev_key = reverse_key_entry.get().lower() 
+    if ord(rev_key) >= 97 and ord(rev_key) <= 122 and rev_key not in keys:
+        keys.append(rev_key)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Reverse key error. Repeated or not a to z char")
+        error_label.grid(row = 0, column = 0) 
+        return
+    
+    neut_key = neutral_key_entry.get().lower()
+    if ord(neut_key) >= 97 and ord(neut_key) <= 122 and neut_key not in keys:
+        keys.append(neut_key)
+    else:
+        error_window = Toplevel(window)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = tkinter.Frame(error_window)
+        error_frame.pack()
+        error_label = tkinter.Label(error_frame, text = "Neutral key error. Only one char (a to z)")
+        error_label.grid(row = 0, column = 0) 
+        return
+    
     # Create object config
     config = configparser.ConfigParser(allow_no_value=True)
 
@@ -304,7 +413,7 @@ def write_ini():
                       'downshift': downshift,
                       'reverse': rev_key,
                       '; Neutral key is not necessary to be in hex code': None,
-                      'neutral key': options['neut_key']
+                      'neutral key': neut_key,
                     }
 
     config['OPTIONS'] = {'; True if you have a shifter with seven gears. Seventh gear button must be configured or anyshift will crash ': None,
@@ -416,35 +525,40 @@ def gears(gear):
 # RUN ANYSHIFT JOYSTICK LOOP                       
 def run_any():   
 
-    # Read the actual configuration displayed
-    read_options_from_windows()
-    
-    # Update button text
-    run_button.config(text="Anyshift running. Press 'End' to stop")
-    window.update()    
+    # Read the actual configuration displayed and check if there are keys repeated
+    error = read_options_from_windows()
+        
+    if error == False:  # If read_options_from_windows didn´t failed run anyshift else return
+        # Update button text
+        run_button.config(text="Anyshift running. Press 'End' to stop")
+        window.update()    
 
-    if options['mem_mode'] == 'True':
-        # Open DosBox process and check for process opened
-        rwm = ReadWriteMemory()
-        try:
-            process = rwm.get_process_by_name(options['process'])
-            process.open()        
-        except:
-            error_window = Toplevel(window)        
-            error_window.title("Error")
-            error_window.config(width=200, height=50)
-            error_frame = tkinter.Frame(error_window)
-            error_frame.pack()
-            error_label = tkinter.Label(error_frame, text = "Process not found. Open it before Anyshift")
-            error_label.grid(row = 0, column = 0)
-            run_button.config(text="Run Anyshift")
-            pygame.quit()
-            return
-        joystick_loop_mem(options)
-        run_button.config(text="Run Anyshift")  # Return button to normal text
+        if options['mem_mode'] == 'True':
+            # Open DosBox process and check for process opened
+            rwm = ReadWriteMemory()
+            try:
+                process = rwm.get_process_by_name(options['process'])
+                process.open()        
+            except:
+                error_window = Toplevel(window)        
+                error_window.title("Error")
+                error_window.config(width=200, height=50)
+                error_frame = tkinter.Frame(error_window)
+                error_frame.pack()
+                error_label = tkinter.Label(error_frame, text = "Process not found. Open it before Anyshift")
+                error_label.grid(row = 0, column = 0)
+                run_button.config(text="Run Anyshift")
+                pygame.quit()
+                return
+            joystick_loop_mem(options)
+            run_button.config(text="Run Anyshift")  # Return button to normal text
+        else:
+            joystick_loop_keys(options)
+            run_button.config(text="Run Anyshift")  # Return button to normal text 
     else:
-        joystick_loop_keys(options)
-        run_button.config(text="Run Anyshift")  # Return button to normal text   
+        pygame.quit()
+        run_button.config(text="Run Anyshift")  # Return button to normal text 
+        return  
    
 
 
