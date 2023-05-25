@@ -1,15 +1,15 @@
 # Ignore folders
 /build
 /dist
+/Console_version
 
 # Ignore files
 
-
+*.pyc
 *.spec
 *.ico
 cmd.py
 presets.py
-gearbox.py
 any_clean.py
 mempru.py
 mempru2.py

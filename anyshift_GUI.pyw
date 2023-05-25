@@ -1,26 +1,41 @@
-"""GUI for Anyshift config util. Still WIP"""
+#################################################################################################################################
+# Anyshift GUI
+#
+# THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
+# APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
+# HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY
+# OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
+# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM
+# IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF
+# ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+#
+# 2023 Menkaura Soft
+##################################################################################################################################
 
 import tkinter  # GUI
 from tkinter import *  # Toplevel window
 from tkinter import ttk  # GUI combobox
-import os  # Hide pygame welcome message
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame  # Joystick input
 import configparser  # Write and read ini files
-import keyboard  # key presses
 import csv  # Load and write csv files
-import time  # Delays
-import ctypes  # Kernel level key presses
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
-
+from Gearbox import joystick_loop_keys, joystick_loop_mem
+from ShifterConfig import gear_selection, joystick_lister
 
 # Global variables
-first_time = True
 options = {}
 
 # READ CONFIG FROM THE DICTIONARY CREATED FROM PRESETS.CSV
 def load_preset():
-    
+
+    # Read presets.csv and store data in a list of dictionaries
+    juegos = []    
+    with open("presets.csv", "r") as file:
+        reader = csv.DictReader(file)    
+        for row in reader:  
+            juegos.append(row)
+                
     # Read selected preset in combobox
     name = presets_combobox.get()
     index = 0
@@ -104,7 +119,7 @@ def save_preset():
     preset = []
     keys = []
 
-    id = len(juegos)
+    id = len(lista)
     #print(presets_combobox.currentText())    TODO NAME OF PRESET
     name = save_name_entry.get()
     preset.append(id)
@@ -125,7 +140,6 @@ def save_preset():
         return
     
     downshift = downshift_key_entry.get().lower()
-    print(downshift)
     if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
         preset.append(downshift)
         keys.append(downshift)
@@ -386,8 +400,8 @@ def windows_updater():
     reverse_gear_value.config(text = options['reverse'])
 
 
-# LOOPS FOR SELECTING BUTTONS IN SHIFTER   
-def select_first():
+# GET ACTIVE JOYSTICK OF COMBOBOX AND CALLS GEARS SELECTION TO SELECT BUTTON FOR THE DESIRED GEAR
+def gears(gear):
 
     global options
     pygame.init()
@@ -396,607 +410,56 @@ def select_first():
         if joys[i] == active_joystick:
             active_joystick_id = i
     
-    try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
-        shifter.init()
-        num_buttons = shifter.get_numbuttons()
-    except:
-        return
-    
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYBUTTONDOWN:
-                for i in range(num_buttons):
-                    if shifter.get_button(i) == True:
-                        options['first'] = i
-                        done = True
-    pygame.quit()
+    gear_selection(options, gear, active_joystick_id)
     windows_updater()
-def select_second():
-
-    global options
-    pygame.init()
-    active_joystick = joystick_id_combobox.get()
-    for i in range(num_joy):
-        if joys[i] == active_joystick:
-            active_joystick_id = i
-    
-    try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
-        shifter.init()
-        num_buttons = shifter.get_numbuttons()
-    except:
-        return
-    
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYBUTTONDOWN:
-                for i in range(num_buttons):
-                    if shifter.get_button(i) == True:
-                        options['second'] = i
-                        done = True
-    pygame.quit()
-    windows_updater()
-def select_third():
-
-    global options
-    pygame.init()
-    active_joystick = joystick_id_combobox.get()
-    for i in range(num_joy):
-        if joys[i] == active_joystick:
-            active_joystick_id = i
-    
-    try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
-        shifter.init()
-        num_buttons = shifter.get_numbuttons()
-    except:
-        return
-    
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYBUTTONDOWN:
-                for i in range(num_buttons):
-                    if shifter.get_button(i) == True:
-                        options['third'] = i
-                        done = True
-    pygame.quit()
-    windows_updater()
-def select_fourth():
-
-    global options
-    pygame.init()
-    active_joystick = joystick_id_combobox.get()
-    for i in range(num_joy):
-        if joys[i] == active_joystick:
-            active_joystick_id = i
-    
-    try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
-        shifter.init()
-        num_buttons = shifter.get_numbuttons()
-    except:
-        return
-    
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYBUTTONDOWN:
-                for i in range(num_buttons):
-                    if shifter.get_button(i) == True:
-                        options['fourth'] = i
-                        done = True
-    pygame.quit()
-    windows_updater()
-def select_fifth():
-
-    global options
-    pygame.init()
-    active_joystick = joystick_id_combobox.get()
-    for i in range(num_joy):
-        if joys[i] == active_joystick:
-            active_joystick_id = i
-    
-    try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
-        shifter.init()
-        num_buttons = shifter.get_numbuttons()
-    except:
-        return
-    
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYBUTTONDOWN:
-                for i in range(num_buttons):
-                    if shifter.get_button(i) == True:
-                        options['fifth'] = i
-                        done = True
-    pygame.quit()
-    windows_updater()
-def select_sixth():
-
-    global options
-    pygame.init()
-    active_joystick = joystick_id_combobox.get()
-    for i in range(num_joy):
-        if joys[i] == active_joystick:
-            active_joystick_id = i
-    
-    try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
-        shifter.init()
-        num_buttons = shifter.get_numbuttons()
-    except:
-        return
-    
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYBUTTONDOWN:
-                for i in range(num_buttons):
-                    if shifter.get_button(i) == True:
-                        options['sixth'] = i
-                        done = True
-    pygame.quit()
-    windows_updater()
-def select_seventh():
-
-    global options
-    pygame.init()
-    active_joystick = joystick_id_combobox.get()
-    for i in range(num_joy):
-        if joys[i] == active_joystick:
-            active_joystick_id = i
-    
-    try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
-        shifter.init()
-        num_buttons = shifter.get_numbuttons()
-    except:
-        return
-    
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYBUTTONDOWN:
-                for i in range(num_buttons):
-                    if shifter.get_button(i) == True:
-                        options['seventh'] = i
-                        done = True
-    pygame.quit()
-    windows_updater()
-def select_reverse():
-
-    global options
-    pygame.init()
-    active_joystick = joystick_id_combobox.get()
-       
-    for i in range(num_joy):
-        if joys[i] == active_joystick:
-            active_joystick_id = i
-    
-    try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
-        shifter.init()
-        num_buttons = shifter.get_numbuttons()
-    except:
-        return
-    
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYBUTTONDOWN:
-                for i in range(num_buttons):
-                    if shifter.get_button(i) == True:
-                        options['reverse'] = i
-                        done = True
-    pygame.quit()
-    windows_updater() 
 
 
 # RUN ANYSHIFT JOYSTICK LOOP                       
 def run_any():   
 
+    # Read the actual configuration displayed
     read_options_from_windows()
     
+    # Update button text
     run_button.config(text="Anyshift running. Press 'End' to stop")
-    window.update()
-    
+    window.update()    
 
     if options['mem_mode'] == 'True':
-        joystick_loop_mem()
+        # Open DosBox process and check for process opened
+        rwm = ReadWriteMemory()
+        try:
+            process = rwm.get_process_by_name(options['process'])
+            process.open()        
+        except:
+            error_window = Toplevel(window)        
+            error_window.title("Error")
+            error_window.config(width=200, height=50)
+            error_frame = tkinter.Frame(error_window)
+            error_frame.pack()
+            error_label = tkinter.Label(error_frame, text = "Process not found. Open it before Anyshift")
+            error_label.grid(row = 0, column = 0)
+            run_button.config(text="Run Anyshift")
+            pygame.quit()
+            return
+        joystick_loop_mem(options)
+        run_button.config(text="Run Anyshift")  # Return button to normal text
     else:
-        joystick_loop_keys()
+        joystick_loop_keys(options)
+        run_button.config(text="Run Anyshift")  # Return button to normal text   
    
 
-# MEM MODE JOYSTICK LOOP
-def joystick_loop_mem():
 
-    pygame.init()
-    # Initialize joystick module
-    pygame.joystick.init()    
-    # Create a joystick object and initialize it
-    shifter = pygame.joystick.Joystick(int(options['joy_id']))
-    shifter.init()
-        
-    # Open DosBox process and check for process opened
-    rwm = ReadWriteMemory()
-    try:
-        process = rwm.get_process_by_name(options['process'])
-        process.open()        
-        # DosBox base address. Got from the pointer we have
-        x_pointer = process.get_pointer(int(options['db_base_addr'], 16)) 
-        
-        if options['process'] == 'pcsx2.exe':
-            # In pcsx2 1.6 is allways de same address
-            gear_address = x_pointer
-        else:
-            # In dosbox gear address is the base address plus the offset. This is the value we found in Cheat Engine
-            gear_address = process.read(x_pointer) + int(options['offset'], 16)        
-    except:
-        error_window = Toplevel(window)        
-        error_window.title("Error")
-        error_window.config(width=200, height=50)
-        error_frame = tkinter.Frame(error_window)
-        error_frame.pack()
-        error_label = tkinter.Label(error_frame, text = "Process not found. Open it before Anyshift")
-        error_label.grid(row = 0, column = 0)
-
-        run_button.config(text="Run Anyshift")
-        pygame.quit()
-        return
-
-    address = gear_address
-     
-    if options['nascar_mode'] == 'False':
-        # Loop
-        done = False
-        while not done:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = True  # Flag that we are done so we exit this loop.
-                if event.type == pygame.JOYBUTTONDOWN:
-                    if shifter.get_button(options['first']) == True:
-                        process.write(address, 1)
-                        gear_selected = 1
-                    if shifter.get_button(options['second']) == True:
-                        process.write(address, 2)
-                        gear_selected = 2
-                    if shifter.get_button(options['third']) == True:
-                        process.write(address, 3)
-                        gear_selected = 3
-                    if shifter.get_button(options['fourth']) == True:
-                        process.write(address, 4)
-                        gear_selected = 4
-                    if shifter.get_button(options['fifth']) == True:
-                        process.write(address, 5)
-                        gear_selected = 5
-                    if shifter.get_button(options['sixth']) == True:
-                        process.write(address, 6)
-                        gear_selected = 6  
-                    if options['seven_gears'] == 'True':  # To avoid invalid button error
-                        if shifter.get_button(options['seventh']) == True:
-                            process.write(address, 7)
-                            gear_selected = 7
-                    if shifter.get_button(options['reverse']) == True:
-                        if options['rev_button'] == 'False':
-                            process.write(address, -1)
-                            gear_selected = -1
-                        else:
-                            KeyPress_rev()
-                            gear_selected = -1                 
-                    print(f"Gear in joystick: {gear_selected}   ",  end="\r")
-                if event.type == pygame.JOYBUTTONUP:        
-                    KeyRelease_rev()  # Release de reverse key just in case we came from reverse
-
-                # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
-                if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True':
-                    time.sleep(0.3)
-                    if not pygame.event.peek(pygame.JOYBUTTONDOWN):
-                        process.write(address, 0)
-                        gear_selected = 0
-                        print(f"Gear in joystick: {gear_selected}   ",  end="\r")
-                
-                
-
-
-            # Select neutral if this key is pressed
-            if keyboard.is_pressed(options['neut_key']):
-                gear_selected = 0
-                print(f"Gear in joystick: {gear_selected}   ",  end="\r")
-
-            if keyboard.is_pressed('End'):
-                done = True
-    else:  # Nascar mode is True    Memory Locations doesn´t seem to be correct
-        # Loop
-        done = False
-        while not done:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = True  # Flag that we are done so we exit this loop.
-
-                if event.type == pygame.JOYBUTTONDOWN:
-                    if shifter.get_button(options['first']) == True:
-                        process.write(address, 0)
-                        gear_selected = 1
-                    if shifter.get_button(options['second']) == True:
-                        process.write(address, 1)
-                        gear_selected = 2
-                    if shifter.get_button(options['third']) == True:
-                        process.write(address, 2)
-                        gear_selected = 3
-                    if shifter.get_button(options['fourth']) == True:
-                        process.write(address, 3)
-                        gear_selected = 4
-                    if shifter.get_button(options['fifth']) == True:
-                        process.write(address, 4)
-                        gear_selected = 5
-                    if shifter.get_button(options['sixth']) == True:
-                        process.write(address, 5)
-                        gear_selected = 6
-                    if shifter.get_button(options['reverse']) == True:
-                        KeyPress_rev()
-                        gear_selected = -1                
-                    print(f"Gear in joystick: {gear_selected}   ",  end="\r") 
-
-                if event.type == pygame.JOYBUTTONUP :
-                    KeyRelease_rev()  # Release de reverse key just in case we came from reverse
-            if keyboard.is_pressed('End'):
-                done = True
-    pygame.quit()
-    run_button.config(text="Run Anyshift")    
-
-
-# KEYS MODE JOYSTICK LOOP
-def joystick_loop_keys():
-
-    pygame.init()
-    # Initialize joystick module
-    pygame.joystick.init()    
-    # Create a joystick object and initialize it
-    shifter = pygame.joystick.Joystick(int(options['joy_id']))
-    shifter.init()
-        
-    gear_selected = 0 
-    actual_gear = 0
-    # Joystick read loop  
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True  # Flag that we are done so we exit this loop.
-
-            if event.type == pygame.JOYBUTTONDOWN:
-                if shifter.get_button(options['first']) == True:
-                    gear_selected = 1
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(options['second']) == True:
-                    gear_selected = 2
-                    actual_gear = update_gear(gear_selected, actual_gear) 
-                if shifter.get_button(options['third']) == True:
-                    gear_selected = 3
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(options['fourth']) == True:
-                    gear_selected = 4
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(options['fifth']) == True:
-                    gear_selected = 5
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(options['sixth']) == True:
-                    gear_selected = 6
-                    actual_gear = update_gear(gear_selected, actual_gear)  
-                if options['seven_gears'] == 'True':  # To avoid invalid button error
-                    if shifter.get_button(options['seventh']) == True:
-                        gear_selected = 7
-                        actual_gear = update_gear(gear_selected, actual_gear)
-                if shifter.get_button(options['reverse']) == True:
-                    gear_selected = -1
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
-
-            # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
-            if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True':
-                time.sleep(0.3)
-                if not pygame.event.peek(pygame.JOYBUTTONDOWN):
-                    gear_selected = 0
-                    actual_gear = update_gear(gear_selected, actual_gear)
-                    print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
-
-        # Select neutral if this key is pressed
-        if keyboard.is_pressed(options['neut_key']):
-            gear_selected = 0
-            actual_gear = update_gear(gear_selected, actual_gear)
-            print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
-
-        # Escape to exit from Anyshift    
-        if keyboard.is_pressed('End'):
-                done = True
-    pygame.quit()   
-    run_button.config(text="Run Anyshift") 
-
-
-# Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
-def update_gear(gear_selected, actual_gear):
-
-    global first_time
-
-    if options['nascar_mode'] == 'True':
-        if options['rev_button'] == 'True' and gear_selected == -1:
-            while actual_gear != 1:
-                KeyPress_down()
-                actual_gear -= 1
-            KeyPress_rev() 
-            act_gear = 1
-        else:  # Reverse is a gear, not a button   
-            KeyRelease_rev()  # Release de reverse key just in case we came from reverse is a button mode
-            if options['neutral'] == 'True':  # Normal operation with gear 0 for neutral
-                act_gear = actual_gear
-                while act_gear != gear_selected:
-                    if act_gear < gear_selected:
-                        act_gear += 1
-                        KeyPress_up()                
-                    if act_gear > gear_selected:
-                        act_gear -= 1
-                        KeyPress_down()
-            else:  # Game doesn´t detect neutral, so we skip gear 0    
-                act_gear = actual_gear
-                while act_gear != gear_selected:  
-                    if act_gear < gear_selected:
-                        if act_gear == 0:
-                            act_gear += 1
-                            if first_time == True:  # To prevent the bug where it doesn´t change the first time you use the shifter
-                                KeyPress_up()
-                                first_time = False   
-                        else:
-                            act_gear += 1
-                            KeyPress_up()                
-                    if act_gear > gear_selected:
-                        if act_gear == 0:
-                            act_gear -= 1                                           
-                        else:
-                            act_gear -= 1
-                            KeyPress_down()
-    else:
-        # Press key selected for reverse
-        if options['rev_button'] == 'True' and gear_selected == -1:
-            KeyPress_rev() 
-            act_gear = -1
-        else:  # Reverse is a gear, not a button   
-            KeyRelease_rev()  # Release de reverse key just in case we came from reverse is a button mode
-            if options['neutral'] == 'True':  # Normal operation with gear 0 for neutral
-                act_gear = actual_gear
-                while act_gear != gear_selected:
-                    if act_gear < gear_selected:
-                        act_gear += 1
-                        KeyPress_up()                
-                    if act_gear > gear_selected:
-                        act_gear -= 1
-                        KeyPress_down()
-            else:  # Game doesn´t detect neutral, so we skip gear 0    
-                act_gear = actual_gear
-                while act_gear != gear_selected:  
-                    if act_gear < gear_selected:
-                        if act_gear == 0:
-                            act_gear += 1
-                            if first_time == True:  # To prevent the bug where it doesn´t change the first time you use the shifter
-                                KeyPress_up()
-                                first_time = False  
-                        else:
-                            act_gear += 1
-                            KeyPress_up()                
-                    if act_gear > gear_selected:
-                        if act_gear == 0:
-                            act_gear -= 1                                           
-                        else:
-                            act_gear -= 1
-                            KeyPress_down()
-                            
-    return act_gear
-
-
-# Bunch of stuff so that the script can send keystrokes to game #
-SendInput = ctypes.windll.user32.SendInput
-# C struct redefinitions
-PUL = ctypes.POINTER(ctypes.c_ulong)
-
-
-class KeyBdInput(ctypes.Structure):
-    _fields_ = [("wVk", ctypes.c_ushort),
-                ("wScan", ctypes.c_ushort),
-                ("dwFlags", ctypes.c_ulong),
-                ("time", ctypes.c_ulong),
-                ("dwExtraInfo", PUL)]
-
-
-class HardwareInput(ctypes.Structure):
-    _fields_ = [("uMsg", ctypes.c_ulong),
-                ("wParamL", ctypes.c_short),
-                ("wParamH", ctypes.c_ushort)]
-
-
-class MouseInput(ctypes.Structure):
-    _fields_ = [("dx", ctypes.c_long),
-                ("dy", ctypes.c_long),
-                ("mouseData", ctypes.c_ulong),
-                ("dwFlags", ctypes.c_ulong),
-                ("time", ctypes.c_ulong),
-                ("dwExtraInfo", PUL)]
-
-
-class Input_I(ctypes.Union):
-    _fields_ = [("ki", KeyBdInput),
-                ("mi", MouseInput),
-                ("hi", HardwareInput)]
-
-
-class Input(ctypes.Structure):
-    _fields_ = [("type", ctypes.c_ulong),
-                ("ii", Input_I)]
-
-
-# Ctypes complicated stuff for low level key presses
-def PressKey(hexKeyCode):
-    extra = ctypes.c_ulong(0)
-    ii_ = Input_I()
-    ii_.ki = KeyBdInput(0, hexKeyCode, 0x0008, 0, ctypes.pointer(extra))
-    x = Input(ctypes.c_ulong(1), ii_)
-    ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
-
-
-def ReleaseKey(hexKeyCode):
-    extra = ctypes.c_ulong(0)
-    ii_ = Input_I()
-    ii_.ki = KeyBdInput(0, hexKeyCode, 0x0008 | 0x0002, 0, ctypes.pointer(extra))
-    x = Input(ctypes.c_ulong(1), ii_)
-    ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
-
-
-def KeyPress_up():
-    time.sleep(float(options['presskey_timer']))
-    PressKey(int(options['up_key'], 16))  # press
-    time.sleep(float(options['releasekey_timer']))
-    ReleaseKey(int(options['up_key'], 16))  # release
-
-
-def KeyPress_down():
-    time.sleep(float(options['presskey_timer']))
-    PressKey(int(options['down_key'], 16))  # press
-    time.sleep(float(options['releasekey_timer']))
-    ReleaseKey(int(options['down_key'], 16))  # release
-
-
-def KeyPress_rev():
-    time.sleep(float(options['presskey_timer']))
-    PressKey(int(options['rev_key'], 16))  # press
-
-
-def KeyRelease_rev():
-    time.sleep(float(options['releasekey_timer']))
-    ReleaseKey(int(options['rev_key'], 16))  # release
-
-
-#####################WINDOWS CREATION AND LOOP###################
+####################################  MAIN   ########################################
 
 # Get list of joystick ids and save them into joys list
-pygame.joystick.init()
-num_joy = pygame.joystick.get_count()
-joys = []
-for i in range(num_joy):
-    joy = pygame.joystick.Joystick(i)
-    joy_id = joy.get_name()
-    joys.append(joy_id)
-    joy.quit()
+joys, num_joy = joystick_lister()
 
 # Read config from ini file
 read_ini()
 
 # Create tkinter windows object
 window = tkinter.Tk()
-window.title("Anyshift Config")
+window.title("Anyshift")
 window.iconbitmap("any_ico.ico")
 
 # Create frame
@@ -1025,42 +488,42 @@ except:
 gears_selection_frame = tkinter.LabelFrame(frame, text = "Joystick Buttons")
 gears_selection_frame.grid(row = 1, column = 0)
 
-first_gear_button = tkinter.Button(gears_selection_frame, text = "1", command = select_first)
+first_gear_button = tkinter.Button(gears_selection_frame, text = "1", command = lambda: gears(1))
 first_gear_button.grid(row = 2, column = 0)
 first_gear_value = tkinter.Label(gears_selection_frame, text = options['first'])
 first_gear_value.grid(row = 3, column = 0)
 
-second_gear_button = tkinter.Button(gears_selection_frame, text = "2", command = select_second)
+second_gear_button = tkinter.Button(gears_selection_frame, text = "2", command = lambda: gears(2))
 second_gear_button.grid(row = 4, column = 0)
 second_gear_value = tkinter.Label(gears_selection_frame, text = options['second'])
 second_gear_value.grid(row = 5, column = 0)
 
-third_gear_button = tkinter.Button(gears_selection_frame, text = "3", command = select_third)
+third_gear_button = tkinter.Button(gears_selection_frame, text = "3", command = lambda: gears(3))
 third_gear_button.grid(row = 2, column = 1)
 third_gear_value = tkinter.Label(gears_selection_frame, text = options['third'])
 third_gear_value.grid(row = 3, column = 1)
 
-fourth_gear_button = tkinter.Button(gears_selection_frame, text = "4", command = select_fourth)
+fourth_gear_button = tkinter.Button(gears_selection_frame, text = "4", command = lambda: gears(4))
 fourth_gear_button.grid(row = 4, column = 1)
 fourth_gear_value = tkinter.Label(gears_selection_frame, text = options['fourth'])
 fourth_gear_value.grid(row = 5, column = 1)
 
-fifth_gear_button = tkinter.Button(gears_selection_frame, text = "5", command = select_fifth)
+fifth_gear_button = tkinter.Button(gears_selection_frame, text = "5", command = lambda: gears(5))
 fifth_gear_button.grid(row = 2, column = 2)
 fifth_gear_value = tkinter.Label(gears_selection_frame, text = options['fifth'])
 fifth_gear_value.grid(row = 3, column = 2)
 
-sixth_gear_button = tkinter.Button(gears_selection_frame, text = "6", command = select_sixth)
+sixth_gear_button = tkinter.Button(gears_selection_frame, text = "6", command = lambda: gears(6))
 sixth_gear_button.grid(row = 4, column = 2)
 sixth_gear_value = tkinter.Label(gears_selection_frame, text = options['sixth'])
 sixth_gear_value.grid(row = 5, column = 2)
 
-seventh_gear_button = tkinter.Button(gears_selection_frame, text = "7", command = select_seventh)
+seventh_gear_button = tkinter.Button(gears_selection_frame, text = "7", command = lambda: gears(7))
 seventh_gear_button.grid(row = 2, column = 3)
 seventh_gear_value = tkinter.Label(gears_selection_frame, text = options['seventh'])
 seventh_gear_value.grid(row = 3, column = 3)
 
-reverse_gear_label = tkinter.Button(gears_selection_frame, text = "R", command = select_reverse)
+reverse_gear_label = tkinter.Button(gears_selection_frame, text = "R", command = lambda: gears(8))
 reverse_gear_label.grid(row = 4, column = 3)
 reverse_gear_value = tkinter.Label(gears_selection_frame, text = options['reverse'])
 reverse_gear_value.grid(row = 5, column = 3)
@@ -1169,13 +632,11 @@ profiles_selection_frame = tkinter.LabelFrame(frame, text = "Profiles")
 profiles_selection_frame.grid(row = 6, column = 0, padx = 20, pady = 5)
 
 # Presets buttons
-juegos = []
 lista = []
 with open("presets.csv", "r") as file:
     reader = csv.DictReader(file)    
     counter = 0
     for row in reader:  # Load csv in a list of dictionaries
-        juegos.append(row)
         lista.append(row['name'])
 
 presets_combobox = ttk.Combobox(profiles_selection_frame, values = lista, width = 30)
