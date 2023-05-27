@@ -52,6 +52,7 @@ def gear_selection(options, gear, active_joystick_id):
  
 def select_first(options, active_joystick_id):
 
+    pygame.init()
     try:
         shifter = pygame.joystick.Joystick(active_joystick_id)
         shifter.init()
@@ -73,6 +74,7 @@ def select_first(options, active_joystick_id):
 
 def select_second(options, active_joystick_id):
 
+    pygame.init()
     try:
         shifter = pygame.joystick.Joystick(active_joystick_id)
         shifter.init()
@@ -94,6 +96,7 @@ def select_second(options, active_joystick_id):
 
 def select_third(options, active_joystick_id):
     
+    pygame.init()
     try:
         shifter = pygame.joystick.Joystick(active_joystick_id)
         shifter.init()
@@ -115,6 +118,7 @@ def select_third(options, active_joystick_id):
 
 def select_fourth(options, active_joystick_id):
     
+    pygame.init()
     try:
         shifter = pygame.joystick.Joystick(active_joystick_id)
         shifter.init()
@@ -136,6 +140,7 @@ def select_fourth(options, active_joystick_id):
 
 def select_fifth(options, active_joystick_id):
     
+    pygame.init()
     try:
         shifter = pygame.joystick.Joystick(active_joystick_id)
         shifter.init()
@@ -157,6 +162,7 @@ def select_fifth(options, active_joystick_id):
 
 def select_sixth(options, active_joystick_id):
     
+    pygame.init()
     try:
         shifter = pygame.joystick.Joystick(active_joystick_id)
         shifter.init()
@@ -178,6 +184,7 @@ def select_sixth(options, active_joystick_id):
 
 def select_seventh(options, active_joystick_id):
     
+    pygame.init()
     try:
         shifter = pygame.joystick.Joystick(active_joystick_id)
         shifter.init()
@@ -199,6 +206,7 @@ def select_seventh(options, active_joystick_id):
 
 def select_reverse(options, active_joystick_id):
     
+    pygame.init()
     try:
         shifter = pygame.joystick.Joystick(active_joystick_id)
         shifter.init()

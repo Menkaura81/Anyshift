@@ -1,5 +1,5 @@
-#################################################################################################
-# Gearbox module provides all the shifting logic to Anyshift
+################################################################################################
+# Gearbox module provides all the shifting logic to Anyshift software
 #
 # There is no warranty for the program, to the extent permitted by applicable law. Except 
 # when otherwise stated in writing the copyright holders and/or other parties provide the
