@@ -19,6 +19,9 @@ def ini_reader():
     options['seven_gears'] = config['OPTIONS']['seven gears']
     options['rev_button'] = config['OPTIONS']['reverse is button']
     options['neutral'] = config['OPTIONS']['neutral detection']
+    options['clutch'] = config['OPTIONS']['require clutch']
+    options['clutch_id'] = config['SHIFTER']['clutch id']
+    options['clutch_axis'] = config['SHIFTER']['clutch axis']
     options['mem_mode'] = config['OPTIONS']['memory write mode']
     options['process'] = config['OPTIONS']['process name']
     options['db_base_addr'] = config['OPTIONS']['base address']
@@ -47,8 +50,12 @@ def ini_writer(options, upshift, downshift, rev_key):
     # Create object config
     config = configparser.ConfigParser(allow_no_value=True)
 
-    config['SHIFTER'] = {'; This is the id number of the joystick you want to use': None,
+    config['SHIFTER'] = {'; This is the id number of the shifter you want to use': None,
                          'Joystick id': options['joy_id'],
+                         '; This is the id number of the controller you wanth to use for clutch': None,
+                         'clutch id': options['clutch_id'],
+                         '; Selected controller axis for the clutch': None,
+                         'clutch axis': options['clutch_axis'],
                          '; Joystick buttons for each gear': None,
                          'first gear': options['first'],
                          'second gear': options['second'],
@@ -60,11 +67,10 @@ def ini_writer(options, upshift, downshift, rev_key):
                          'reverse': options['reverse']
                         }
 
-    config['KEYS'] = {'; Upshift, downshift and reverse key in hex code': None,
+    config['KEYS'] = {'; Upshift, downshift, neutral and reverse key': None,
                       'upshift': upshift,
                       'downshift': downshift,
                       'reverse': rev_key,
-                      '; Neutral key is not necessary to be in hex code': None,
                       'neutral key': options['neut_key']
                     }
 
@@ -72,6 +78,8 @@ def ini_writer(options, upshift, downshift, rev_key):
                          'seven gears': options['seven_gears'],
                          '; True if you want to change to neutral if no gear is selected in shifter. Most old games doesnt support this': None,
                          'neutral detection': options['neutral'],
+                         '; True if clutch is needed to change gears': None,
+                         'require clutch': options['clutch'],
                          '; True if the game uses a separated button for reverse. Gran Turismo or Nascar Racing for example': None,
                          'reverse is button': options['rev_button'],
                          '; Unique mode for old papyrus games where the game remember the gear you were in when you changed to': None,

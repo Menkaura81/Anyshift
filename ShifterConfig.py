@@ -48,6 +48,8 @@ def gear_selection(options, gear, active_joystick_id):
         select_seventh(options, active_joystick_id)
     elif gear == 8:
         select_reverse(options, active_joystick_id)
+    elif gear == 10:  # clutch axis
+        get_axis(options)
 
  
 def select_first(options, active_joystick_id):
@@ -58,6 +60,7 @@ def select_first(options, active_joystick_id):
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
+        pygame.quit()
         return
     
     done = False
@@ -80,6 +83,7 @@ def select_second(options, active_joystick_id):
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
+        pygame.quit()
         return
     
     done = False
@@ -102,6 +106,7 @@ def select_third(options, active_joystick_id):
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
+        pygame.quit()
         return
     
     done = False
@@ -124,6 +129,7 @@ def select_fourth(options, active_joystick_id):
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
+        pygame.quit()
         return
     
     done = False
@@ -146,6 +152,7 @@ def select_fifth(options, active_joystick_id):
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
+        pygame.quit()
         return
     
     done = False
@@ -168,6 +175,7 @@ def select_sixth(options, active_joystick_id):
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
+        pygame.quit()
         return
     
     done = False
@@ -190,6 +198,7 @@ def select_seventh(options, active_joystick_id):
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
+        pygame.quit()
         return
     
     done = False
@@ -212,6 +221,7 @@ def select_reverse(options, active_joystick_id):
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
+        pygame.quit()
         return
     
     done = False
@@ -223,4 +233,25 @@ def select_reverse(options, active_joystick_id):
                         options['reverse'] = i
                         done = True
     pygame.quit()
+    return options
+
+
+def get_axis(options):
+    
+    pygame.init()
+    try:
+        clutch = pygame.joystick.Joystick(int(options['clutch_id']))
+        clutch.init()
+    except:
+        pygame.quit()
+        return
+    
+    done = False
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYAXISMOTION:
+                options['clutch_axis'] = event.axis
+                done = True
+    pygame.quit()
+        
     return options

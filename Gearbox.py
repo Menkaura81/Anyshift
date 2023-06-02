@@ -17,6 +17,8 @@ import time  # Delays
 from CtypeKeyPressSimulator import PressKey, ReleaseKey  # Low level key presses
 import keyboard  # Normal key presses
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
+import os  # Path for sound files 
+import random  # Randomize sound files
 
 # Flag for avoiding first shifting bug when running nascar mode 
 first_time = True
@@ -30,6 +32,12 @@ def joystick_loop_mem(options):
     # Create a joystick object and initialize it
     shifter = pygame.joystick.Joystick(int(options['joy_id']))
     shifter.init()
+
+    # Create clutch joystick object and initialize it if clutch = true
+    if options['clutch'] == 'True':
+        clutch = pygame.joystick.Joystick(int(options['clutch_id']))
+        clutch.init()
+    clutch_pressed = False
         
     # Open DosBox process and check for process opened
     rwm = ReadWriteMemory()
@@ -44,99 +52,220 @@ def joystick_loop_mem(options):
     else:
         # In dosbox gear address is the base address plus the offset. This is the value we found in Cheat Engine
         address = process.read(x_pointer) + int(options['offset'], 16)        
-         
-    if options['nascar_mode'] == 'False':
-        # Loop
-        done = False
-        while not done:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = True  # Flag that we are done so we exit this loop.
-                if event.type == pygame.JOYBUTTONDOWN:
-                    if shifter.get_button(options['first']) == True:
-                        process.write(address, 1)
-                        gear_selected = 1
-                    if shifter.get_button(options['second']) == True:
-                        process.write(address, 2)
-                        gear_selected = 2
-                    if shifter.get_button(options['third']) == True:
-                        process.write(address, 3)
-                        gear_selected = 3
-                    if shifter.get_button(options['fourth']) == True:
-                        process.write(address, 4)
-                        gear_selected = 4
-                    if shifter.get_button(options['fifth']) == True:
-                        process.write(address, 5)
-                        gear_selected = 5
-                    if shifter.get_button(options['sixth']) == True:
-                        process.write(address, 6)
-                        gear_selected = 6  
-                    if options['seven_gears'] == 'True':  # To avoid invalid button error
-                        if shifter.get_button(options['seventh']) == True:
-                            process.write(address, 7)
-                            gear_selected = 7
-                    if shifter.get_button(options['reverse']) == True:
-                        if options['rev_button'] == 'False':
-                            process.write(address, -1)
-                            gear_selected = -1
-                        else:
-                            KeyPress_rev(options)
-                            gear_selected = -1                 
-                    print(f"Gear in joystick: {gear_selected}   ",  end="\r")
-                if event.type == pygame.JOYBUTTONUP:        
-                    KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
 
-                # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
-                if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True':
-                    time.sleep(0.3)
-                    if not pygame.event.peek(pygame.JOYBUTTONDOWN):
-                        process.write(address, 0)
-                        gear_selected = 0
+    gear_selected = 0 
+    if options['clutch'] == 'False':  # Doesn´t require clutch to shift    
+        if options['nascar_mode'] == 'False':
+            # Loop
+            done = False
+            while not done:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        done = True  # Flag that we are done so we exit this loop.
+
+                    if event.type == pygame.JOYBUTTONDOWN:
+                        if shifter.get_button(options['first']) == True :
+                            process.write(address, 1)
+                            gear_selected = 1
+                        if shifter.get_button(options['second']) == True:
+                            process.write(address, 2)
+                            gear_selected = 2
+                        if shifter.get_button(options['third']) == True:
+                            process.write(address, 3)
+                            gear_selected = 3
+                        if shifter.get_button(options['fourth']) == True:
+                            process.write(address, 4)
+                            gear_selected = 4
+                        if shifter.get_button(options['fifth']) == True:
+                            process.write(address, 5)
+                            gear_selected = 5
+                        if shifter.get_button(options['sixth']) == True:
+                            process.write(address, 6)
+                            gear_selected = 6  
+                        if options['seven_gears'] == 'True':  # To avoid invalid button error
+                            if shifter.get_button(options['seventh']) == True:
+                                process.write(address, 7)
+                                gear_selected = 7
+                        if shifter.get_button(options['reverse']) == True:
+                            if options['rev_button'] == 'False':
+                                process.write(address, -1)
+                                gear_selected = -1
+                            else:
+                                KeyPress_rev(options)
+                                gear_selected = -1                 
+                        print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+                    if event.type == pygame.JOYBUTTONUP:        
+                        KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
+
+                    # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
+                    if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True':
+                        time.sleep(0.3)
+                        if not pygame.event.peek(pygame.JOYBUTTONDOWN):
+                            process.write(address, 0)
+                            gear_selected = 0
+                            print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+                            
+                # Select neutral if this key is pressed
+                if keyboard.is_pressed(options['neut_key']):
+                    gear_selected = 0
+                    print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+
+                if keyboard.is_pressed('End'):
+                    done = True
+        else:  # Nascar mode is True    Memory Locations doesn´t seem to be correct
+            # Loop
+            done = False
+            while not done:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        done = True  # Flag that we are done so we exit this loop.
+
+                    if event.type == pygame.JOYBUTTONDOWN:
+                        if shifter.get_button(options['first']) == True:
+                            process.write(address, 0)
+                            gear_selected = 1
+                        if shifter.get_button(options['second']) == True:
+                            process.write(address, 1)
+                            gear_selected = 2
+                        if shifter.get_button(options['third']) == True:
+                            process.write(address, 2)
+                            gear_selected = 3
+                        if shifter.get_button(options['fourth']) == True:
+                            process.write(address, 3)
+                            gear_selected = 4
+                        if shifter.get_button(options['fifth']) == True:
+                            process.write(address, 4)
+                            gear_selected = 5
+                        if shifter.get_button(options['sixth']) == True:
+                            process.write(address, 5)
+                            gear_selected = 6
+                        if shifter.get_button(options['reverse']) == True:
+                            KeyPress_rev()
+                            gear_selected = -1                
+                        print(f"Gear in joystick: {gear_selected}   ",  end="\r") 
+
+                    if event.type == pygame.JOYBUTTONUP :
+                        KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
+                if keyboard.is_pressed('End'):
+                    done = True
+    else: # Require clutch is true
+        if options['nascar_mode'] == 'False':
+            
+            done = False
+            while not done:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        done = True  # Flag that we are done so we exit this loop.
+                    
+                    if clutch.get_axis(int(options['clutch_axis'])) > -0.75:
+                        clutch_pressed = True
+                    else:
+                        clutch_pressed = False    
+
+                    if event.type == pygame.JOYBUTTONDOWN:
+                        sound = True
+                        
+                        if shifter.get_button(options['first']) == True and clutch_pressed == True:
+                            process.write(address, 1)
+                            gear_selected = 1
+                            sound = False
+                           
+                        elif shifter.get_button(options['second']) == True and clutch_pressed == True:
+                            process.write(address, 2)
+                            gear_selected = 2
+                            sound = False
+                           
+                        elif shifter.get_button(options['third']) == True and clutch_pressed == True:
+                            process.write(address, 3)
+                            gear_selected = 3
+                            sound = False
+                         
+                        elif shifter.get_button(options['fourth']) == True and clutch_pressed == True:
+                            process.write(address, 4)
+                            gear_selected = 4
+                            sound = False
+                          
+                        elif shifter.get_button(options['fifth']) == True and clutch_pressed == True:
+                            process.write(address, 5)
+                            gear_selected = 5
+                            sound = False
+                        elif shifter.get_button(options['sixth']) == True and clutch_pressed == True:
+                            process.write(address, 6)
+                            gear_selected = 6
+                            sound = False
+                        elif options['seven_gears'] == 'True':  # To avoid invalid button error
+                            if shifter.get_button(options['seventh']) == True and clutch_pressed == True:
+                                process.write(address, 7)
+                                gear_selected = 7
+                                sound = False                            
+                        elif shifter.get_button(options['reverse']) == True and clutch_pressed == True:
+                            if options['rev_button'] == 'False':
+                                process.write(address, -1)
+                                gear_selected = -1
+                            else:
+                                KeyPress_rev(options)
+                                gear_selected = -1 
+
+                        if sound == True:
+                            play_sound() 
+                              
+                                   
                         print(f"Gear in joystick: {gear_selected}   ",  end="\r")
                         
-            # Select neutral if this key is pressed
-            if keyboard.is_pressed(options['neut_key']):
-                gear_selected = 0
-                print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+                    if event.type == pygame.JOYBUTTONUP:        
+                        KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
 
-            if keyboard.is_pressed('End'):
-                done = True
-    else:  # Nascar mode is True    Memory Locations doesn´t seem to be correct
-        # Loop
-        done = False
-        while not done:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = True  # Flag that we are done so we exit this loop.
+                    # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
+                    if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True':
+                        time.sleep(0.3)
+                        if not pygame.event.peek(pygame.JOYBUTTONDOWN):
+                            process.write(address, 0)
+                            gear_selected = 0
+                            print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+                            
+                # Select neutral if this key is pressed
+                if keyboard.is_pressed(options['neut_key']):
+                    gear_selected = 0
+                    print(f"Gear in joystick: {gear_selected}   ",  end="\r")
 
-                if event.type == pygame.JOYBUTTONDOWN:
-                    if shifter.get_button(options['first']) == True:
-                        process.write(address, 0)
-                        gear_selected = 1
-                    if shifter.get_button(options['second']) == True:
-                        process.write(address, 1)
-                        gear_selected = 2
-                    if shifter.get_button(options['third']) == True:
-                        process.write(address, 2)
-                        gear_selected = 3
-                    if shifter.get_button(options['fourth']) == True:
-                        process.write(address, 3)
-                        gear_selected = 4
-                    if shifter.get_button(options['fifth']) == True:
-                        process.write(address, 4)
-                        gear_selected = 5
-                    if shifter.get_button(options['sixth']) == True:
-                        process.write(address, 5)
-                        gear_selected = 6
-                    if shifter.get_button(options['reverse']) == True:
-                        KeyPress_rev()
-                        gear_selected = -1                
-                    print(f"Gear in joystick: {gear_selected}   ",  end="\r") 
+                if keyboard.is_pressed('End'):
+                    done = True
+        else:  # Nascar mode is True    Memory Locations doesn´t seem to be correct
+            # Loop
+            done = False
+            while not done:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        done = True  # Flag that we are done so we exit this loop.
 
-                if event.type == pygame.JOYBUTTONUP :
-                    KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
-            if keyboard.is_pressed('End'):
-                done = True
+                    if event.type == pygame.JOYBUTTONDOWN:
+                        if shifter.get_button(options['first']) == True and clutch_pressed == True:
+                            process.write(address, 0)
+                            gear_selected = 1
+                        if shifter.get_button(options['second']) == True and clutch_pressed == True:
+                            process.write(address, 1)
+                            gear_selected = 2
+                        if shifter.get_button(options['third']) == True and clutch_pressed == True:
+                            process.write(address, 2)
+                            gear_selected = 3
+                        if shifter.get_button(options['fourth']) == True and clutch_pressed == True:
+                            process.write(address, 3)
+                            gear_selected = 4
+                        if shifter.get_button(options['fifth']) == True and clutch_pressed == True:
+                            process.write(address, 4)
+                            gear_selected = 5
+                        if shifter.get_button(options['sixth']) == True and clutch_pressed == True:
+                            process.write(address, 5)
+                            gear_selected = 6
+                        if shifter.get_button(options['reverse']) == True and clutch_pressed == True:
+                            KeyPress_rev()
+                            gear_selected = -1                
+                        print(f"Gear in joystick: {gear_selected}   ",  end="\r") 
+
+                    if event.type == pygame.JOYBUTTONUP :
+                        KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
+                if keyboard.is_pressed('End'):
+                    done = True    
     pygame.quit()
     
 
@@ -312,3 +441,12 @@ def KeyPress_rev(options):
 def KeyRelease_rev(options):
     time.sleep(float(options['releasekey_timer']))
     ReleaseKey(int(options['rev_key'], 16))  # release                        
+
+
+def play_sound():
+    number = random.randint(1,3)
+    audio_file = os.path.dirname(__file__) 
+    audio_file = audio_file + "/" + str(number) + ".wav"
+    pygame.mixer.music.load(audio_file)
+    pygame.mixer.music.play(loops=0)
+    return

@@ -18,7 +18,7 @@ from tkinter import ttk  # GUI combobox
 import csv  # Load and write csv files
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
 from Gearbox import joystick_loop_keys, joystick_loop_mem
-from ShifterConfig import gear_selection, joystick_lister
+from ShifterConfig import gear_selection, joystick_lister, get_axis
 from ReadWriteSaves import ini_reader, ini_writer, hex_convert, char_convert
 
 # Read config from presets.csv
@@ -41,16 +41,16 @@ def load_preset():
     # Load variables from dictionary
     global options 
     options['up_key'] = juegos[index]['upshift']    
-    options['up_key'] = hex_convert(options['up_key'])
+    options['up_key'] = options['up_key']
     options['down_key'] = juegos[index]['downshift']
-    options['down_key'] = hex_convert(options['down_key'])
+    options['down_key'] = options['down_key']
     options['rev_key'] = juegos[index]['reverse']
-    options['rev_key']  = hex_convert(options['rev_key'])
+    options['rev_key']  = options['rev_key']
     options['neut_key'] = juegos[index]['neutral key']    
     options['seven_gears'] = juegos[index]['seven gears']
     options['neutral'] = juegos[index]['neutral detection']
     options['rev_button'] = juegos[index]['reverse is button']
-    options['nascar'] = juegos[index]['nascar racing mode']
+    options['nascar_mode'] = juegos[index]['nascar racing mode']
     options['presskey_timer'] = juegos[index]['presskey timer']    
     options['releasekey_timer'] = juegos[index]['releasekey timer']    
     options['mem_mode'] = juegos[index]['memory write mode']
@@ -160,15 +160,26 @@ def save_preset():
 def read_options_from_windows():
     
     global options 
+    keys = []  # To keep track of already selected keys
+
     joys, num_joy = joystick_lister()  # Get joystick list and count   
     active_joystick = app.joystick_id_combobox.get()
-    keys = []  # To keep track of already selected keys
+    active_clutch =  app.clutch_id_combobox.get()
 
     for i in range(num_joy):
         if joys[i] == active_joystick:
-            active_joystick_id = i    
+            active_joystick_id = i 
 
-    options['joy'] = active_joystick_id
+    for i in range(num_joy):
+        if joys[i] == active_clutch:
+            active_clutch_id = i
+       
+
+    options['joy_id'] = active_joystick_id
+    options['clutch_id'] = active_clutch_id
+
+    options['clutch'] = app.clutch_var.get()
+    
     upshift = app.upshift_key_entry.get()[:1].lower()
     if ord(upshift) >= 97 and ord(upshift) <= 122:
         keys.append(upshift)
@@ -268,20 +279,24 @@ def windows_updater():
     app.sixth_gear_value.config(text = options['sixth'])
     app.seventh_gear_value.config(text = options['seventh'])
     app.reverse_gear_value.config(text = options['reverse'])
+    
+       
+    app.clutch_axis_value = Label(app.gears_selection_frame, text = options['clutch_axis'])  
+    app.clutch_axis_value.grid(row = 3, column = 4, padx=(25,10))
 
     app.upshift_key_entry.delete(0, 4)  
-    app.upshift_key_entry.insert(0, char_convert(options['up_key']))
+    app.upshift_key_entry.insert(0, options['up_key'])
 
     app.downshift_key_entry.delete(0, 4)  
-    app.downshift_key_entry.insert(0, char_convert(options['down_key']))
+    app.downshift_key_entry.insert(0, options['down_key'])
 
     app.reverse_key_entry.delete(0, 4)  
-    app.reverse_key_entry.insert(0, char_convert(options['rev_key']))
+    app.reverse_key_entry.insert(0, options['rev_key'])
 
     app.neutral_key_entry.delete(0, 2) 
     app.neutral_key_entry.insert(0, options['neut_key'])
 
-    # Update checks in window
+    # Update checks in window 
     app.neutral_var = StringVar(value = options['neutral'])
     app.neutral_check = Checkbutton(app.options_selection_frame, text= "Detect Neutral",
                                 variable=app.neutral_var, onvalue="True", offvalue="False")
@@ -300,7 +315,7 @@ def windows_updater():
     app.rev_check.grid(row=0, column=1)
 
     
-    app.nascar = StringVar(value = options['nascar'])
+    app.nascar = StringVar(value = options['nascar_mode'])
     app.nascar_check = Checkbutton(app.options_selection_frame, text= "Nascar mode",
                                   variable=app.nascar, onvalue="True", offvalue="False")
     app.nascar_check.grid(row=1, column=1)
@@ -388,14 +403,23 @@ class GUI(Tk):
         self.frame.pack()
 
         # Joystick selection
-        self.joystick_frame = LabelFrame(self.frame, text = "Joystick id")
+        self.joystick_frame = LabelFrame(self.frame, text = "Joysticks selection")
         self.joystick_frame.grid(row = 0, column = 0, padx= 20, pady = 5)
-
+        
         # No joystick connected check
         try:
+            self.shifter_label = Label(self.joystick_frame, text = "Shifter")
+            self.shifter_label.grid(row = 0, column = 0)
             self.joystick_id_combobox = ttk.Combobox(self.joystick_frame, values = joys)
             self.joystick_id_combobox.current(options['joy_id'])
-            self.joystick_id_combobox.grid(row = 0, column = 0)
+            self.joystick_id_combobox.grid(row = 1, column = 0)
+            self.clutch_var = StringVar(value = options['clutch'])
+            self.clutch_check = Checkbutton(self.joystick_frame, text= "Clutch",
+                                            variable=self.clutch_var, onvalue="True", offvalue="False")
+            self.clutch_check.grid(row=0, column=1)
+            self.clutch_id_combobox = ttk.Combobox(self.joystick_frame, values = joys)
+            self.clutch_id_combobox.current(options['clutch_id'])
+            self.clutch_id_combobox.grid(row = 1, column = 1)
         except:
             error_label = Label(self.joystick_frame, text = "No devices connected.")
             error_label.grid(row = 0, column = 0)
@@ -410,14 +434,14 @@ class GUI(Tk):
         self.gears_selection_frame.grid(row = 1, column = 0)
 
         self.first_gear_button = Button(self.gears_selection_frame, text = "1", command = lambda: gears(1))
-        self.first_gear_button.grid(row = 2, column = 0)
+        self.first_gear_button.grid(row = 2, column = 0, padx=(10,0))
         self.first_gear_value = Label(self.gears_selection_frame, text = options['first'])
-        self.first_gear_value.grid(row = 3, column = 0)
+        self.first_gear_value.grid(row = 3, column = 0, padx=(10,0))
 
         self.second_gear_button = Button(self.gears_selection_frame, text = "2", command = lambda: gears(2))
-        self.second_gear_button.grid(row = 4, column = 0)
+        self.second_gear_button.grid(row = 4, column = 0, padx=(10,0))
         self.second_gear_value = Label(self.gears_selection_frame, text = options['second'])
-        self.second_gear_value.grid(row = 5, column = 0)
+        self.second_gear_value.grid(row = 5, column = 0, padx=(10,0))
 
         self.third_gear_button = Button(self.gears_selection_frame, text = "3", command = lambda: gears(3))
         self.third_gear_button.grid(row = 2, column = 1)
@@ -443,6 +467,13 @@ class GUI(Tk):
         self.seventh_gear_button.grid(row = 2, column = 3)
         self.seventh_gear_value = Label(self.gears_selection_frame, text = options['seventh'])
         self.seventh_gear_value.grid(row = 3, column = 3)
+
+        self.clutch_axis = Button(self.gears_selection_frame, text = "Clutch Axis", command = lambda: gears(10))
+        self.clutch_axis.grid(row = 2, column = 4, padx=(25,10))
+        self.clutch_axis_value = Label(self.gears_selection_frame, text = options['clutch_axis'])  
+        self.clutch_axis_value.grid(row = 3, column = 4, padx=(25,10))
+
+        
 
         self.reverse_gear_label = Button(self.gears_selection_frame, text = "R", command = lambda: gears(8))
         self.reverse_gear_label.grid(row = 4, column = 3)
