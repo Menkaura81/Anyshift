@@ -18,6 +18,7 @@ from CtypeKeyPressSimulator import PressKey, ReleaseKey  # Low level key presses
 import keyboard  # Normal key presses
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
 import os  # Path for sound files 
+import sys # Path for sound files
 import random  # Randomize sound files
 
 # Flag for avoiding first shifting bug when running nascar mode 
@@ -463,9 +464,20 @@ def KeyRelease_rev(options):
 
 
 def play_sound():
+
+    # Get path for .wavs location
+    
+    # determine if application is a script file or frozen exe
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+    elif __file__:
+        application_path = os.path.dirname(__file__)
+
+    #wav_path = os.path.join(application_path, config_name)
+
     number = random.randint(1,3)
-    audio_file = os.path.dirname(__file__) 
-    audio_file = audio_file + "/" + str(number) + ".wav"
+    #audio_file = os.path.dirname(__file__) 
+    audio_file = application_path + "/" + str(number) + ".wav"
     pygame.mixer.music.load(audio_file)
     pygame.mixer.music.play(loops=0)
     return
