@@ -41,6 +41,16 @@ def ini_reader():
     options['rev_key'] = config['KEYS']['reverse']
     options['presskey_timer'] = float(config['OPTIONS']['presskey timer'])
     options['releasekey_timer'] = float(config['OPTIONS']['releasekey timer'])
+    options['first_value'] = config['OPTIONS']['first gear value']
+    options['second_value'] = config['OPTIONS']['second gear value']
+    options['third_value'] = config['OPTIONS']['third gear value']
+    options['fourth_value'] = config['OPTIONS']['fourth gear value']
+    options['fifth_value'] = config['OPTIONS']['fifth gear value']
+    options['sixth_value'] = config['OPTIONS']['sixth gear value']
+    options['seventh_value'] = config['OPTIONS']['seventh gear value']
+    options['reverse_value'] = config['OPTIONS']['reverse gear value']
+    options['neutral_value'] = config['OPTIONS']['neutral value']
+
 
     return options
 
@@ -94,6 +104,16 @@ def ini_writer(options, upshift, downshift, rev_key):
                          'Base address': options['db_base_addr'],
                          '; Memory value offset from base addres ': None,
                          'Memory value offset': options['offset'],
+                         '; Values that the game uses for each gear': None,
+                         'neutral value': options['neutral_value'],
+                         'first gear value': options['first_value'],
+                         'second gear value': options['second_value'],
+                         'third gear value': options['third_value'],
+                         'fourth gear value': options['fourth_value'],
+                         'fifth gear value': options['fifth_value'],
+                         'sixth gear value': options['sixth_value'],
+                         'seventh gear value': options['seventh_value'],
+                         'reverse gear value': options['reverse_value'],
                          '; Delays for key presses and releases. Tinker with this if game doesnt detect key presses': None,
                          'presskey timer': options['presskey_timer'],
                          'releasekey timer': options['releasekey_timer'],

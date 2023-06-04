@@ -18,7 +18,7 @@ from tkinter import ttk  # GUI combobox
 import csv  # Load and write csv files
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
 from Gearbox import joystick_loop_keys, joystick_loop_mem
-from ShifterConfig import gear_selection, joystick_lister, get_axis
+from ShifterConfig import gear_selection, joystick_lister
 from ReadWriteSaves import ini_reader, ini_writer, hex_convert, char_convert
 
 # Read config from presets.csv
@@ -56,10 +56,20 @@ def load_preset():
     options['mem_mode'] = juegos[index]['memory write mode']
     options['process'] = juegos[index]['process name']    
     options['db_base_addr'] = juegos[index]['base address']    
-    options['offset'] = juegos[index]['offset']     
+    options['offset'] = juegos[index]['offset']
+    options['first_value'] = juegos[index]['first value']
+    options['second_value'] = juegos[index]['second value']
+    options['third_value'] = juegos[index]['third value']
+    options['fourth_value'] = juegos[index]['fourth value']
+    options['fifth_value'] = juegos[index]['fifth value']
+    options['sixth_value'] = juegos[index]['sixth value']
+    options['seventh_value'] = juegos[index]['seventh value']
+    options['reverse_value'] = juegos[index]['reverse value']
+    options['neutral_value'] = juegos[index]['neutral value']  
     
     # Update windows with read values
     windows_updater()
+
 
 # Save actual config displayed in windows into presets.csv
 def save_preset():
@@ -251,7 +261,16 @@ def read_options_from_windows():
     options['presskey_timer'] = presskey_timer
     releasekey_timer = app.release_key_entry.get()
     options['releasekey_timer'] = releasekey_timer
-          
+
+    options['first_value'] = app.first_gear_value_entry.get()
+    options['second_value'] = app.second_gear_value_entry.get()
+    options['third_value'] = app.third_gear_value_entry.get()
+    options['fourth_value'] = app.fourth_gear_value_entry.get()
+    options['fifth_value'] = app.fifth_gear_value_entry.get()
+    options['sixth_value'] = app.sixth_gear_value_entry.get()
+    options['seventh_value'] = app.seventh_gear_value_entry.get()
+    options['reverse_value'] = app.reverse_gear_value_entry.get()
+    options['neutral_value'] = app.neutral_gear_value_entry.get()
 
 # Write ini file to remember current options
 def write_ini():
@@ -301,57 +320,71 @@ def windows_updater():
     app.neutral_check = Checkbutton(app.options_selection_frame, text= "Detect Neutral",
                                 variable=app.neutral_var, onvalue="True", offvalue="False")
     app.neutral_check.grid(row=0, column=0)
-
     
     app.seven_var = StringVar(value = options['seven_gears'])
     app.seven_check = Checkbutton(app.options_selection_frame, text= "Use seventh gear",
                                   variable=app.seven_var, onvalue="True", offvalue="False")
     app.seven_check.grid(row=1, column=0)
-
     
     app.rev_bool = StringVar(value = options['rev_button'])
     app.rev_check = Checkbutton(app.options_selection_frame, text= "Reverse is a button",
                                   variable=app.rev_bool, onvalue="True", offvalue="False")
     app.rev_check.grid(row=0, column=1)
-
     
     app.nascar = StringVar(value = options['nascar_mode'])
     app.nascar_check = Checkbutton(app.options_selection_frame, text= "Nascar mode",
                                   variable=app.nascar, onvalue="True", offvalue="False")
     app.nascar_check.grid(row=1, column=1)
-
     
     app.mem_var = StringVar(value = options['mem_mode'])
-    app.mem_check = Checkbutton(app.memory_selection_frame, text= "Memory mode",
+    app.mem_check = Checkbutton(app.memory_selection_frame, text= "Active",
                                   variable=app.mem_var, onvalue="True", offvalue="False")                                  
     app.mem_check.grid(row=0, column=0)
 
+    # Update entries
     app.press_key_entry.delete(0, 5)
     app.press_key_entry.insert(0, options['presskey_timer'])
-
     app.release_key_entry.delete(0, 5)
     app.release_key_entry.insert(0, options['releasekey_timer'])
-
-    app.process_key_entry.delete(0, 12)
+    app.process_key_entry.delete(0, 30)
     app.process_key_entry.insert(0, options['process'])
-
     app.dosbase_key_entry.delete(0, 12)
     app.dosbase_key_entry.insert(0, options['db_base_addr'])
-
     app.offset_key_entry.delete(0, 12)
     app.offset_key_entry.insert(0, options['offset'])
+
+    # Update gear values
+    app.first_gear_value_entry.delete(0, 12)
+    app.first_gear_value_entry.insert(0, options['first_value'])
+    app.second_gear_value_entry.delete(0, 12)
+    app.second_gear_value_entry.insert(0, options['second_value'])
+    app.third_gear_value_entry.delete(0, 12)
+    app.third_gear_value_entry.insert(0, options['third_value'])
+    app.fourth_gear_value_entry.delete(0, 12)
+    app.fourth_gear_value_entry.insert(0, options['fourth_value']) 
+    app.fifth_gear_value_entry.delete(0, 12)
+    app.fifth_gear_value_entry.insert(0, options['fifth_value'])
+    app.sixth_gear_value_entry.delete(0, 12)
+    app.sixth_gear_value_entry.insert(0, options['sixth_value'])
+    app.seventh_gear_value_entry.delete(0, 12)
+    app.seventh_gear_value_entry.insert(0, options['seventh_value'])
+    app.reverse_gear_value_entry.delete(0, 12)
+    app.reverse_gear_value_entry.insert(0, options['reverse_value'])
+    app.neutral_gear_value_entry.delete(0, 12)
+    app.neutral_gear_value_entry.insert(0, options['neutral_value'])
+
 
 # Get active joystick of combobox anc calls gear selection to select button for the desired gear
 def gears(gear):
 
     global options
-    joys, num_joy = joystick_lister()  # Get joystick list and count
-    active_joystick = app.joystick_id_combobox.get()
-    for i in range(num_joy):
-        if joys[i] == active_joystick:
-            active_joystick_id = i
+    read_options_from_windows()
+    gear_selection(options, gear)
     
-    gear_selection(options, gear, active_joystick_id)
+    # Show characters no hex code as we came from read options from windows not read ini
+    options['up_key'] = char_convert(options['up_key'])
+    options['down_key'] = char_convert(options['down_key'])
+    options['rev_key'] = char_convert(options['rev_key'])    
     windows_updater()
 
 
@@ -404,13 +437,13 @@ class GUI(Tk):
 
         # Joystick selection
         self.joystick_frame = LabelFrame(self.frame, text = "Joysticks selection")
-        self.joystick_frame.grid(row = 0, column = 0, padx= 20, pady = 5)
+        self.joystick_frame.grid(row = 0, column = 0, padx= 10, pady = 5)
         
         # No joystick connected check
         try:
-            self.shifter_label = Label(self.joystick_frame, text = "Shifter")
-            self.shifter_label.grid(row = 0, column = 0)
-            self.joystick_id_combobox = ttk.Combobox(self.joystick_frame, values = joys)
+            self.shifter_label = Label(self.joystick_frame, text="Shifter")
+            self.shifter_label.grid(row=0, column=0)
+            self.joystick_id_combobox = ttk.Combobox(self.joystick_frame, values=joys)
             self.joystick_id_combobox.current(options['joy_id'])
             self.joystick_id_combobox.grid(row = 1, column = 0)
             self.clutch_var = StringVar(value = options['clutch'])
@@ -471,9 +504,7 @@ class GUI(Tk):
         self.clutch_axis = Button(self.gears_selection_frame, text = "Clutch Axis", command = lambda: gears(10))
         self.clutch_axis.grid(row = 2, column = 4, padx=(25,10))
         self.clutch_axis_value = Label(self.gears_selection_frame, text = options['clutch_axis'])  
-        self.clutch_axis_value.grid(row = 3, column = 4, padx=(25,10))
-
-        
+        self.clutch_axis_value.grid(row = 3, column = 4, padx=(25,10))        
 
         self.reverse_gear_label = Button(self.gears_selection_frame, text = "R", command = lambda: gears(8))
         self.reverse_gear_label.grid(row = 4, column = 3)
@@ -509,6 +540,20 @@ class GUI(Tk):
         self.reverse_key_entry.insert(0, options['rev_key'])
         self.reverse_key_entry.grid(row = 1, column = 3)
 
+        # Timers
+
+        self.press_key_label = Label(self.keys_selection_frame, text = "Press key delay")
+        self.press_key_label.grid(row = 2, column = 0)
+        self.press_key_entry = Entry(self.keys_selection_frame, width= 4)
+        self.press_key_entry.insert(0, options['presskey_timer'])
+        self.press_key_entry.grid(row = 2, column = 1)
+
+        self.release_key_label = Label(self.keys_selection_frame, text = "Release key delay")
+        self.release_key_label.grid(row = 2, column = 2)
+        self.release_key_entry = Entry(self.keys_selection_frame, width= 4)
+        self.release_key_entry.insert(0, options['releasekey_timer'])
+        self.release_key_entry.grid(row = 2, column = 3, padx=(0,6))
+
         for widget in self.keys_selection_frame.winfo_children():
             widget.grid_configure(pady = 5)
 
@@ -538,12 +583,11 @@ class GUI(Tk):
         self.nascar_check.grid(row=1, column=1)
 
         # Mem mode
-
-        self.memory_selection_frame = LabelFrame(self.frame)
+        self.memory_selection_frame = LabelFrame(self.frame, text = "Memory mode")
         self.memory_selection_frame.grid(row = 4, column = 0, padx = 20, pady = 5)
 
         self.mem_var = StringVar(value = options['mem_mode'])
-        self.mem_check = Checkbutton(self.memory_selection_frame, text= "Memory mode",
+        self.mem_check = Checkbutton(self.memory_selection_frame, text= "Active",
                                         variable=self.mem_var, onvalue="True", offvalue="False")                                  
         self.mem_check.grid(row=0, column=0)
 
@@ -551,33 +595,78 @@ class GUI(Tk):
         self.process_label.grid(row = 1, column = 0)
         self.process_key_entry = Entry(self.memory_selection_frame, width= 12)
         self.process_key_entry.insert(0, options['process'])
-        self.process_key_entry.grid(row = 1, column = 1)
+        self.process_key_entry.grid(row = 1, column = 1, padx=(0,10))
 
         self.dosbase_key_label = Label(self.memory_selection_frame, text = "Base address")
         self.dosbase_key_label.grid(row = 2, column = 0)
         self.dosbase_key_entry = Entry(self.memory_selection_frame, width= 12)
         self.dosbase_key_entry.insert(0, options['db_base_addr'])
-        self.dosbase_key_entry.grid(row = 2, column = 1)
+        self.dosbase_key_entry.grid(row = 2, column = 1, padx=(0,10))
 
         self.offset_key_label = Label(self.memory_selection_frame, text = "Memory address offset")
         self.offset_key_label.grid(row = 3, column = 0)
         self.offset_key_entry = Entry(self.memory_selection_frame, width= 12)
         self.offset_key_entry.insert(0, options['offset'])
-        self.offset_key_entry.grid(row = 3, column = 1)
+        self.offset_key_entry.grid(row = 3, column = 1, padx=(0,10))
 
-        # Timers
+        # Gear values
+        self.process_label = Label(self.memory_selection_frame, text = "Gear values ingame:")
+        self.process_label.grid(row = 0, column =2, columnspan=8)
 
-        self.press_key_label = Label(self.memory_selection_frame, text = "Press key delay")
-        self.press_key_label.grid(row = 2, column = 2)
-        self.press_key_entry = Entry(self.memory_selection_frame, width= 4)
-        self.press_key_entry.insert(0, options['presskey_timer'])
-        self.press_key_entry.grid(row = 2, column = 3)
+        self.first_gear_value_label = Label(self.memory_selection_frame, text = "1:")
+        self.first_gear_value_label.grid(row = 1, column = 3)
+        self.first_gear_value_entry = Entry(self.memory_selection_frame, width= 2)        
+        self.first_gear_value_entry.grid(row = 1, column = 4)
+        self.first_gear_value_entry.insert(0, options['first_value'])
 
-        self.release_key_label = Label(self.memory_selection_frame, text = "Release key delay")
-        self.release_key_label.grid(row = 3, column = 2)
-        self.release_key_entry = Entry(self.memory_selection_frame, width= 4)
-        self.release_key_entry.insert(0, options['releasekey_timer'])
-        self.release_key_entry.grid(row = 3, column = 3)
+        self.third_gear_value_label = Label(self.memory_selection_frame, text = "3:")
+        self.third_gear_value_label.grid(row = 1, column = 5)
+        self.third_gear_value_entry = Entry(self.memory_selection_frame, width= 2)        
+        self.third_gear_value_entry.grid(row = 1, column = 6)
+        self.third_gear_value_entry.insert(0, options['third_value'])
+
+        self.fifth_gear_value_label = Label(self.memory_selection_frame, text = "5:")
+        self.fifth_gear_value_label.grid(row = 1, column = 7)
+        self.fifth_gear_value_entry = Entry(self.memory_selection_frame, width= 2)        
+        self.fifth_gear_value_entry.grid(row = 1, column = 8)
+        self.fifth_gear_value_entry.insert(0, options['fifth_value'])
+
+        self.seventh_gear_value_label = Label(self.memory_selection_frame, text = "7:")
+        self.seventh_gear_value_label.grid(row = 1, column = 9)
+        self.seventh_gear_value_entry = Entry(self.memory_selection_frame, width= 2)        
+        self.seventh_gear_value_entry.grid(row = 1, column = 10, padx=(0,8))
+        self.seventh_gear_value_entry.insert(0, options['seventh_value'])
+
+        self.neutral_gear_value_label = Label(self.memory_selection_frame, text = "N:")
+        self.neutral_gear_value_label.grid(row = 2, column = 6)
+        self.neutral_gear_value_entry = Entry(self.memory_selection_frame, width= 2)        
+        self.neutral_gear_value_entry.grid(row = 2, column = 7)
+        self.neutral_gear_value_entry.insert(0, options['neutral_value'])        
+
+        self.second_gear_value_label = Label(self.memory_selection_frame, text = "2:")
+        self.second_gear_value_label.grid(row = 3, column = 3)
+        self.second_gear_value_entry = Entry(self.memory_selection_frame, width= 2)        
+        self.second_gear_value_entry.grid(row = 3, column = 4)
+        self.second_gear_value_entry.insert(0, options['second_value'])
+
+        self.fourth_gear_value_label = Label(self.memory_selection_frame, text = "4:")
+        self.fourth_gear_value_label.grid(row = 3, column = 5)
+        self.fourth_gear_value_entry = Entry(self.memory_selection_frame, width= 2)        
+        self.fourth_gear_value_entry.grid(row = 3, column = 6)
+        self.fourth_gear_value_entry.insert(0, options['fourth_value'])
+
+        self.sixth_gear_value_label = Label(self.memory_selection_frame, text = "6:")
+        self.sixth_gear_value_label.grid(row = 3, column = 7)
+        self.sixth_gear_value_entry = Entry(self.memory_selection_frame, width= 2)        
+        self.sixth_gear_value_entry.grid(row = 3, column = 8)
+        self.sixth_gear_value_entry.insert(0, options['sixth_value'])
+
+        self.reverse_gear_value_label = Label(self.memory_selection_frame, text = "R:")
+        self.reverse_gear_value_label.grid(row = 3, column = 9)
+        self.reverse_gear_value_entry = Entry(self.memory_selection_frame, width= 2)        
+        self.reverse_gear_value_entry.grid(row = 3, column = 10, padx=(0,8))
+        self.reverse_gear_value_entry.insert(0, options['reverse_value'])       
+        
 
         # Profiles
         profiles_selection_frame = LabelFrame(self.frame, text = "Profiles")
@@ -605,11 +694,11 @@ class GUI(Tk):
 
         # Save data button
         self.save_data_button = Button(self.frame, text="Remember current options", command= write_ini)
-        self.save_data_button.grid(row=8, column=0, sticky="news", padx=20, pady = 5)
+        self.save_data_button.grid(row=8, column=0, sticky="news", padx=10, pady = 5)
 
         # Run Button
         self.run_button = Button(self.frame, text="Run Anyshift", command= run_any)
-        self.run_button.grid(row=9, column=0, sticky="news", padx=20, pady = 5)
+        self.run_button.grid(row=9, column=0, sticky="news", padx=10, pady = 5)
 
     
 if __name__ == "__main__":    

@@ -1,11 +1,12 @@
-id,name,upshift,downshift,reverse,neutral key,seven gears,neutral detection,reverse is button,nascar racing mode,memory write mode,process name,base address,offset,presskey timer,releasekey timer,
-0,Gran Turismo 4 pcsx2,s,z,c,n,True,False,True,False,False,-,0,0,0.05,0.3,
-1,Gran Turismo 4 pcsx2 mem mode,s,z,c,n,True,False,True,False,True,pcsx2.exe,0x21C0F11C,0,0.05,0.3,
-2,Enthusia pcsx2,s,z,c,n,True,False,False,False,False,-,0,0,0.05,0.3,
-3,Gran Turismo duckstation,s,z,c,n,False,False,True,False,False,-,0,0,0.05,0.2,
-4,Nascar Racing dosbox,s,z,c,n,False,False,True,True,False,-,0,0,0.05,0.2,
-5,Nascar Racing 2 dosbox,a,z,c,n,False,False,True,True,False,-,0,0,0.05,0.2,
-6,Indycar Racing dosbox,s,z,t,n,False,False,True,True,False,-,0,0,0.05,0.2,
-7,Grand Prix 2 dosbox mem mode,s,z,c,n,True,True,False,False,True,DOSBox.exe,0x01D3A1A0,0x291BF0,0.05,0.2,
-8,Colin McRae Rally pc,s,z,c,n,False,True,False,False,False,-,0,0,0.05,0.2,
-9,Indanapolis 500 model2 emu,s,z,c,n,False,False,False,False,False,-,0,0,0.05,0.2,
+id,name,upshift,downshift,reverse,neutral key,seven gears,neutral detection,reverse is button,nascar racing mode,memory write mode,process name,base address,offset,presskey timer,releasekey timer,neutral value,first value,second value,third value,fourth value,fifth value,sixth value,seventh value,reverse value,
+0,Gran Turismo 4 pcsx2,s,z,c,n,True,False,True,False,False,-,0,0,0.05,0.3,-,1,2,3,4,5,6,7,-
+1,Gran Turismo 4 pcsx2 mem mode,s,z,c,n,True,False,True,False,True,pcsx2.exe,0x21C0F11C,0,0.05,0.3,-,1,2,3,4,5,6,7,-,
+2,Enthusia pcsx2,s,z,c,n,True,False,False,False,False,-,0,0,0.05,0.3,0,1,2,3,4,5,6,7,-1
+3,Gran Turismo duckstation,s,z,c,n,False,False,True,False,False,-,0,0,0.05,0.2,-,1,2,3,4,5,6,7,-
+4,Nascar Racing dosbox,s,z,c,n,False,False,True,True,False,-,0,0,0.05,0.2,-,0,1,2,3,-,-,-,-
+5,Nascar Racing 2 dosbox,a,z,c,n,False,False,True,True,False,-,0,0,0.05,0.2,-,0,1,2,3,-,-,-,-
+6,Indycar Racing dosbox,s,z,t,n,False,False,True,True,False,-,0,0,0.05,0.2,-,0,1,2,3,4,5,6,-
+7,Grand Prix 2 dosbox mem mode,s,z,c,n,True,True,False,False,True,DOSBox.exe,0x01D3A1A0,0x291BF0,0.05,0.2,0,1,2,3,4,5,6,7,-1,
+8,Colin McRae Rally pc,s,z,c,n,False,True,False,False,False,-,0,0,0.05,0.2,0,1,2,3,4,5,6,7,-1
+9,Indanapolis 500 model2 emu,s,z,c,n,False,False,False,False,False,-,0,0,0.05,0.2,-,1,2,3,4,5,6,-,-
+10,Richard Burns Rally,s,z,c,n,False,True,False,False,True,RichardBurnsRally_SSE.exe,0x008EF660,0x1100,0.05,0.3,1,2,3,4,5,6,7,8,0

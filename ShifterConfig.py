@@ -30,33 +30,33 @@ def joystick_lister():
 
 
 # Function to choose wich gear config
-def gear_selection(options, gear, active_joystick_id):
+def gear_selection(options, gear):
 
     if gear == 1:
-        select_first(options, active_joystick_id)
+        select_first(options)
     elif gear == 2:
-        select_second(options, active_joystick_id)
+        select_second(options)
     elif gear == 3:
-        select_third(options, active_joystick_id)
+        select_third(options)
     elif gear == 4:
-        select_fourth(options, active_joystick_id)
+        select_fourth(options)
     elif gear == 5:
-        select_fifth(options, active_joystick_id)
+        select_fifth(options)
     elif gear == 6:
-        select_sixth(options, active_joystick_id)
+        select_sixth(options)
     elif gear == 7:
-        select_seventh(options, active_joystick_id)
+        select_seventh(options)
     elif gear == 8:
-        select_reverse(options, active_joystick_id)
+        select_reverse(options)
     elif gear == 10:  # clutch axis
         get_axis(options)
 
  
-def select_first(options, active_joystick_id):
+def select_first(options):
 
     pygame.init()
     try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
@@ -75,11 +75,11 @@ def select_first(options, active_joystick_id):
     return options
 
 
-def select_second(options, active_joystick_id):
+def select_second(options):
 
     pygame.init()
     try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
@@ -98,11 +98,11 @@ def select_second(options, active_joystick_id):
     return options
 
 
-def select_third(options, active_joystick_id):
+def select_third(options):
     
     pygame.init()
     try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
@@ -121,11 +121,11 @@ def select_third(options, active_joystick_id):
     return options
 
 
-def select_fourth(options, active_joystick_id):
+def select_fourth(options):
     
     pygame.init()
     try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
@@ -144,11 +144,11 @@ def select_fourth(options, active_joystick_id):
     return options
 
 
-def select_fifth(options, active_joystick_id):
+def select_fifth(options):
     
     pygame.init()
     try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
@@ -167,11 +167,11 @@ def select_fifth(options, active_joystick_id):
     return options
 
 
-def select_sixth(options, active_joystick_id):
+def select_sixth(options):
     
     pygame.init()
     try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
@@ -190,11 +190,11 @@ def select_sixth(options, active_joystick_id):
     return options
     
 
-def select_seventh(options, active_joystick_id):
+def select_seventh(options):
     
     pygame.init()
     try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
@@ -213,11 +213,11 @@ def select_seventh(options, active_joystick_id):
     return options
 
 
-def select_reverse(options, active_joystick_id):
+def select_reverse(options):
     
     pygame.init()
     try:
-        shifter = pygame.joystick.Joystick(active_joystick_id)
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
         shifter.init()
         num_buttons = shifter.get_numbuttons()
     except:
