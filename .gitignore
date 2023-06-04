@@ -1,6 +1,7 @@
 # Ignore folders
 /build
 /dist
+/__pycache__
 
 # Ignore files
 

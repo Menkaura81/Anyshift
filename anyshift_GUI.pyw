@@ -154,6 +154,15 @@ def save_preset():
     preset.append(app.offset_key_entry.get())
     preset.append(app.press_key_entry.get())
     preset.append(app.release_key_entry.get())
+    preset.append(app.neutral_gear_value_entry.get())
+    preset.append(app.first_gear_value_entry.get())
+    preset.append(app.second_gear_value_entry.get())
+    preset.append(app.third_gear_value_entry.get())
+    preset.append(app.fourth_gear_value_entry.get())
+    preset.append(app.fifth_gear_value_entry.get())
+    preset.append(app.sixth_gear_value_entry.get())
+    preset.append(app.seventh_gear_value_entry.get())
+    preset.append(app.reverse_gear_value_entry.get())
 
     with open('presets.csv', 'a') as file: 
         # Pass this file object to csv.writer()
