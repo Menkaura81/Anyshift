@@ -39,7 +39,7 @@ def joystick_loop_mem(options):
         clutch = pygame.joystick.Joystick(int(options['clutch_id']))
         clutch.init()
     clutch_pressed = False
-    clutch_value = ((-2 * options['bitepoint']) / 100 + 1)
+    clutch_value = ((-2 * int(options['bitepoint'])) / 100 + 1)
         
     # Open DosBox process and check for process opened
     rwm = ReadWriteMemory()
@@ -218,7 +218,7 @@ def joystick_loop_keys(options):
         clutch = pygame.joystick.Joystick(int(options['clutch_id']))
         clutch.init()
     clutch_pressed = False
-    clutch_value = ((-2 * options['bitepoint']) / 100 + 1)
+    clutch_value = ((-2 * int(options['bitepoint'])) / 100 + 1)
         
     gear_selected = 0 
     actual_gear = 0
