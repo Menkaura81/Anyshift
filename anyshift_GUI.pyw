@@ -524,7 +524,7 @@ class GUI(Tk):
 
         self.bitepoint_label = Label(self.gears_selection_frame, text = "        Bitepoint:")
         self.bitepoint_label.grid(row = 4, column = 4)
-        self.bitepoint_entry = Entry(self.gears_selection_frame, width= 2)
+        self.bitepoint_entry = Entry(self.gears_selection_frame, width= 3)
         self.bitepoint_entry.insert(0, options['bitepoint'])
         self.bitepoint_entry.grid(row = 4, column = 5)
         self.bitepoint2_label = Label(self.gears_selection_frame, text = "%")
