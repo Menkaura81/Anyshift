@@ -39,6 +39,7 @@ def joystick_loop_mem(options):
         clutch = pygame.joystick.Joystick(int(options['clutch_id']))
         clutch.init()
     clutch_pressed = False
+    clutch_value = ((-2 * options['bitepoint']) / 100 + 1)
         
     # Open DosBox process and check for process opened
     rwm = ReadWriteMemory()
@@ -122,7 +123,7 @@ def joystick_loop_mem(options):
                 if event.type == pygame.QUIT:
                     done = True  # Flag that we are done so we exit this loop.
                 
-                if clutch.get_axis(int(options['clutch_axis'])) > ((options['bitepoint']/100) * -1):  # First we check if clutch if pressed or not
+                if clutch.get_axis(int(options['clutch_axis'])) > clutch_value:  # First we check if clutch if pressed or not
                     clutch_pressed = True
                 else:
                     clutch_pressed = False    
@@ -217,6 +218,7 @@ def joystick_loop_keys(options):
         clutch = pygame.joystick.Joystick(int(options['clutch_id']))
         clutch.init()
     clutch_pressed = False
+    clutch_value = ((-2 * options['bitepoint']) / 100 + 1)
         
     gear_selected = 0 
     actual_gear = 0
@@ -282,7 +284,7 @@ def joystick_loop_keys(options):
                 if event.type == pygame.QUIT:
                     done = True  # Flag that we are done so we exit this loop.
                 
-                if clutch.get_axis(int(options['clutch_axis'])) > ((options['bitepoint']/100) * -1):  # First we check if clutch if pressed or not
+                if clutch.get_axis(int(options['clutch_axis'])) > clutch_value:  # First we check if clutch if pressed or not
                     clutch_pressed = True
                 else:
                     clutch_pressed = False
