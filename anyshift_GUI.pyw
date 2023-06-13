@@ -281,6 +281,8 @@ def read_options_from_windows():
     options['reverse_value'] = app.reverse_gear_value_entry.get()
     options['neutral_value'] = app.neutral_gear_value_entry.get()
 
+    options['bitepoint'] = app.bitepoint_entry.get()[:2]
+
 # Write ini file to remember current options
 def write_ini():
     
@@ -511,14 +513,23 @@ class GUI(Tk):
         self.seventh_gear_value.grid(row = 3, column = 3)
 
         self.clutch_axis = Button(self.gears_selection_frame, text = "Clutch Axis", command = lambda: gears(10))
-        self.clutch_axis.grid(row = 2, column = 4, padx=(25,10))
+        self.clutch_axis.grid(row = 2, column = 4, padx=(25,0))
         self.clutch_axis_value = Label(self.gears_selection_frame, text = options['clutch_axis'])  
-        self.clutch_axis_value.grid(row = 3, column = 4, padx=(25,10))        
+        self.clutch_axis_value.grid(row = 3, column = 4, padx=(25,0))        
 
         self.reverse_gear_label = Button(self.gears_selection_frame, text = "R", command = lambda: gears(8))
         self.reverse_gear_label.grid(row = 4, column = 3)
         self.reverse_gear_value = Label(self.gears_selection_frame, text = options['reverse'])
         self.reverse_gear_value.grid(row = 5, column = 3)
+
+        self.bitepoint_label = Label(self.gears_selection_frame, text = "        Bitepoint:")
+        self.bitepoint_label.grid(row = 4, column = 4)
+        self.bitepoint_entry = Entry(self.gears_selection_frame, width= 2)
+        self.bitepoint_entry.insert(0, options['bitepoint'])
+        self.bitepoint_entry.grid(row = 4, column = 5)
+        self.bitepoint2_label = Label(self.gears_selection_frame, text = "%")
+        self.bitepoint2_label.grid(row = 4, column = 6, padx=(0,5))
+
 
         # Keys selection
 

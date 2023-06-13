@@ -50,6 +50,7 @@ def ini_reader():
     options['seventh_value'] = config['OPTIONS']['seventh gear value']
     options['reverse_value'] = config['OPTIONS']['reverse gear value']
     options['neutral_value'] = config['OPTIONS']['neutral value']
+    options['bitepoint'] = int(config['OPTIONS']['clutch bitepoint'])
 
 
     return options
@@ -90,6 +91,8 @@ def ini_writer(options, upshift, downshift, rev_key):
                          'neutral detection': options['neutral'],
                          '; True if clutch is needed to change gears': None,
                          'require clutch': options['clutch'],
+                         '; Percent of the clutch that needs to be pressed to allow gear change': None,
+                         'clutch bitepoint': options['bitepoint'],
                          '; True if the game uses a separated button for reverse. Gran Turismo or Nascar Racing for example': None,
                          'reverse is button': options['rev_button'],
                          '; Unique mode for old papyrus games where the game remember the gear you were in when you changed to': None,

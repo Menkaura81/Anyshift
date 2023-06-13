@@ -192,6 +192,7 @@ def joystick_loop_mem(options):
                         
             # Select neutral if this key is pressed
             if keyboard.is_pressed(options['neut_key']):
+                process.write(address, int(options['neutral_value']))
                 gear_selected = 0
                 print(f"Gear in joystick: {gear_selected}   ",  end="\r")
 
