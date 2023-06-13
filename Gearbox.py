@@ -164,7 +164,7 @@ def joystick_loop_mem(options):
                             gear_selected = 7
                             sound = False
                         else:
-                            sound = False                            
+                            sound = False  ## CLARO CUANDO SEVEN GEARS ES TRUE ENTRA AQUI Y SI NO SE CAMBIA SONIDO FALSO ENTONCES NO SUENA CUALQUIER CAMBIO ANTERIOR                            
                     elif shifter.get_button(options['reverse']) == True and clutch_pressed == True:
                         if options['rev_button'] == 'False':
                             process.write(address, int(options['reverse_value']))
@@ -465,8 +465,7 @@ def KeyRelease_rev(options):
 
 def play_sound():
 
-    # Get path for .wavs location
-    
+    # Get path for .wavs location    
     # determine if application is a script file or frozen exe
     if getattr(sys, 'frozen', False):
         application_path = os.path.dirname(sys.executable)

@@ -461,7 +461,7 @@ class GUI(Tk):
             self.clutch_check.grid(row=0, column=1)
             self.clutch_id_combobox = ttk.Combobox(self.joystick_frame, values = joys)
             self.clutch_id_combobox.current(options['clutch_id'])
-            self.clutch_id_combobox.grid(row = 1, column = 1)
+            self.clutch_id_combobox.grid(row = 1, column = 1, padx=(0,1))
         except:
             error_label = Label(self.joystick_frame, text = "No devices connected.")
             error_label.grid(row = 0, column = 0)
