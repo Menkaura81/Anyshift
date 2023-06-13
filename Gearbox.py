@@ -122,7 +122,7 @@ def joystick_loop_mem(options):
                 if event.type == pygame.QUIT:
                     done = True  # Flag that we are done so we exit this loop.
                 
-                if clutch.get_axis(int(options['clutch_axis'])) > -0.75:  # First we check if clutch if pressed or not
+                if clutch.get_axis(int(options['clutch_axis'])) > ((options['bitepoint']/100) * -1):  # First we check if clutch if pressed or not
                     clutch_pressed = True
                 else:
                     clutch_pressed = False    
@@ -282,7 +282,7 @@ def joystick_loop_keys(options):
                 if event.type == pygame.QUIT:
                     done = True  # Flag that we are done so we exit this loop.
                 
-                if clutch.get_axis(int(options['clutch_axis'])) > -0.75:  # First we check if clutch if pressed or not
+                if clutch.get_axis(int(options['clutch_axis'])) > ((options['bitepoint']/100) * -1):  # First we check if clutch if pressed or not
                     clutch_pressed = True
                 else:
                     clutch_pressed = False
