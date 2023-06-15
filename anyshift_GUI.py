@@ -84,95 +84,99 @@ def save_preset():
             counter += 1
             
     id = counter
-    name = app.save_name_entry.get()
     preset.append(id)
-    preset.append(name)
 
-    upshift = app.upshift_key_entry.get()[:1].lower()
-    if ord(upshift) >= 97 and ord(upshift) <= 122:
-        preset.append(upshift)
-        keys.append(upshift)
-    else:
-        error_window = Toplevel(app)        
-        error_window.title("Error")
-        error_window.config(width=200, height=50)
-        error_frame = Frame(error_window)
-        error_frame.pack()
-        error_label = Label(error_frame, text = "Upshift key error. Only one char (a to z)")
-        error_label.grid(row = 0, column = 0)
-        return
-    
-    downshift = app.downshift_key_entry.get()[:1].lower()
-    if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
-        preset.append(downshift)
-        keys.append(downshift)
-    else:
-        error_window = Toplevel(app)        
-        error_window.title("Error")
-        error_window.config(width=200, height=50)
-        error_frame = Frame(error_window)
-        error_frame.pack()
-        error_label = Label(error_frame, text = "Downshift key error. Repeated or not a to z char")
-        error_label.grid(row = 0, column = 0)
-        return
-    
-    reverse = app.reverse_key_entry.get()[:1].lower() 
-    if ord(reverse) >= 97 and ord(reverse) <= 122 and reverse not in keys:
-        preset.append(reverse)
-        keys.append(reverse)
-    else:
-        error_window = Toplevel(app)        
-        error_window.title("Error")
-        error_window.config(width=200, height=50)
-        error_frame = Frame(error_window)
-        error_frame.pack()
-        error_label = Label(error_frame, text = "Reverse key error. Repeated or not a to z char")
-        error_label.grid(row = 0, column = 0) 
-        return
-    
-    neutral = app.neutral_key_entry.get()[:1].lower()
-    if ord(neutral) >= 97 and ord(neutral) <= 122 and neutral not in keys:
-        preset.append(neutral)
-        keys.append(neutral)
-    else:
-        error_window = Toplevel(app)        
-        error_window.title("Error")
-        error_window.config(width=200, height=50)
-        error_frame = Frame(error_window)
-        error_frame.pack()
-        error_label = Label(error_frame, text = "Neutral key error. Only one char (a to z)")
-        error_label.grid(row = 0, column = 0) 
-        return
-    
-    preset.append(app.seven_var.get())
-    preset.append(app.neutral_var.get())
-    preset.append(app.rev_bool.get())
-    preset.append(app.nascar.get())
-    preset.append(app.mem_var.get())
-    preset.append(app.process_key_entry.get())
-    preset.append(app.dosbase_key_entry.get())
-    preset.append(app.offset_key_entry.get())
-    preset.append(app.press_key_entry.get())
-    preset.append(app.release_key_entry.get())
-    preset.append(app.neutral_gear_value_entry.get())
-    preset.append(app.first_gear_value_entry.get())
-    preset.append(app.second_gear_value_entry.get())
-    preset.append(app.third_gear_value_entry.get())
-    preset.append(app.fourth_gear_value_entry.get())
-    preset.append(app.fifth_gear_value_entry.get())
-    preset.append(app.sixth_gear_value_entry.get())
-    preset.append(app.seventh_gear_value_entry.get())
-    preset.append(app.reverse_gear_value_entry.get())
+    name = app.save_name_entry.get()
+    if name:  # Check if we have a name to save the preset
+        preset.append(name)
 
-    with open('presets.csv', 'a') as file: 
-        # Pass this file object to csv.writer()
-        # and get a writer object
-        writer = csv.writer(file) 
-        # Pass the list as an argument into
-        # the writerow()
-        writer.writerow(preset) 
-        # Close the file object
-        file.close()
+        upshift = app.upshift_key_entry.get()[:1].lower()
+        if ord(upshift) >= 97 and ord(upshift) <= 122:
+            preset.append(upshift)
+            keys.append(upshift)
+        else:
+            error_window = Toplevel(app)        
+            error_window.title("Error")
+            error_window.config(width=200, height=50)
+            error_frame = Frame(error_window)
+            error_frame.pack()
+            error_label = Label(error_frame, text = "Upshift key error. Only one char (a to z)")
+            error_label.grid(row = 0, column = 0)
+            return
+        
+        downshift = app.downshift_key_entry.get()[:1].lower()
+        if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
+            preset.append(downshift)
+            keys.append(downshift)
+        else:
+            error_window = Toplevel(app)        
+            error_window.title("Error")
+            error_window.config(width=200, height=50)
+            error_frame = Frame(error_window)
+            error_frame.pack()
+            error_label = Label(error_frame, text = "Downshift key error. Repeated or not a to z char")
+            error_label.grid(row = 0, column = 0)
+            return
+        
+        reverse = app.reverse_key_entry.get()[:1].lower() 
+        if ord(reverse) >= 97 and ord(reverse) <= 122 and reverse not in keys:
+            preset.append(reverse)
+            keys.append(reverse)
+        else:
+            error_window = Toplevel(app)        
+            error_window.title("Error")
+            error_window.config(width=200, height=50)
+            error_frame = Frame(error_window)
+            error_frame.pack()
+            error_label = Label(error_frame, text = "Reverse key error. Repeated or not a to z char")
+            error_label.grid(row = 0, column = 0) 
+            return
+        
+        neutral = app.neutral_key_entry.get()[:1].lower()
+        if ord(neutral) >= 97 and ord(neutral) <= 122 and neutral not in keys:
+            preset.append(neutral)
+            keys.append(neutral)
+        else:
+            error_window = Toplevel(app)        
+            error_window.title("Error")
+            error_window.config(width=200, height=50)
+            error_frame = Frame(error_window)
+            error_frame.pack()
+            error_label = Label(error_frame, text = "Neutral key error. Only one char (a to z)")
+            error_label.grid(row = 0, column = 0) 
+            return
+        
+        preset.append(app.seven_var.get())
+        preset.append(app.neutral_var.get())
+        preset.append(app.rev_bool.get())
+        preset.append(app.nascar.get())
+        preset.append(app.mem_var.get())
+        preset.append(app.process_key_entry.get())
+        preset.append(app.dosbase_key_entry.get())
+        preset.append(app.offset_key_entry.get())
+        preset.append(app.press_key_entry.get())
+        preset.append(app.release_key_entry.get())
+        preset.append(app.neutral_gear_value_entry.get())
+        preset.append(app.first_gear_value_entry.get())
+        preset.append(app.second_gear_value_entry.get())
+        preset.append(app.third_gear_value_entry.get())
+        preset.append(app.fourth_gear_value_entry.get())
+        preset.append(app.fifth_gear_value_entry.get())
+        preset.append(app.sixth_gear_value_entry.get())
+        preset.append(app.seventh_gear_value_entry.get())
+        preset.append(app.reverse_gear_value_entry.get())
+
+        with open('presets.csv', 'a') as file: 
+            # Pass this file object to csv.writer()
+            # and get a writer object
+            writer = csv.writer(file) 
+            # Pass the list as an argument into
+            # the writerow()
+            writer.writerow(preset) 
+            # Close the file object
+            file.close()
+    else:
+        return
     
 
 # Read options displayed in windows and store the into options[]
