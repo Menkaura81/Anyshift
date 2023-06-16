@@ -136,43 +136,42 @@ def joystick_loop_mem(options):
                         gear_selected = 1
                         sound = False
                         
-                    elif shifter.get_button(options['second']) == True and clutch_pressed == True:
+                    if shifter.get_button(options['second']) == True and clutch_pressed == True:
                         process.write(address, int(options['second_value']))                            
                         gear_selected = 2
                         sound = False
                         
-                    elif shifter.get_button(options['third']) == True and clutch_pressed == True:
+                    if shifter.get_button(options['third']) == True and clutch_pressed == True:
                         process.write(address, int(options['third_value']))
                         gear_selected = 3
                         sound = False
                         
-                    elif shifter.get_button(options['fourth']) == True and clutch_pressed == True:
+                    if shifter.get_button(options['fourth']) == True and clutch_pressed == True:
                         process.write(address, int(options['fourth_value']))
                         gear_selected = 4
                         sound = False
                         
-                    elif shifter.get_button(options['fifth']) == True and clutch_pressed == True:
+                    if shifter.get_button(options['fifth']) == True and clutch_pressed == True:
                         process.write(address, int(options['fifth_value']))
                         gear_selected = 5
                         sound = False
-                    elif shifter.get_button(options['sixth']) == True and clutch_pressed == True:
+                    if shifter.get_button(options['sixth']) == True and clutch_pressed == True:
                         process.write(address, int(options['sixth_value']))
                         gear_selected = 6
                         sound = False
-                    elif options['seven_gears'] == 'True':  # To avoid invalid button error
+                    if options['seven_gears'] == 'True':  # To avoid invalid button error
                         if shifter.get_button(options['seventh']) == True and clutch_pressed == True:
                             process.write(address, int(options['seventh_value']))
                             gear_selected = 7
-                            sound = False
-                        else:
-                            sound = False  ## CLARO CUANDO SEVEN GEARS ES TRUE ENTRA AQUI Y SI NO SE CAMBIA SONIDO FALSO ENTONCES NO SUENA CUALQUIER CAMBIO ANTERIOR                            
-                    elif shifter.get_button(options['reverse']) == True and clutch_pressed == True:
+                            sound = False                                                                       
+                    if shifter.get_button(options['reverse']) == True and clutch_pressed == True:
                         if options['rev_button'] == 'False':
                             process.write(address, int(options['reverse_value']))
                             gear_selected = -1
                             sound = False
                         else:
                             KeyPress_rev(options)
+                            sound = False
                             gear_selected = -1 
 
                     if sound == True:  # Play sound if clutch was not pressed
