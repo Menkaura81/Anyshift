@@ -20,6 +20,11 @@ from ReadWriteMemory import ReadWriteMemory  # Memory writing
 from Gearbox import joystick_loop_keys, joystick_loop_mem
 from ShifterConfig import gear_selection, joystick_lister
 from ReadWriteSaves import ini_reader, ini_writer, hex_convert, char_convert
+import webbrowser
+
+# Open buymeacoffee link
+def callback(url):
+    webbrowser.open_new(url)
 
 # Read config from presets.csv
 def load_preset():
@@ -723,6 +728,11 @@ class GUI(Tk):
         # Run Button
         self.run_button = Button(self.frame, text="Run Anyshift", command= run_any)
         self.run_button.grid(row=9, column=0, sticky="news", padx=10, pady = 5)
+
+        # Buyme a coffe
+        self.pay_label = Label(self.frame, fg="blue", cursor="hand2", text = "Do you like Anyshift?. If so, you can buy me a coffee")
+        self.pay_label.grid(row = 10, column = 0)
+        self.pay_label.bind("<Button-1>", lambda e: callback("https://www.buymeacoffee.com/Menkaura"))
 
     
 if __name__ == "__main__":    
