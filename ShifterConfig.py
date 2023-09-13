@@ -72,6 +72,8 @@ def select_first(options):
                     if shifter.get_button(i) == True:
                         options['first'] = i
                         done = True
+        if keyboard.is_pressed('End'):
+            done = True
     pygame.quit()    
     return options
 
@@ -95,6 +97,8 @@ def select_second(options):
                     if shifter.get_button(i) == True:
                         options['second'] = i
                         done = True
+        if keyboard.is_pressed('End'):
+            done = True
     pygame.quit()
     return options
 
@@ -118,6 +122,8 @@ def select_third(options):
                     if shifter.get_button(i) == True:
                         options['third'] = i
                         done = True
+        if keyboard.is_pressed('End'):
+            done = True
     pygame.quit()
     return options
 
@@ -141,6 +147,8 @@ def select_fourth(options):
                     if shifter.get_button(i) == True:
                         options['fourth'] = i
                         done = True
+        if keyboard.is_pressed('End'):
+            done = True
     pygame.quit()
     return options
 
@@ -164,6 +172,8 @@ def select_fifth(options):
                     if shifter.get_button(i) == True:
                         options['fifth'] = i
                         done = True
+        if keyboard.is_pressed('End'):
+            done = True
     pygame.quit()
     return options
 
@@ -187,6 +197,8 @@ def select_sixth(options):
                     if shifter.get_button(i) == True:
                         options['sixth'] = i
                         done = True
+        if keyboard.is_pressed('End'):
+            done = True
     pygame.quit()
     return options
     
@@ -210,6 +222,8 @@ def select_seventh(options):
                     if shifter.get_button(i) == True:
                         options['seventh'] = i
                         done = True
+        if keyboard.is_pressed('End'):
+            done = True
     pygame.quit()
     return options
 
@@ -233,6 +247,8 @@ def select_reverse(options):
                     if shifter.get_button(i) == True:
                         options['reverse'] = i
                         done = True
+        if keyboard.is_pressed('End'):
+            done = True
     pygame.quit()
     return options
 

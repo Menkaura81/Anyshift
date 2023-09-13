@@ -75,6 +75,18 @@ Select manual shifting ingame.
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a gear.
 
+Tokyo Xtreme Racer Drift 2
+
+Tested with pcsx2 1.6.0 and PAL version of the game. Support force feedback, 900º wheel rotation and independent pedals. 
+You have to set your keys in the gamepad control setup of the emulator:
+
+    - L2 = Downshift (Default key s)
+    - R2 = Upshift (Default key z)
+
+Select manual shifting ingame. 
+You have to select tfirst gear before begin to accelerate to avoid desynchronization the game will engage first when you accelerate. The game autoshifts to neutral when stopped so you have to be careful.
+Reverse is a button.
+
 GRAN TURISMO duckstation
 
 Tested with duckstation and PAL version of the game. Doesn´t support force feedback. You need negcon controller settings to use steering wheel. Pedals must be combined.
@@ -164,6 +176,8 @@ Configure controls in the emulator.
 
 Select right position on the shifter before you gain control on the car to avoid desynchronization. 
 Neutral not detected and no reverse gear. 
+
+
 
 ### References 
 
