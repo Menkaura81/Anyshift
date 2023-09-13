@@ -13,6 +13,7 @@
 #####################################################################################################
 
 import pygame
+import keyboard  # Normal key presses
 
 # Get list of joystick ids and save them into joys list
 def joystick_lister():
@@ -252,6 +253,8 @@ def get_axis(options):
             if event.type == pygame.JOYAXISMOTION:
                 options['clutch_axis'] = event.axis
                 done = True
+        if keyboard.is_pressed('End'):
+            done = True
     pygame.quit()
         
     return options
