@@ -78,8 +78,7 @@ Reverse is a gear.
 TOKYO XTREME RACER 3 pcsx2
 
 Tested with pcsx2 1.6.0 and PAL version of the game. Support force feedback but you have to select Logitech Driving Force in the usb plugin, nor Logitech DFPro.
-
-You have to set your keys in the gamepad control setup of the emulator:
+You have to set your keys in the USB Wheel control setup of the emulator:
 
     - L1 = Downshift (Default key s)
     - R1 = Upshift (Default key z)
