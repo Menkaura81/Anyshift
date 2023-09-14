@@ -61,7 +61,7 @@ Select manual shifting ingame.
 On the rolling starts you have to select the right position on the shifter before crossing start line to avoid desynchronization.
 Neutral not detected and reverse is a button.
 
-Supports memory write mode. Just launch anyshift and enjoy
+Supports memory write mode altough reverse seems to act a little buggy.
 
 ENTHUSIA pcsx2
 
@@ -74,6 +74,8 @@ You have to set your keys in the gamepad control setup of the emulator:
 Select manual shifting ingame. 
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a gear.
+
+Supports memory write mode
 
 TOKYO XTREME RACER 3 pcsx2
 
@@ -90,7 +92,7 @@ Neutral detected and reverse is a button
 TOKYO XTREME RACER DRIFT 2 pcsx2
 
 Tested with pcsx2 1.6.0 and PAL version of the game. Support force feedback, 900º wheel rotation and independent pedals. 
-You have to set your keys in the gamepad control setup of the emulator:
+You have to set your keys in the USB Wheel control setup of the emulator:
 
     - L1 = Downshift (Default key s)
     - R1 = Upshift (Default key z)
@@ -191,12 +193,10 @@ Select right position on the shifter before you gain control on the car to avoid
 Neutral not detected and no reverse gear. 
 
 
-
 ### References 
 
 - https://stackoverflow.com/questions/6620637/writing-comments-to-files-with-configparser  -- Comments in configparser
 - https://linuxhint.com/string-to-hexadecimal-in-python/ -- To convert strings to hex
-- https://www.scaler.com/topics/how-to-clear-screen-in-python/ -- Clear console command
 - https://www.reddit.com/r/learnpython/comments/22tke1/use_python_to_send_keystrokes_to_games_in_windows/  -- Send key strokes to games using ctypes
 - https://www.pygame.org/docs/ref/joystick.html -- Pygame joystick library 
 - https://stackoverflow.com/questions/63442491/get-data-at-address-from-cheat-engine-with-python  -- Get data address from cheat engine
