@@ -75,21 +75,35 @@ Select manual shifting ingame.
 You have to select the right position on the shifter (first gear) before going to track to avoid desynchronization. 
 Reverse is a gear.
 
-Tokyo Xtreme Racer Drift 2
+TOKYO XTREME RACER 3 pcsx2
+
+Tested with pcsx2 1.6.0 and PAL version of the game. Support force feedback but you have to select Logitech Driving Force in the usb plugin, nor Logitech DFPro.
+
+You have to set your keys in the gamepad control setup of the emulator:
+
+    - L1 = Downshift (Default key s)
+    - R1 = Upshift (Default key z)
+    - Circle = Reverse (Default key c)
+
+Select manual shifting ingame.  
+Neutral detected and reverse is a button
+
+TOKYO XTREME RACER DRIFT 2 pcsx2
 
 Tested with pcsx2 1.6.0 and PAL version of the game. Support force feedback, 900º wheel rotation and independent pedals. 
 You have to set your keys in the gamepad control setup of the emulator:
 
-    - L2 = Downshift (Default key s)
-    - R2 = Upshift (Default key z)
+    - L1 = Downshift (Default key s)
+    - R1 = Upshift (Default key z)
+    - Circle = Reverse (Default key c)
 
 Select manual shifting ingame. 
-You have to select tfirst gear before begin to accelerate to avoid desynchronization the game will engage first when you accelerate. The game autoshifts to neutral when stopped so you have to be careful.
-Reverse is a button.
+You have to select first gear before begin to accelerate to avoid desynchronization the game will engage first when you accelerate. The game autoshifts to neutral when stopped so you have to be careful.
+Neutral not detected and reverse is a button.
 
 GRAN TURISMO duckstation
 
-Tested with duckstation and PAL version of the game. Doesn´t support force feedback. You need negcon controller settings to use steering wheel. Pedals must be combined.
+Tested with duckstation and PAL version of the game. Doesn´t support force feedback. You need negcon controller plugin to use steering wheel. Pedals must be combined.
 Recomended wheel rotation degrees 720º
 You have to set your keys in the neGcon control setup of the emulator:
 
