@@ -98,7 +98,7 @@ def joystick_loop_mem(options):
 
                 if event.type == pygame.JOYBUTTONUP:        
                     KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
-
+                    
                 # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
                 if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True':
                     time.sleep(0.3)
