@@ -24,7 +24,7 @@ import serial # Arduino serial comunication
 
 # Flag for avoiding first shifting bug when running nascar mode 
 first_time = True
-
+COM_PORT = "COM13"
 
 # Mem mode joystick loop
 def joystick_loop_mem(options):
@@ -37,7 +37,9 @@ def joystick_loop_mem(options):
     shifter.init()
 
     # Setting serial port for arduino
-    arduino = serial.Serial("COM13", 9600)
+    arduino = serial.Serial(COM_PORT, 9600)
+    time.sleep(2)
+    arduino.write(b'8')  # Light the display so the user can confirm it is working
 
     # Create clutch joystick object and initialize it if clutch = true
     if options['clutch'] == 'True':
@@ -117,6 +119,7 @@ def joystick_loop_mem(options):
                     if not pygame.event.peek(pygame.JOYBUTTONDOWN):
                         process.write(address, int(options['neutral_value']))
                         gear_selected = 0
+                        arduino.write(b'0')
                         print(f"Gear in joystick: {gear_selected}   ",  end="\r")
                         
             # Select neutral if this key is pressed
@@ -221,8 +224,10 @@ def joystick_loop_mem(options):
 
             if keyboard.is_pressed('End'):
                 done = True
+                
         
     pygame.quit()
+    arduino.write(b'9')  # Blank the display    
     arduino.close()  # Closing arduino
     
 
@@ -237,7 +242,9 @@ def joystick_loop_keys(options):
     shifter.init()
 
     # Setting serial port for arduino
-    arduino = serial.Serial("COM13", 9600)
+    arduino = serial.Serial(COM_PORT, 9600)
+    time.sleep(2)
+    arduino.write(b'8')  # Light the display so the user can confirm it is working
 
     # Create clutch joystick object and initialize it if clutch = true
     if options['clutch'] == 'True':
@@ -399,9 +406,10 @@ def joystick_loop_keys(options):
 
             # Escape to exit from Anyshift    
             if keyboard.is_pressed('End'):
-                    done = True    
+                done = True    
     
     pygame.quit() 
+    arduino.write(b'9')  # Blank the display
     arduino.close()  # Closing arduino  
     
 
