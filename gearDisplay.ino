@@ -1,11 +1,12 @@
 /*****************************************************************************************
 * Arduino sketch for driving a 7 segment display with Anyshift 
 *
-* Base on the SevSeg library by Dean Reading
+* Based on the SevSeg library by Dean Reading
 *
 * 2023 Menkaura Soft
 ******************************************************************************************/
 #include "SevSeg.h"
+
 
 SevSeg sevseg;
 
