@@ -37,9 +37,14 @@ def joystick_loop_mem(options):
     shifter.init()
 
     # Setting serial port for arduino
-    arduino = serial.Serial(COM_PORT, 9600)
-    time.sleep(2)
-    arduino.write(b'8')  # Light the display so the user can confirm it is working
+    arduino_conected = False
+    try:
+        arduino = serial.Serial(COM_PORT, 9600)
+        time.sleep(2)
+        arduino.write(b'8')  # Light the display so the user can confirm it is working
+        arduino_conected = True
+    except:
+        print(f"No arduino conected in {COM_PORT}")
 
     # Create clutch joystick object and initialize it if clutch = true
     if options['clutch'] == 'True':
@@ -75,32 +80,39 @@ def joystick_loop_mem(options):
                     if shifter.get_button(options['first']) == True :
                         process.write(address, int(options['first_value']))
                         gear_selected = 1
-                        arduino.write(b'1')  # Send gear indicator data to arduino
+                        if arduino_conected == True:
+                            arduino.write(b'1')  # Send gear indicator data to arduino
                     if shifter.get_button(options['second']) == True:
                         process.write(address, int(options['second_value']))
                         gear_selected = 2
-                        arduino.write(b'2')  # Send gear indicator data to arduino
+                        if arduino_conected == True:
+                            arduino.write(b'2')  # Send gear indicator data to arduino
                     if shifter.get_button(options['third']) == True:
                         process.write(address, int(options['third_value']))
                         gear_selected = 3
-                        arduino.write(b'3')  # Send gear indicator data to arduino
+                        if arduino_conected == True:
+                            arduino.write(b'3')  # Send gear indicator data to arduino
                     if shifter.get_button(options['fourth']) == True:
                         process.write(address, int(options['fourth_value']))
                         gear_selected = 4
-                        arduino.write(b'4')  # Send gear indicator data to arduino
+                        if arduino_conected == True:
+                            arduino.write(b'4')  # Send gear indicator data to arduino
                     if shifter.get_button(options['fifth']) == True:
                         process.write(address, int(options['fifth_value']))
                         gear_selected = 5
-                        arduino.write(b'5')  # Send gear indicator data to arduino
+                        if arduino_conected == True:
+                            arduino.write(b'5')  # Send gear indicator data to arduino
                     if shifter.get_button(options['sixth']) == True:
                         process.write(address, int(options['sixth_value']))
                         gear_selected = 6
-                        arduino.write(b'6')  # Send gear indicator data to arduino  
+                        if arduino_conected == True:
+                            arduino.write(b'6')  # Send gear indicator data to arduino  
                     if options['seven_gears'] == 'True':  # To avoid invalid button error
                         if shifter.get_button(options['seventh']) == True:
                             process.write(address, int(options['seventh_value']))
                             gear_selected = 7
-                            arduino.write(b'7')  # Send gear indicator data to arduino
+                            if arduino_conected == True:
+                                arduino.write(b'7')  # Send gear indicator data to arduino
                     if shifter.get_button(options['reverse']) == True:
                         if options['rev_button'] == 'False':
                             process.write(address, int(options['reverse_value']))
@@ -119,14 +131,16 @@ def joystick_loop_mem(options):
                     if not pygame.event.peek(pygame.JOYBUTTONDOWN):
                         process.write(address, int(options['neutral_value']))
                         gear_selected = 0
-                        arduino.write(b'0')
+                        if arduino_conected == True:
+                            arduino.write(b'0')
                         print(f"Gear in joystick: {gear_selected}   ",  end="\r")
                         
             # Select neutral if this key is pressed
             if keyboard.is_pressed(options['neut_key']):
                 process.write(address, int(options['neutral_value']))
                 gear_selected = 0
-                arduino.write(b'0')  
+                if arduino_conected == True:
+                    arduino.write(b'0')  
                 print(f"Gear in joystick: {gear_selected}   ",  end="\r")
 
             if keyboard.is_pressed('End'):
@@ -151,42 +165,49 @@ def joystick_loop_mem(options):
                     if shifter.get_button(options['first']) == True and clutch_pressed == True:
                         process.write(address, int(options['first_value']))
                         gear_selected = 1
-                        arduino.write(b'1')  
+                        if arduino_conected == True:
+                            arduino.write(b'1')  
                         sound = False
                         
                     if shifter.get_button(options['second']) == True and clutch_pressed == True:
                         process.write(address, int(options['second_value']))                            
                         gear_selected = 2
-                        arduino.write(b'2') 
+                        if arduino_conected == True:
+                            arduino.write(b'2') 
                         sound = False
                         
                     if shifter.get_button(options['third']) == True and clutch_pressed == True:
                         process.write(address, int(options['third_value']))
                         gear_selected = 3
-                        arduino.write(b'3') 
+                        if arduino_conected == True:
+                            arduino.write(b'3') 
                         sound = False
                         
                     if shifter.get_button(options['fourth']) == True and clutch_pressed == True:
                         process.write(address, int(options['fourth_value']))
                         gear_selected = 4
-                        arduino.write(b'4') 
+                        if arduino_conected == True:
+                            arduino.write(b'4') 
                         sound = False
                         
                     if shifter.get_button(options['fifth']) == True and clutch_pressed == True:
                         process.write(address, int(options['fifth_value']))
                         gear_selected = 5
-                        arduino.write(b'5') 
+                        if arduino_conected == True:
+                            arduino.write(b'5') 
                         sound = False
                     if shifter.get_button(options['sixth']) == True and clutch_pressed == True:
                         process.write(address, int(options['sixth_value']))
                         gear_selected = 6
-                        arduino.write(b'6') 
+                        if arduino_conected == True:
+                            arduino.write(b'6') 
                         sound = False
                     if options['seven_gears'] == 'True':  # To avoid invalid button error
                         if shifter.get_button(options['seventh']) == True and clutch_pressed == True:
                             process.write(address, int(options['seventh_value']))
                             gear_selected = 7
-                            arduino.write(b'7') 
+                            if arduino_conected == True:
+                                arduino.write(b'7') 
                             sound = False                                                                       
                     if shifter.get_button(options['reverse']) == True and clutch_pressed == True:
                         if options['rev_button'] == 'False':
@@ -212,14 +233,16 @@ def joystick_loop_mem(options):
                     if not pygame.event.peek(pygame.JOYBUTTONDOWN):
                         process.write(address, int(options['neutral_value']))
                         gear_selected = 0
-                        arduino.write(b'0') 
+                        if arduino_conected == True:
+                            arduino.write(b'0') 
                         print(f"Gear in joystick: {gear_selected}   ",  end="\r")
                         
             # Select neutral if this key is pressed
             if keyboard.is_pressed(options['neut_key']):
                 process.write(address, int(options['neutral_value']))
                 gear_selected = 0
-                arduino.write(b'0') 
+                if arduino_conected == True:
+                    arduino.write(b'0') 
                 print(f"Gear in joystick: {gear_selected}   ",  end="\r")
 
             if keyboard.is_pressed('End'):
@@ -227,8 +250,9 @@ def joystick_loop_mem(options):
                 
         
     pygame.quit()
-    arduino.write(b'9')  # Blank the display    
-    arduino.close()  # Closing arduino
+    if arduino_conected == True:
+        arduino.write(b'9')  # Blank the display    
+        arduino.close()  # Closing arduino
     
 
 # Keys mode joystick loop
@@ -242,9 +266,14 @@ def joystick_loop_keys(options):
     shifter.init()
 
     # Setting serial port for arduino
-    arduino = serial.Serial(COM_PORT, 9600)
-    time.sleep(2)
-    arduino.write(b'8')  # Light the display so the user can confirm it is working
+    arduino_conected = False
+    try:
+        arduino = serial.Serial(COM_PORT, 9600)
+        time.sleep(2)
+        arduino.write(b'8')  # Light the display so the user can confirm it is working
+        arduino_conected = True
+    except:
+        print(f"No arduino conected in {COM_PORT}")
 
     # Create clutch joystick object and initialize it if clutch = true
     if options['clutch'] == 'True':
@@ -267,32 +296,39 @@ def joystick_loop_keys(options):
                 if event.type == pygame.JOYBUTTONDOWN:
                     if shifter.get_button(options['first']) == True:
                         gear_selected = 1
-                        arduino.write(b'1')
+                        if arduino_conected == True:
+                            arduino.write(b'1')
                         actual_gear = update_gear(gear_selected, actual_gear, options)
                     if shifter.get_button(options['second']) == True:
                         gear_selected = 2
-                        arduino.write(b'2')
+                        if arduino_conected == True:
+                            arduino.write(b'2')
                         actual_gear = update_gear(gear_selected, actual_gear, options) 
                     if shifter.get_button(options['third']) == True:
                         gear_selected = 3
-                        arduino.write(b'3')
+                        if arduino_conected == True:
+                            arduino.write(b'3')
                         actual_gear = update_gear(gear_selected, actual_gear, options)
                     if shifter.get_button(options['fourth']) == True:
                         gear_selected = 4
-                        arduino.write(b'4')
+                        if arduino_conected == True:
+                            arduino.write(b'4')
                         actual_gear = update_gear(gear_selected, actual_gear, options)
                     if shifter.get_button(options['fifth']) == True:
                         gear_selected = 5
-                        arduino.write(b'5')
+                        if arduino_conected == True:
+                            arduino.write(b'5')
                         actual_gear = update_gear(gear_selected, actual_gear, options)
                     if shifter.get_button(options['sixth']) == True:
                         gear_selected = 6
-                        arduino.write(b'6')
+                        if arduino_conected == True:
+                            arduino.write(b'6')
                         actual_gear = update_gear(gear_selected, actual_gear, options)  
                     if options['seven_gears'] == 'True':  # To avoid invalid button error
                         if shifter.get_button(options['seventh']) == True:
                             gear_selected = 7
-                            arduino.write(b'7')
+                            if arduino_conected == True:
+                                arduino.write(b'7')
                             actual_gear = update_gear(gear_selected, actual_gear, options)
                     if shifter.get_button(options['reverse']) == True:
                         gear_selected = -1
@@ -304,14 +340,16 @@ def joystick_loop_keys(options):
                     time.sleep(0.3)
                     if not pygame.event.peek(pygame.JOYBUTTONDOWN):
                         gear_selected = 0
-                        arduino.write(b'0')
+                        if arduino_conected == True:
+                            arduino.write(b'0')
                         actual_gear = update_gear(gear_selected, actual_gear, options)
                         print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
             # Select neutral if this key is pressed
             if keyboard.is_pressed(options['neut_key']):
                 gear_selected = 0
-                arduino.write(b'0')
+                if arduino_conected == True:
+                    arduino.write(b'0')
                 actual_gear = update_gear(gear_selected, actual_gear, options)
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
@@ -337,44 +375,51 @@ def joystick_loop_keys(options):
 
                     if shifter.get_button(options['first']) == True and clutch_pressed == True:
                         gear_selected = 1
-                        arduino.write(b'1')
+                        if arduino_conected == True:
+                            arduino.write(b'1')
                         sound = False
                         actual_gear = update_gear(gear_selected, actual_gear, options)
 
                     if shifter.get_button(options['second']) == True and clutch_pressed == True:
                         gear_selected = 2
-                        arduino.write(b'2')
+                        if arduino_conected == True:
+                            arduino.write(b'2')
                         sound = False
                         actual_gear = update_gear(gear_selected, actual_gear, options) 
 
                     if shifter.get_button(options['third']) == True and clutch_pressed == True:
                         gear_selected = 3
-                        arduino.write(b'3')
+                        if arduino_conected == True:
+                            arduino.write(b'3')
                         sound = False
                         actual_gear = update_gear(gear_selected, actual_gear, options)
 
                     if shifter.get_button(options['fourth']) == True and clutch_pressed == True:
                         gear_selected = 4
-                        arduino.write(b'4')
+                        if arduino_conected == True:
+                            arduino.write(b'4')
                         sound = False
                         actual_gear = update_gear(gear_selected, actual_gear, options)
 
                     if shifter.get_button(options['fifth']) == True and clutch_pressed == True:
                         gear_selected = 5
-                        arduino.write(b'5')
+                        if arduino_conected == True:
+                            arduino.write(b'5')
                         sound = False
                         actual_gear = update_gear(gear_selected, actual_gear, options)
 
                     if shifter.get_button(options['sixth']) == True and clutch_pressed == True:
                         gear_selected = 6
-                        arduino.write(b'6')
+                        if arduino_conected == True:
+                            arduino.write(b'6')
                         sound = False
                         actual_gear = update_gear(gear_selected, actual_gear, options)
 
                     if options['seven_gears'] == 'True':  # To avoid invalid button error
                         if shifter.get_button(options['seventh']) == True and clutch_pressed == True:
                             gear_selected = 7
-                            arduino.write(b'7')
+                            if arduino_conected == True:
+                                arduino.write(b'7')
                             sound = False
                             actual_gear = update_gear(gear_selected, actual_gear, options)
 
@@ -393,14 +438,16 @@ def joystick_loop_keys(options):
                     time.sleep(0.3)
                     if not pygame.event.peek(pygame.JOYBUTTONDOWN):
                         gear_selected = 0
-                        arduino.write(b'0')
+                        if arduino_conected == True:
+                            arduino.write(b'0')
                         actual_gear = update_gear(gear_selected, actual_gear, options)
                         print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
             # Select neutral if this key is pressed
             if keyboard.is_pressed(options['neut_key']):
                 gear_selected = 0
-                arduino.write(b'0')
+                if arduino_conected == True:
+                    arduino.write(b'0')
                 actual_gear = update_gear(gear_selected, actual_gear, options)
                 print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
 
@@ -409,8 +456,9 @@ def joystick_loop_keys(options):
                 done = True    
     
     pygame.quit() 
-    arduino.write(b'9')  # Blank the display
-    arduino.close()  # Closing arduino  
+    if arduino_conected == True:
+        arduino.write(b'9')  # Blank the display    
+        arduino.close()  # Closing arduino  
     
 
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
