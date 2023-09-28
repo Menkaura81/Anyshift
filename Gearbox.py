@@ -24,7 +24,7 @@ import serial # Arduino serial comunication
 
 # Flag for avoiding first shifting bug when running nascar mode 
 first_time = True
-COM_PORT = "COM13"
+# COM_PORT = "COM13"
 
 # Mem mode joystick loop
 def joystick_loop_mem(options):
@@ -39,12 +39,12 @@ def joystick_loop_mem(options):
     # Setting serial port for arduino
     arduino_conected = False
     try:
-        arduino = serial.Serial(COM_PORT, 9600)
+        arduino = serial.Serial(options['comport'], 9600)
         time.sleep(2)
         arduino.write(b'8')  # Light the display so the user can confirm it is working
         arduino_conected = True
     except:
-        print(f"No arduino conected in {COM_PORT}")
+        print(f"No arduino conected in {options['comport']}")
 
     # Create clutch joystick object and initialize it if clutch = true
     if options['clutch'] == 'True':
@@ -268,12 +268,12 @@ def joystick_loop_keys(options):
     # Setting serial port for arduino
     arduino_conected = False
     try:
-        arduino = serial.Serial(COM_PORT, 9600)
+        arduino = serial.Serial(options['comport'], 9600)
         time.sleep(2)
         arduino.write(b'8')  # Light the display so the user can confirm it is working
         arduino_conected = True
     except:
-        print(f"No arduino conected in {COM_PORT}")
+        print(f"No arduino conected in {options['comport']}")
 
     # Create clutch joystick object and initialize it if clutch = true
     if options['clutch'] == 'True':

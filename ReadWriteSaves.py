@@ -51,7 +51,7 @@ def ini_reader():
     options['reverse_value'] = config['OPTIONS']['reverse gear value']
     options['neutral_value'] = config['OPTIONS']['neutral value']
     options['bitepoint'] = int(config['OPTIONS']['clutch bitepoint'])
-
+    options['comport'] = config['EXTRAS']['comport']
 
     return options
 
@@ -83,7 +83,7 @@ def ini_writer(options, upshift, downshift, rev_key):
                       'downshift': downshift,
                       'reverse': rev_key,
                       'neutral key': options['neut_key']
-                    }
+                     }
 
     config['OPTIONS'] = {'; True if you have a shifter with seven gears. Seventh gear button must be configured or anyshift will crash ': None,
                          'seven gears': options['seven_gears'],
@@ -120,7 +120,12 @@ def ini_writer(options, upshift, downshift, rev_key):
                          '; Delays for key presses and releases. Tinker with this if game doesnt detect key presses': None,
                          'presskey timer': options['presskey_timer'],
                          'releasekey timer': options['releasekey_timer'],
-                        }         
+                        }    
+
+    config['EXTRAS'] = {
+                        '; select arduino com port': None,
+                        'comport' : options['comport'],
+                       }     
 
     # Write the file
     with open("Anyshift.ini", "w") as configfile:

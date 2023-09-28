@@ -1,7 +1,7 @@
 # Anyshift
 ## A python app to convert joystick inputs into key strokes so you can play vintage driving games with a H-Shifter
 
-Anyshift is a software written in Python. It uses pygame joystick module to read inputs from the selected device, applies the shifter to sequential logic changes and send keyboard presses so you can use your H-Shifter with your favorite old racing game.
+Anyshift is a software written in Python. It uses pygame joystick module to read inputs from the selected device, applies the shifter to sequential logic changes and send keyboard presses so you can use your H-Shifter with your favorite old racing game. I can also write gear selected directly to memory if the adrress is known. Also supports a 7 segment display gear indicator.
 
 if you enjoy this app, you can buy me a coffee to keep me awake coding cool apps: https://www.buymeacoffee.com/Menkaura
 
