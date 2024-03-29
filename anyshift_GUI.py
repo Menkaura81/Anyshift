@@ -474,12 +474,28 @@ class GUI(Tk):
             self.clutch_id_combobox.current(options['clutch_id'])
             self.clutch_id_combobox.grid(row = 1, column = 1, padx=(0,1))
         except:
-            error_label = Label(self.joystick_frame, text = "No devices connected.")
-            error_label.grid(row = 0, column = 0)
-            error_label = Label(self.joystick_frame, text = "Connect at least one device")
-            error_label.grid(row = 1, column = 0)
-            error_label = Label(self.joystick_frame, text = "and launch Anyshift again")
-            error_label.grid(row = 2, column = 0)
+            # Case no devices connected
+            if len(joys) == 0:
+                error_label = Label(self.joystick_frame, text = "No devices connected.")
+                error_label.grid(row = 0, column = 0)
+                error_label = Label(self.joystick_frame, text = "Connect at least one device")
+                error_label.grid(row = 1, column = 0)
+                error_label = Label(self.joystick_frame, text = "and launch Anyshift again")
+                error_label.grid(row = 2, column = 0)
+            # Case .ini device not coneccted, it default to joy_id = 0
+            else:
+                self.shifter_label = Label(self.joystick_frame, text="Shifter")
+                self.shifter_label.grid(row=0, column=0)
+                self.joystick_id_combobox = ttk.Combobox(self.joystick_frame, values=joys)
+                self.joystick_id_combobox.current(0)
+                self.joystick_id_combobox.grid(row = 1, column = 0)
+                self.clutch_var = StringVar(value = options['clutch'])
+                self.clutch_check = Checkbutton(self.joystick_frame, text= "Clutch",
+                                                variable=self.clutch_var, onvalue="True", offvalue="False")
+                self.clutch_check.grid(row=0, column=1)
+                self.clutch_id_combobox = ttk.Combobox(self.joystick_frame, values = joys)
+                self.clutch_id_combobox.current(0)
+                self.clutch_id_combobox.grid(row = 1, column = 1, padx=(0,1))
                 
 
         # Joystick buttons selection

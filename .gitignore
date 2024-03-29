@@ -20,3 +20,5 @@ mempru3.py
 any_pru.py
 BitepointToClutchValue.py
 pruebaSerial.py 
+
+pyinstaller --onefile --windowed --icon=any_ico.ico anyshift_GUI.py
