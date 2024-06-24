@@ -497,8 +497,7 @@ class GUI(Tk):
                 self.clutch_id_combobox.current(0)
                 self.clutch_id_combobox.grid(row = 1, column = 1, padx=(0,1))
                 
-
-        # Joystick buttons selection
+        #region JOYSTICK BUTTONS
         self.gears_selection_frame = LabelFrame(self.frame, text = "Joystick Buttons")
         self.gears_selection_frame.grid(row = 1, column = 0)
 
@@ -555,7 +554,7 @@ class GUI(Tk):
         self.bitepoint2_label = Label(self.gears_selection_frame, text = "%")
         self.bitepoint2_label.grid(row = 4, column = 6, padx=(0,5))
 
-
+        #region KEYS
         # Keys selection
 
         self.keys_selection_frame = LabelFrame(self.frame, text = "Key Selection")
@@ -585,7 +584,7 @@ class GUI(Tk):
         self.reverse_key_entry.insert(0, options['rev_key'])
         self.reverse_key_entry.grid(row = 1, column = 3)
 
-        # Timers
+        #region TIMERS
 
         self.press_key_label = Label(self.keys_selection_frame, text = "Press key delay")
         self.press_key_label.grid(row = 2, column = 0)
@@ -602,7 +601,7 @@ class GUI(Tk):
         for widget in self.keys_selection_frame.winfo_children():
             widget.grid_configure(pady = 5)
 
-        # Options
+        #region OPTIONS
 
         self.options_selection_frame = LabelFrame(self.frame, text = "Options")
         self.options_selection_frame.grid(row = 3, column = 0, padx = 20, pady = 5)

@@ -147,7 +147,7 @@ def joystick_loop_mem(options):
                 done = True
 
             
-    else: # Require clutch is true                   
+    else: # Require clutch is true
         done = False
         while not done:
             for event in pygame.event.get():
@@ -160,7 +160,14 @@ def joystick_loop_mem(options):
                     clutch_pressed = False    
 
                 if event.type == pygame.JOYBUTTONDOWN:
-                    sound = True
+                    sound = True                    
+                    # Flag to detect if a defined key for changing gear is pressed
+                    validKey = False
+                    if shifter.get_button(options['first']) == True or shifter.get_button(options['second']) == True \
+                    or shifter.get_button(options['third']) == True or shifter.get_button(options['fourth']) == True \
+                    or shifter.get_button(options['fifth']) == True or shifter.get_button(options['sixth']) == True \
+                    or shifter.get_button(options['seventh']) == True or shifter.get_button(options['reverse']) == True:
+                        validKey = True
                     
                     if shifter.get_button(options['first']) == True and clutch_pressed == True:
                         process.write(address, int(options['first_value']))
@@ -208,7 +215,7 @@ def joystick_loop_mem(options):
                             gear_selected = 7
                             if arduino_conected == True:
                                 arduino.write(b'7') 
-                            sound = False                                                                       
+                            sound = False                                                                    
                     if shifter.get_button(options['reverse']) == True and clutch_pressed == True:
                         if options['rev_button'] == 'False':
                             process.write(address, int(options['reverse_value']))
@@ -219,7 +226,7 @@ def joystick_loop_mem(options):
                             sound = False
                             gear_selected = -1 
 
-                    if sound == True:  # Play sound if clutch was not pressed
+                    if sound == True and validKey == True:  # Play sound if clutch was not pressed and the key pressed was one of the defined keys for changing gear
                         play_sound()                             
                                 
                     print(f"Gear in joystick: {gear_selected}   ",  end="\r")
@@ -357,7 +364,7 @@ def joystick_loop_keys(options):
             if keyboard.is_pressed('End'):
                     done = True
 
-    else:  # Require clutch is true
+    else:  # Require clutch is true        
         # Joystick read loop  
         done = False
         while not done:
@@ -372,12 +379,19 @@ def joystick_loop_keys(options):
 
                 if event.type == pygame.JOYBUTTONDOWN:
                     sound = True
+                    # Flag to detect if a defined key for changing gear is pressed
+                    validKey = False
+                    if shifter.get_button(options['first']) == True or shifter.get_button(options['second']) == True \
+                    or shifter.get_button(options['third']) == True or shifter.get_button(options['fourth']) == True \
+                    or shifter.get_button(options['fifth']) == True or shifter.get_button(options['sixth']) == True \
+                    or shifter.get_button(options['seventh']) == True or shifter.get_button(options['reverse']) == True:
+                        validKey = True
 
                     if shifter.get_button(options['first']) == True and clutch_pressed == True:
                         gear_selected = 1
                         if arduino_conected == True:
                             arduino.write(b'1')
-                        sound = False
+                        sound = False                        
                         actual_gear = update_gear(gear_selected, actual_gear, options)
 
                     if shifter.get_button(options['second']) == True and clutch_pressed == True:
@@ -428,7 +442,8 @@ def joystick_loop_keys(options):
                         sound = False
                         actual_gear = update_gear(gear_selected, actual_gear, options)
 
-                    if sound == True:  # Play sound if clutch was not pressed
+                    
+                    if sound == True and validKey == True:  # Play sound if clutch was not pressed and the key pressed was one of the defined keys for changing gear
                         play_sound()
 
                     print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
