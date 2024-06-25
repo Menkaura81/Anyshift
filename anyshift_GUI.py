@@ -319,7 +319,7 @@ def windows_updater():
     app.seventh_gear_value.config(text = options['seventh'])
     app.reverse_gear_value.config(text = options['reverse'])
     
-       
+
     app.clutch_axis_value = Label(app.gears_selection_frame, text = options['clutch_axis'])  
     app.clutch_axis_value.grid(row = 3, column = 4, padx=(25,10))
 

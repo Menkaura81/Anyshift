@@ -69,6 +69,7 @@ def joystick_loop_mem(options):
         # Gear address is the base address plus the offset. This is the value we found in Cheat Engine
         address = process.read(x_pointer) + int(options['offset'], 16)        
 
+    #region MEM MODE NO CLUTCH
     gear_selected = 0 
     if options['clutch'] == 'False':  # Doesn´t require clutch to shift          
         # Loop
@@ -158,7 +159,7 @@ def joystick_loop_mem(options):
             if keyboard.is_pressed('End'):
                 done = True
 
-            
+    #region MEM MODE CLUTCH     
     else: # Require clutch is true
         done = False
         while not done:
@@ -305,7 +306,7 @@ def joystick_loop_keys(options):
     clutch_pressed = False
     clutch_value = -((-2 * int(options['bitepoint'])) / 100 + 1) 
    
-        
+    #region KEY MODE NO CLUTCH    
     gear_selected = 0 
     actual_gear = 0
     if options['clutch'] == 'False':  # Doesn´t require clutch to shift
@@ -390,6 +391,7 @@ def joystick_loop_keys(options):
             if keyboard.is_pressed('End'):
                     done = True
 
+    #region KEY MODE CLUTCH
     else:  # Require clutch is true        
         # Joystick read loop  
         done = False
@@ -519,7 +521,7 @@ def joystick_loop_keys(options):
         arduino.write(b'9')  # Blank the display    
         arduino.close()  # Closing arduino  
     
-
+#region UPDATE GEARS
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
 def update_gear(gear_selected, actual_gear, options):
 
@@ -598,7 +600,7 @@ def update_gear(gear_selected, actual_gear, options):
                             
     return act_gear
 
-
+#region KEYPRESSES
 # Function to send key presses for upshift
 def KeyPress_up(options):
     time.sleep(float(options['presskey_timer']))
@@ -626,7 +628,7 @@ def KeyRelease_rev(options):
     time.sleep(float(options['releasekey_timer']))
     ReleaseKey(int(options['rev_key'], 16))  # release                        
 
-
+#region PLAY SOUND
 def play_sound():
 
     # Get path for .wavs location    
