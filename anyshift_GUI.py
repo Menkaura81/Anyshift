@@ -496,7 +496,7 @@ class GUI(Tk):
                 self.clutch_id_combobox = ttk.Combobox(self.joystick_frame, values = joys)
                 self.clutch_id_combobox.current(0)
                 self.clutch_id_combobox.grid(row = 1, column = 1, padx=(0,1))
-                
+ 
         #region JOYSTICK BUTTONS
         self.gears_selection_frame = LabelFrame(self.frame, text = "Joystick Buttons")
         self.gears_selection_frame.grid(row = 1, column = 0)
