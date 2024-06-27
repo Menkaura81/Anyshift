@@ -183,6 +183,13 @@ def joystick_loop_mem(options):
                             buttons += 1                    
                     if buttons == 1:
                         validKey = True
+                    # Check if in neutral
+                    inNeutral = False
+                    if shifter.get_button(options['first']) == False and shifter.get_button(options['second']) == False \
+                    and shifter.get_button(options['third']) == False and shifter.get_button(options['fourth']) == False \
+                    and shifter.get_button(options['fifth']) == False and shifter.get_button(options['sixth']) == False \
+                    and shifter.get_button(options['seventh']) == False and shifter.get_button(options['reverse']) == False:
+                        inNeutral = True
                     
                     if shifter.get_button(options['first']) == True and clutch_pressed == True:
                         process.write(address, int(options['first_value']))
@@ -241,7 +248,7 @@ def joystick_loop_mem(options):
                             sound = False
                             gear_selected = -1 
 
-                    if sound == True and validKey == True:  # Play sound if clutch was not pressed and the key pressed was one of the defined keys for changing gear
+                    if sound == True and validKey == True and inNeutral == False:  # Play sound if clutch was not pressed and the key pressed was one of the defined keys for changing gear
                         play_sound()                             
                                 
                     print(f"Gear in joystick: {gear_selected}   ",  end="\r")
@@ -417,7 +424,14 @@ def joystick_loop_keys(options):
                         if shifter.get_button(i) == True:
                             buttons += 1                    
                     if buttons == 1:
-                        validKey = True
+                        validKey = True                    
+                    # Check if in neutral
+                    inNeutral = False
+                    if shifter.get_button(options['first']) == False and shifter.get_button(options['second']) == False \
+                    and shifter.get_button(options['third']) == False and shifter.get_button(options['fourth']) == False \
+                    and shifter.get_button(options['fifth']) == False and shifter.get_button(options['sixth']) == False \
+                    and shifter.get_button(options['seventh']) == False and shifter.get_button(options['reverse']) == False:
+                        inNeutral = True
 
                     if shifter.get_button(options['first']) == True: 
                         if clutch_pressed == True:
@@ -489,7 +503,7 @@ def joystick_loop_keys(options):
                             sound = False
                             actual_gear = update_gear(gear_selected, actual_gear, options)
                                             
-                    if sound == True and validKey == True:  # Play sound if clutch was not pressed and the key pressed was one of the defined keys for changing gear
+                    if sound == True and validKey == True and inNeutral == False:  # Play sound if clutch was not pressed and the key pressed was one of the defined keys for changing gear
                         play_sound()                        
 
                     print(f"Gear in joystick: {gear_selected} -- Actual gear: {actual_gear}   ",  end="\r")
