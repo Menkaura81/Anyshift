@@ -17,7 +17,7 @@ from tkinter import *  # Toplevel window
 from tkinter import ttk  # GUI combobox
 import csv  # Load and write csv files
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
-from Gearbox import joystick_loop_keys, joystick_loop_mem
+from Gearbox import joystick_loop
 from ShifterConfig import gear_selection, joystick_lister
 from ReadWriteSaves import ini_reader, ini_writer, hex_convert, char_convert
 import webbrowser
@@ -416,30 +416,9 @@ def run_any():
     
     # Update button text
     app.run_button.config(text="Anyshift running. Press 'End' to stop")
-    app.update()    
-
-    if options['mem_mode'] == 'True':
-        # Open DosBox process and check for process opened
-        rwm = ReadWriteMemory()
-        try:
-            process = rwm.get_process_by_name(options['process'])
-            process.open()        
-        except:
-            error_window = Toplevel(app)        
-            error_window.title("Error")
-            error_window.config(width=200, height=50)
-            error_frame = Frame(error_window)
-            error_frame.pack()
-            error_label = Label(error_frame, text = "Process not found. Open it before Anyshift")
-            error_label.grid(row = 0, column = 0)
-            app.run_button.config(text="Run Anyshift")
-            return
-        joystick_loop_mem(options)
-        app.run_button.config(text="Run Anyshift")  # Return button to normal text
-    else:
-        joystick_loop_keys(options)
-        app.run_button.config(text="Run Anyshift")  # Return button to normal text   
-   
+    app.update() 
+    joystick_loop(options, app)        
+    app.run_button.config(text="Run Anyshift")  # Return button to normal text
 
 # Tkinter window class
 class GUI(Tk):
