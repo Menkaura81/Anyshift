@@ -80,28 +80,43 @@ def joystick_loop(options, app):
             # Gear address is the base address plus the offset. This is the value we found in Cheat Engine
             address = process.read(x_pointer) + int(options['offset'], 16) 
         
-    #region NO CLUTCH
+    
     gear_selected = 0 
     actual_gear = 0
-    if options['clutch'] == 'False':  # Doesn´t require clutch to shift          
-        # Loop
-        done = False
-        while not done:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = True  # Flag that we are done so we exit this loop.
+              
+    # Loop
+    done = False
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True  # Flag that we are done so we exit this loop.
 
-                if event.type == pygame.JOYBUTTONDOWN:
-                    # Flag to detect if a defined key for changing gear is pressed
-                    validKey = False
-                    # Check for multibutton presses
-                    buttons = 0
-                    for i in range (numButtons):
-                        if shifter.get_button(i) == True:
-                            buttons += 1                    
-                    if buttons == 1:
-                        validKey = True
+            if options['clutch'] == 'True':
+                if clutch.get_axis(int(options['clutch_axis'])) > clutch_value:  # First we check if clutch if pressed or not
+                    clutch_pressed = True
+                else:
+                    clutch_pressed = False
 
+            if event.type == pygame.JOYBUTTONDOWN:
+                # Flag to detect if a defined key for changing gear is pressed
+                validKey = False
+                # Check for multibutton presses
+                buttons = 0
+                for i in range (numButtons):
+                    if shifter.get_button(i) == True:
+                        buttons += 1                    
+                if buttons == 1:
+                    validKey = True
+                    # Check if in neutral
+                inNeutral = False
+                if shifter.get_button(options['first']) == False and shifter.get_button(options['second']) == False \
+                and shifter.get_button(options['third']) == False and shifter.get_button(options['fourth']) == False \
+                and shifter.get_button(options['fifth']) == False and shifter.get_button(options['sixth']) == False \
+                and shifter.get_button(options['seventh']) == False and shifter.get_button(options['reverse']) == False:
+                    inNeutral = True
+
+                #region NO CLUTCH
+                if options['clutch'] == 'False':  # Doesn´t require clutch to shift
                     if shifter.get_button(options['first']) == True :
                         gear_selected = 1
                         if options['mem_mode'] == 'True':
@@ -110,6 +125,7 @@ def joystick_loop(options, app):
                             actual_gear = update_gear(gear_selected, actual_gear, options)                        
                         if arduino_conected == True:
                             arduino.write(b'1')  # Send gear indicator data to arduino
+                    
                     if shifter.get_button(options['second']) == True:
                         gear_selected = 2
                         if options['mem_mode'] == 'True':
@@ -118,6 +134,7 @@ def joystick_loop(options, app):
                             actual_gear = update_gear(gear_selected, actual_gear, options)                        
                         if arduino_conected == True:
                             arduino.write(b'2')  # Send gear indicator data to arduino
+                    
                     if shifter.get_button(options['third']) == True:
                         gear_selected = 3
                         if options['mem_mode'] == 'True':
@@ -126,6 +143,7 @@ def joystick_loop(options, app):
                             actual_gear = update_gear(gear_selected, actual_gear, options)  
                         if arduino_conected == True:
                             arduino.write(b'3')  # Send gear indicator data to arduino
+                    
                     if shifter.get_button(options['fourth']) == True:
                         gear_selected = 4
                         if options['mem_mode'] == 'True':
@@ -134,6 +152,7 @@ def joystick_loop(options, app):
                             actual_gear = update_gear(gear_selected, actual_gear, options)  
                         if arduino_conected == True:
                             arduino.write(b'4')  # Send gear indicator data to arduino
+                    
                     if shifter.get_button(options['fifth']) == True:
                         gear_selected = 5
                         if options['mem_mode'] == 'True':
@@ -142,6 +161,7 @@ def joystick_loop(options, app):
                             actual_gear = update_gear(gear_selected, actual_gear, options)  
                         if arduino_conected == True:
                             arduino.write(b'5')  # Send gear indicator data to arduino
+                    
                     if shifter.get_button(options['sixth']) == True:
                         gear_selected = 6
                         if options['mem_mode'] == 'True':
@@ -150,6 +170,7 @@ def joystick_loop(options, app):
                             actual_gear = update_gear(gear_selected, actual_gear, options)  
                         if arduino_conected == True:
                             arduino.write(b'6')  # Send gear indicator data to arduino  
+                    
                     if options['seven_gears'] == 'True':  # To avoid invalid button error
                         if shifter.get_button(options['seventh']) == True:
                             gear_selected = 7
@@ -159,6 +180,7 @@ def joystick_loop(options, app):
                                 actual_gear = update_gear(gear_selected, actual_gear, options)  
                             if arduino_conected == True:
                                 arduino.write(b'7')  # Send gear indicator data to arduino
+                    
                     if shifter.get_button(options['reverse']) == True:
                         if options['rev_button'] == 'False':
                             gear_selected = -1
@@ -170,69 +192,10 @@ def joystick_loop(options, app):
                             KeyPress_rev(options)
                             gear_selected = -1                 
                     print(f"Gear in joystick: {gear_selected}   ",  end="\r")
-
-                if event.type == pygame.JOYBUTTONUP:        
-                    KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
-                    
-                # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
-                if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True' and validKey == True:
-                    time.sleep(0.3)
-                    if not pygame.event.peek(pygame.JOYBUTTONDOWN):
-                        gear_selected = 0
-                        if options['mem_mode'] == 'True':
-                            process.write(address, int(options['neutral_value']))
-                        else:
-                            actual_gear = update_gear(gear_selected, actual_gear, options)  
-                        if arduino_conected == True:
-                            arduino.write(b'0')
-                        print(f"Gear in joystick: {gear_selected}   ",  end="\r")
-                        
-            # Select neutral if this key is pressed
-            if keyboard.is_pressed(options['neut_key']):
-                gear_selected = 0
-                if options['mem_mode'] == 'True':
-                    process.write(address, int(options['neutral_value']))
-                else:
-                    actual_gear = update_gear(gear_selected, actual_gear, options)  
-                if arduino_conected == True:
-                    arduino.write(b'0')  
-                print(f"Gear in joystick: {gear_selected}   ",  end="\r")
-
-            if keyboard.is_pressed('End'):
-                done = True
-
-    #region CLUTCH     
-    else: # Require clutch is true
-        done = False
-        while not done:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = True  # Flag that we are done so we exit this loop.
                 
-                if clutch.get_axis(int(options['clutch_axis'])) > clutch_value:  # First we check if clutch if pressed or not
-                    clutch_pressed = True
+                # region CLUTCH
                 else:
-                    clutch_pressed = False    
-
-                if event.type == pygame.JOYBUTTONDOWN:
-                    sound = True                    
-                    # Flag to detect if a defined key for changing gear is pressed
-                    validKey = False
-                    # Check for multibutton presses
-                    buttons = 0
-                    for i in range (numButtons):
-                        if shifter.get_button(i) == True:
-                            buttons += 1                    
-                    if buttons == 1:
-                        validKey = True
-                    # Check if in neutral
-                    inNeutral = False
-                    if shifter.get_button(options['first']) == False and shifter.get_button(options['second']) == False \
-                    and shifter.get_button(options['third']) == False and shifter.get_button(options['fourth']) == False \
-                    and shifter.get_button(options['fifth']) == False and shifter.get_button(options['sixth']) == False \
-                    and shifter.get_button(options['seventh']) == False and shifter.get_button(options['reverse']) == False:
-                        inNeutral = True
-                    
+                    sound = True 
                     if shifter.get_button(options['first']) == True and clutch_pressed == True:
                         gear_selected = 1
                         if options['mem_mode'] == 'True':
@@ -242,7 +205,7 @@ def joystick_loop(options, app):
                         if arduino_conected == True:
                             arduino.write(b'1')  
                         sound = False
-                        
+                    
                     if shifter.get_button(options['second']) == True and clutch_pressed == True:
                         gear_selected = 2
                         if options['mem_mode'] == 'True':
@@ -321,43 +284,44 @@ def joystick_loop(options, app):
                         play_sound()                             
                                 
                     print(f"Gear in joystick: {gear_selected}   ",  end="\r")
-                    
-                if event.type == pygame.JOYBUTTONUP:        
-                    KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
-
-                # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
-                if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True' and validKey == True:
-                    time.sleep(0.3)
-                    if not pygame.event.peek(pygame.JOYBUTTONDOWN):
-                        gear_selected = 0
-                        if options['mem_mode'] == 'True':
-                            process.write(address, int(options['neutral_value']))
-                        else:
-                            actual_gear = update_gear(gear_selected, actual_gear, options)
-                        if arduino_conected == True:
-                            arduino.write(b'0') 
-                        print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+            
+            # region REST OF EVENTS
+            if event.type == pygame.JOYBUTTONUP:        
+                KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse
+                
+            # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
+            if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True' and validKey == True:
+                time.sleep(0.2)
+                if not pygame.event.peek(pygame.JOYBUTTONDOWN):
+                    gear_selected = 0
+                    if options['mem_mode'] == 'True':
+                        process.write(address, int(options['neutral_value']))
+                    else:
+                        actual_gear = update_gear(gear_selected, actual_gear, options)  
+                    if arduino_conected == True:
+                        arduino.write(b'0')
+                    print(f"Gear in joystick: {gear_selected}   ",  end="\r")
                         
-            # Select neutral if this key is pressed
-            if keyboard.is_pressed(options['neut_key']):
-                gear_selected = 0
-                if options['mem_mode'] == 'True':
-                    process.write(address, int(options['neutral_value']))
-                else:
-                    actual_gear = update_gear(gear_selected, actual_gear, options)
-                if arduino_conected == True:
-                    arduino.write(b'0') 
-                print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+        # Select neutral if this key is pressed
+        if keyboard.is_pressed(options['neut_key']):
+            gear_selected = 0
+            if options['mem_mode'] == 'True':
+                process.write(address, int(options['neutral_value']))
+            else:
+                actual_gear = update_gear(gear_selected, actual_gear, options)  
+            if arduino_conected == True:
+                arduino.write(b'0')  
+            print(f"Gear in joystick: {gear_selected}   ",  end="\r")
 
-            if keyboard.is_pressed('End'):
-                done = True                
+        if keyboard.is_pressed('End'):
+            done = True
 
     # Close pygame and arduino    
     pygame.quit()
     if arduino_conected == True:
         arduino.write(b'9')  # Blank the display    
         arduino.close()  # Closing arduino
-        
+
 
 #region UPDATE GEARS
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
@@ -434,6 +398,5 @@ def update_gear(gear_selected, actual_gear, options):
                             act_gear -= 1                                           
                         else:
                             act_gear -= 1
-                            KeyPress_down(options)
-                            
+                            KeyPress_down(options)                            
     return act_gear
