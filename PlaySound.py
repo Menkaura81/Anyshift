@@ -30,7 +30,7 @@ def play_sound():
 
     number = random.randint(1,3)
     #audio_file = os.path.dirname(__file__) 
-    audio_file = application_path + "/" + str(number) + ".wav"
+    audio_file = application_path + "/Resources/" + str(number) + ".wav"
     pygame.mixer.music.load(audio_file)
     pygame.mixer.music.play(loops=0)
     return
