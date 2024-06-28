@@ -18,6 +18,9 @@
 #########################################################################################################
 
 import ctypes  # Kernel level key presses
+import time  # Delays
+
+#region CTYPE
 
 # Bunch of stuff so that the script can send keystrokes to game #
 SendInput = ctypes.windll.user32.SendInput
@@ -75,3 +78,32 @@ def ReleaseKey(hexKeyCode):
     ii_.ki = KeyBdInput(0, hexKeyCode, 0x0008 | 0x0002, 0, ctypes.pointer(extra))
     x = Input(ctypes.c_ulong(1), ii_)
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
+
+#region KEYPRESSES
+
+# Function to send key presses for upshift
+def KeyPress_up(options):
+    time.sleep(float(options['presskey_timer']))
+    PressKey(int(options['up_key'], 16))  # press
+    time.sleep(float(options['releasekey_timer']))
+    ReleaseKey(int(options['up_key'], 16))  # release
+
+
+# Function to send key presses for downshift
+def KeyPress_down(options):
+    time.sleep(float(options['presskey_timer']))
+    PressKey(int(options['down_key'], 16))  # press
+    time.sleep(float(options['releasekey_timer']))
+    ReleaseKey(int(options['down_key'], 16))  # release
+
+
+# Function to send key presses for reverse is button mode. Two separate functions, one for press...
+def KeyPress_rev(options):
+    time.sleep(float(options['presskey_timer']))
+    PressKey(int(options['rev_key'], 16))  # press
+
+
+# ... And another to release
+def KeyRelease_rev(options):
+    time.sleep(float(options['releasekey_timer']))
+    ReleaseKey(int(options['rev_key'], 16))  # release

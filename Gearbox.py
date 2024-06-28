@@ -14,7 +14,7 @@
 
 import pygame  # Joystick input
 import time  # Delays
-from CtypeKeyPressSimulator import PressKey, ReleaseKey  # Low level key presses
+from CtypeKeyPressSimulator import *
 import keyboard  # Normal key presses
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
 import serial # Arduino serial comunication
@@ -611,31 +611,3 @@ def update_gear(gear_selected, actual_gear, options):
                             KeyPress_down(options)
                             
     return act_gear
-
-#region KEYPRESSES
-# Function to send key presses for upshift
-def KeyPress_up(options):
-    time.sleep(float(options['presskey_timer']))
-    PressKey(int(options['up_key'], 16))  # press
-    time.sleep(float(options['releasekey_timer']))
-    ReleaseKey(int(options['up_key'], 16))  # release
-
-
-# Function to send key presses for downshift
-def KeyPress_down(options):
-    time.sleep(float(options['presskey_timer']))
-    PressKey(int(options['down_key'], 16))  # press
-    time.sleep(float(options['releasekey_timer']))
-    ReleaseKey(int(options['down_key'], 16))  # release
-
-
-# Function to send key presses for reverse is button mode. Two separate functions, one for press...
-def KeyPress_rev(options):
-    time.sleep(float(options['presskey_timer']))
-    PressKey(int(options['rev_key'], 16))  # press
-
-
-# ... And another to release
-def KeyRelease_rev(options):
-    time.sleep(float(options['releasekey_timer']))
-    ReleaseKey(int(options['rev_key'], 16))  # release
