@@ -17,10 +17,8 @@ import time  # Delays
 from CtypeKeyPressSimulator import PressKey, ReleaseKey  # Low level key presses
 import keyboard  # Normal key presses
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
-import os  # Path for sound files 
-import sys # Path for sound files
-import random  # Randomize sound files
 import serial # Arduino serial comunication
+from PlaySound import play_sound
 
 # Flag for avoiding first shifting bug when running nascar mode 
 first_time = True
@@ -640,23 +638,4 @@ def KeyPress_rev(options):
 # ... And another to release
 def KeyRelease_rev(options):
     time.sleep(float(options['releasekey_timer']))
-    ReleaseKey(int(options['rev_key'], 16))  # release                        
-
-#region PLAY SOUND
-def play_sound():
-
-    # Get path for .wavs location    
-    # determine if application is a script file or frozen exe
-    if getattr(sys, 'frozen', False):
-        application_path = os.path.dirname(sys.executable)
-    elif __file__:
-        application_path = os.path.dirname(__file__)
-
-    #wav_path = os.path.join(application_path, config_name)
-
-    number = random.randint(1,3)
-    #audio_file = os.path.dirname(__file__) 
-    audio_file = application_path + "/" + str(number) + ".wav"
-    pygame.mixer.music.load(audio_file)
-    pygame.mixer.music.play(loops=0)
-    return
+    ReleaseKey(int(options['rev_key'], 16))  # release
