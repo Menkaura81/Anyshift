@@ -17,6 +17,8 @@ In MEMORY WRITE MODE, values for gears are written directly to memory when you s
 
 In SIMULATED KEY PRESSED MODE, you can choose wich joystick is used to select gears and wich keys are pressed for upshift, downshift and reverse. Anyshift can desynchronize with the game some times, but you can use the keyboard keys to resync. In this mode you have to configure the game keys for upshift and downshift. There are more options to choose depending on the game you want to use anyshift with. We´ll cover them later.
 
+IF ANYSHIFT IS NOT WORKING IN YOUR SYSTEM, TRY RUNNING IT AS ADMINISTRATOR 
+
 Two video examples of Anyshift running:
 
 Gran Turismo 4:
