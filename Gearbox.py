@@ -107,6 +107,7 @@ def joystick_loop(options, app):
                     clutch_pressed = False
             # Event ButtonDown
             if event.type == pygame.JOYBUTTONDOWN: 
+                ####################################### FLAGS CHECKS ################################################# 
                 # Flag for grind sound
                 sound = True
                 # Flag to detect if a defined key for changing gear is pressed
