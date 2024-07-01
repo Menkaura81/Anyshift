@@ -13,5 +13,5 @@ id,name,upshift,downshift,reverse,neutral key,seven gears,neutral detection,reve
 11,Grand Prix 2 dosbox mem mode,s,z,c,n,False,True,False,False,True,DOSBox.exe,0x01D3A1A0,0x291BF0,0.08,0.1,0,1,2,3,4,5,6,7,-1,0.5
 12,Colin McRae Rally pc,s,z,c,n,False,True,False,False,False,-,0,0,0.08,0.1,0,1,2,3,4,5,6,7,-1,0.5
 13,Indanapolis 500 model2 emu,s,z,c,n,False,False,False,False,False,-,0,0,0.08,0.1,-,1,2,3,4,5,6,-,-,0.5
-14,Richard Burns Rally mem mode,s,z,c,n,False,True,False,False,True,RichardBurnsRally_SSE.exe,0x008EF660,0x1100,0.08,0.1,1,2,3,4,5,6,7,8,0,0.515,Need for Speed: Porsche,a,z,c,n,False,True,False,False,False,-,0,0,0.08,0.1,-,1,2,3,4,5,6,7,-,0.5
+14,Richard Burns Rally mem mode,s,z,c,n,False,True,False,False,True,RichardBurnsRally_SSE.exe,0x008EF660,0x1100,0.08,0.1,1,2,3,4,5,6,7,8,0,0.5
 15,Need for Speed: Porsche,a,z,c,n,False,True,False,False,False,-,0,0,0.08,0.1,-,1,2,3,4,5,6,7,-,0.5
