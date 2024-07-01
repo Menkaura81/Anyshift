@@ -19,6 +19,7 @@ def ini_reader():
     options['seven_gears'] = config['OPTIONS']['seven gears']
     options['rev_button'] = config['OPTIONS']['reverse is button']
     options['neutral'] = config['OPTIONS']['neutral detection']
+    options['neutral_wait_time'] = float(config['OPTIONS']['neutral delay'])
     options['clutch'] = config['OPTIONS']['require clutch']
     options['clutch_id'] = config['SHIFTER']['clutch id']
     options['clutch_axis'] = config['SHIFTER']['clutch axis']
@@ -89,8 +90,10 @@ def ini_writer(options, upshift, downshift, rev_key):
                          'seven gears': options['seven_gears'],
                          '; True if you want to change to neutral if no gear is selected in shifter. Most old games doesnt support this': None,
                          'neutral detection': options['neutral'],
+                         '; Time the shifter must stay in Neutral to engage it': None,
+                         'neutral delay': options['neutral_wait_time'],
                          '; True if clutch is needed to change gears': None,
-                         'require clutch': options['clutch'],
+                         'require clutch': options['clutch'],                         
                          '; Percent of the clutch that needs to be pressed to allow gear change': None,
                          'clutch bitepoint': options['bitepoint'],
                          '; True if the game uses a separated button for reverse. Gran Turismo or Nascar Racing for example': None,

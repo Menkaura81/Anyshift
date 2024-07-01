@@ -88,13 +88,18 @@ def joystick_loop(options, app):
             # Gear address is the base address plus the offset. This is the value we found in Cheat Engine
             address = process.read(x_pointer) + int(options['offset'], 16) 
     
+    
     #############################################################################################################
     # MAIN LOOP
     #############################################################################################################
     gear_selected = 0 
-    actual_gear = 0              
+    actual_gear = 0
+    gear_detected = False
+    release_gear_time = time.time()
     done = False
-    while not done:        
+    validKey = False 
+    while not done:
+                
         for event in pygame.event.get():
             # Event for end the loop
             if event.type == pygame.QUIT:
@@ -107,7 +112,8 @@ def joystick_loop(options, app):
                     clutch_pressed = False
             # Event ButtonDown
             if event.type == pygame.JOYBUTTONDOWN: 
-                ####################################### FLAGS CHECKS ################################################# 
+                # Flag for gear engage detection
+                gear_detected = False
                 # Flag for grind sound
                 sound = True
                 # Flag to detect if a defined key for changing gear is pressed
@@ -128,122 +134,134 @@ def joystick_loop(options, app):
                 and shifter.get_button(options['seventh']) == False and shifter.get_button(options['reverse']) == False:
                     inNeutral = True
                 ####################################### FIRST GEAR ####################################################
-                if shifter.get_button(options['first']) == True :
-                    if options['clutch'] == 'False':                        
+                if shifter.get_button(options['first']) == True :                    
+                    if options['clutch'] == 'False': 
+                        gear_detected = True                  
                         gear_selected = 1
                         if options['mem_mode'] == 'True':
                             process.write(address, int(options['first_value']))
                         else:
-                            actual_gear = update_gear(gear_selected, actual_gear, options)                        
+                            actual_gear = sendKeystrokes(gear_selected, actual_gear, options)                        
                         if arduino_conected == True:
                             arduino.write(b'1')  # Send gear indicator data to arduino                    
                     else:    
-                        if clutch_pressed == True:                            
+                        if clutch_pressed == True: 
+                            gear_detected = True                       
                             gear_selected = 1
                             if options['mem_mode'] == 'True':
                                 process.write(address, int(options['first_value']))
                             else:
-                                actual_gear = update_gear(gear_selected, actual_gear, options)  
+                                actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
                             if arduino_conected == True:
                                 arduino.write(b'1')  
                             sound = False   
                 ####################################### SECOND GEAR ####################################################
                 if shifter.get_button(options['second']) == True:
                     if options['clutch'] == 'False':
+                        gear_detected = True
                         gear_selected = 2
                         if options['mem_mode'] == 'True':
                             process.write(address, int(options['second_value']))
                         else:
-                            actual_gear = update_gear(gear_selected, actual_gear, options)                        
+                            actual_gear = sendKeystrokes(gear_selected, actual_gear, options)                        
                         if arduino_conected == True:
                             arduino.write(b'2')  # Send gear indicator data to arduino                        
                     else:
                         if clutch_pressed == True:
+                            gear_detected = True
                             gear_selected = 2
                             if options['mem_mode'] == 'True':
                                 process.write(address, int(options['second_value']))                            
                             else:
-                                actual_gear = update_gear(gear_selected, actual_gear, options) 
+                                actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
                             if arduino_conected == True:
                                 arduino.write(b'2') 
                             sound = False
                 ####################################### THIRD GEAR ####################################################
                 if shifter.get_button(options['third']) == True:
                     if options['clutch'] == 'False':
+                        gear_detected = True
                         gear_selected = 3
                         if options['mem_mode'] == 'True':
                             process.write(address, int(options['third_value']))
                         else:
-                            actual_gear = update_gear(gear_selected, actual_gear, options)  
+                            actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
                         if arduino_conected == True:
                             arduino.write(b'3')  # Send gear indicator data to arduino                        
                     else:
                         if clutch_pressed == True:
+                            gear_detected = True
                             gear_selected = 3
                             if options['mem_mode'] == 'True':
                                 process.write(address, int(options['third_value']))
                             else:
-                                actual_gear = update_gear(gear_selected, actual_gear, options)                         
+                                actual_gear = sendKeystrokes(gear_selected, actual_gear, options)                         
                             if arduino_conected == True:
                                 arduino.write(b'3') 
                             sound = False
                 ####################################### FOURTH GEAR ####################################################
                 if shifter.get_button(options['fourth']) == True:
                     if options['clutch'] == 'False':
+                        gear_detected = True
                         gear_selected = 4
                         if options['mem_mode'] == 'True':
                             process.write(address, int(options['fourth_value']))
                         else:
-                            actual_gear = update_gear(gear_selected, actual_gear, options)  
+                            actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
                         if arduino_conected == True:
                             arduino.write(b'4')  # Send gear indicator data to arduino                        
                     else:
                         if clutch_pressed == True:
+                            gear_detected = True
                             gear_selected = 4
                             if options['mem_mode'] == 'True':
                                 process.write(address, int(options['fourth_value']))
                             else:
-                                actual_gear = update_gear(gear_selected, actual_gear, options) 
+                                actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
                             if arduino_conected == True:
                                 arduino.write(b'4') 
                             sound = False
                 ####################################### FIFTH GEAR ####################################################
                 if shifter.get_button(options['fifth']) == True:
                     if options['clutch'] == 'False':
+                        gear_detected = True
                         gear_selected = 5
                         if options['mem_mode'] == 'True':
                             process.write(address, int(options['fifth_value']))
                         else:
-                            actual_gear = update_gear(gear_selected, actual_gear, options)  
+                            actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
                         if arduino_conected == True:
                             arduino.write(b'5')  # Send gear indicator data to arduino                        
                     else:                        
                         if clutch_pressed == True:
+                            gear_detected = True
                             gear_selected = 5
                             if options['mem_mode'] == 'True':
                                 process.write(address, int(options['fifth_value']))
                             else:
-                                actual_gear = update_gear(gear_selected, actual_gear, options) 
+                                actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
                             if arduino_conected == True:
                                 arduino.write(b'5') 
                             sound = False    
                 ####################################### SIXTH GEAR ####################################################
                 if shifter.get_button(options['sixth']) == True:
                     if options['clutch'] == 'False':
+                        gear_detected = True
                         gear_selected = 6
                         if options['mem_mode'] == 'True':
                             process.write(address, int(options['sixth_value']))
                         else:
-                            actual_gear = update_gear(gear_selected, actual_gear, options)  
+                            actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
                         if arduino_conected == True:
                             arduino.write(b'6')  # Send gear indicator data to arduino                  
                     else:
                         if clutch_pressed == True:
+                            gear_detected = True
                             gear_selected = 6
                             if options['mem_mode'] == 'True':
                                 process.write(address, int(options['sixth_value']))
                             else:
-                                actual_gear = update_gear(gear_selected, actual_gear, options) 
+                                actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
                             if arduino_conected == True:
                                 arduino.write(b'6') 
                             sound = False
@@ -251,20 +269,22 @@ def joystick_loop(options, app):
                 if options['seven_gears'] == 'True':  # To avoid invalid button error
                     if shifter.get_button(options['seventh']) == True:
                         if options['clutch'] == 'False':
+                            gear_detected = True
                             gear_selected = 7
                             if options['mem_mode'] == 'True':
                                 process.write(address, int(options['seventh_value']))
                             else:
-                                actual_gear = update_gear(gear_selected, actual_gear, options)  
+                                actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
                             if arduino_conected == True:
                                 arduino.write(b'7')  # Send gear indicator data to arduino                            
                         else:
                             if clutch_pressed == True:
+                                gear_detected = True
                                 gear_selected = 7
                                 if options['mem_mode'] == 'True':
                                     process.write(address, int(options['seventh_value']))
                                 else:
-                                    actual_gear = update_gear(gear_selected, actual_gear, options) 
+                                    actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
                                 if arduino_conected == True:
                                     arduino.write(b'7') 
                                 sound = False  
@@ -272,23 +292,26 @@ def joystick_loop(options, app):
                 if shifter.get_button(options['reverse']) == True:
                     if options['rev_button'] == 'False':
                         if options['clutch'] == 'False':
+                            gear_detected = True
                             gear_selected = -1
                             if options['mem_mode'] == 'True':
                                 process.write(address, int(options['reverse_value']))
                             else:
-                                actual_gear = update_gear(gear_selected, actual_gear, options)                             
+                                actual_gear = sendKeystrokes(gear_selected, actual_gear, options)                             
                         else:
                             if clutch_pressed == True:
+                                gear_detected = True
                                 gear_selected = -1
                                 if options['mem_mode'] == 'True':
                                     process.write(address, int(options['reverse_value']))
                                 else:
-                                    actual_gear = update_gear(gear_selected, actual_gear, options)
+                                    actual_gear = sendKeystrokes(gear_selected, actual_gear, options)
                                 sound = False    
                     else:
                         KeyPress_rev(options)
                         sound = False
-                        gear_selected = -1   
+                        gear_selected = -1
+                        gear_detected = True
 
                 # Play sound if clutch was not pressed and the key pressed was one of the defined keys for changing gear 
                 if sound == True and validKey == True and inNeutral == False and options['clutch'] == 'True': 
@@ -298,21 +321,21 @@ def joystick_loop(options, app):
             
             # Release de reverse key just in case we came from reverse
             if event.type == pygame.JOYBUTTONUP:        
-                KeyRelease_rev(options)  
-
-            #################################################### NEUTRAL ##############################################################    
-            # Change to neutral if the option is enabled. The program sleeps, and then check if the next event is a joybuttondown, if true skips neutral
-            if event.type == pygame.JOYBUTTONUP and options['neutral'] == 'True' and validKey == True:
-                time.sleep(0.3)
-                if not pygame.event.peek(pygame.JOYBUTTONDOWN):
-                    gear_selected = 0
-                    if options['mem_mode'] == 'True':
-                        process.write(address, int(options['neutral_value']))
-                    else:
-                        actual_gear = update_gear(gear_selected, actual_gear, options)  
-                    if arduino_conected == True:
-                        arduino.write(b'0')
-                    print(f"Gear in joystick: {gear_selected}   ",  end="\r")
+                KeyRelease_rev(options) 
+                release_gear_time = time.time()
+                gear_detected = False
+            
+        #################################################### NEUTRAL ##############################################################    
+        # Change to neutral if the option is enabled.                 
+        if (time.time() - release_gear_time) >= options['neutral_wait_time'] and options['neutral'] == 'True' and gear_detected == False and validKey == True:
+            gear_selected = 0
+            if options['mem_mode'] == 'True':
+                process.write(address, int(options['neutral_value']))
+            else:
+                actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
+            if arduino_conected == True:
+                arduino.write(b'0')
+            print(f"Gear in joystick: {gear_selected}   ",  end="\r")         
                         
         # Select neutral if this key is pressed
         if keyboard.is_pressed(options['neut_key']):
@@ -320,7 +343,7 @@ def joystick_loop(options, app):
             if options['mem_mode'] == 'True':
                 process.write(address, int(options['neutral_value']))
             else:
-                actual_gear = update_gear(gear_selected, actual_gear, options)  
+                actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
             if arduino_conected == True:
                 arduino.write(b'0')  
             print(f"Gear in joystick: {gear_selected}   ",  end="\r")
@@ -340,7 +363,7 @@ def joystick_loop(options, app):
 #################################################################################################################
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
 #################################################################################################################
-def update_gear(gear_selected, actual_gear, options):
+def sendKeystrokes(gear_selected, actual_gear, options):
     global first_time
     if options['nascar_mode'] == 'True':
         if options['rev_button'] == 'True' and gear_selected == -1:

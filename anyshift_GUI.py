@@ -71,7 +71,7 @@ def load_preset():
     options['seventh_value'] = juegos[index]['seventh value']
     options['reverse_value'] = juegos[index]['reverse value']
     options['neutral_value'] = juegos[index]['neutral value']  
-    
+    options['neutral_wait_time'] = juegos[index]['neutral delay']
     # Update windows with read values
     windows_updater()
 
@@ -149,7 +149,7 @@ def save_preset():
             error_frame.pack()
             error_label = Label(error_frame, text = "Neutral key error. Only one char (a to z)")
             error_label.grid(row = 0, column = 0) 
-            return
+            return       
         
         preset.append(app.seven_var.get())
         preset.append(app.neutral_var.get())
@@ -170,6 +170,29 @@ def save_preset():
         preset.append(app.sixth_gear_value_entry.get())
         preset.append(app.seventh_gear_value_entry.get())
         preset.append(app.reverse_gear_value_entry.get())
+
+        neutDelay = app.neutral_delay_entry.get()
+        try:
+            if float(neutDelay) > 0 and float(neutDelay) < 2:
+                preset.append(float(neutDelay))  
+            else:
+                error_window = Toplevel(app)        
+                error_window.title("Error")
+                error_window.config(width=200, height=50)
+                error_frame = Frame(error_window)
+                error_frame.pack()
+                error_label = Label(error_frame, text = "Neutral delay error. Must be a float between 0 and 2")
+                error_label.grid(row = 0, column = 0) 
+                return
+        except:
+            error_window = Toplevel(app)        
+            error_window.title("Error")
+            error_window.config(width=200, height=50)
+            error_frame = Frame(error_window)
+            error_frame.pack()
+            error_label = Label(error_frame, text = "Neutral delay error. Must be a float between 0 and 2")
+            error_label.grid(row = 0, column = 0) 
+            return
 
         with open('presets.csv', 'a') as file: 
             # Pass this file object to csv.writer()
@@ -263,7 +286,30 @@ def read_options_from_windows():
         error_label = Label(error_frame, text = "Neutral key error. Only one char (a to z)")
         error_label.grid(row = 0, column = 0) 
         return  
-    
+
+    neutDelay = app.neutral_delay_entry.get()
+    try:
+        if float(neutDelay) > 0 and float(neutDelay) < 2:
+            options['neutral_wait_time'] = float(neutDelay)  
+        else:
+            error_window = Toplevel(app)        
+            error_window.title("Error")
+            error_window.config(width=200, height=50)
+            error_frame = Frame(error_window)
+            error_frame.pack()
+            error_label = Label(error_frame, text = "Neutral delay error. Must be a float between 0 and 2")
+            error_label.grid(row = 0, column = 0) 
+            return
+    except:
+        error_window = Toplevel(app)        
+        error_window.title("Error")
+        error_window.config(width=200, height=50)
+        error_frame = Frame(error_window)
+        error_frame.pack()
+        error_label = Label(error_frame, text = "Neutral delay error. Must be a float between 0 and 2")
+        error_label.grid(row = 0, column = 0) 
+        return
+
     options['seven_gears'] = app.seven_var.get()
     options['neutral'] = app.neutral_var.get()
     options['rev_button'] = app.rev_bool.get()
@@ -319,7 +365,6 @@ def windows_updater():
     app.seventh_gear_value.config(text = options['seventh'])
     app.reverse_gear_value.config(text = options['reverse'])
     
-
     app.clutch_axis_value = Label(app.gears_selection_frame, text = options['clutch_axis'])  
     app.clutch_axis_value.grid(row = 3, column = 4, padx=(25,10))
 
@@ -349,12 +394,12 @@ def windows_updater():
     app.rev_bool = StringVar(value = options['rev_button'])
     app.rev_check = Checkbutton(app.options_selection_frame, text= "Reverse is a button",
                                   variable=app.rev_bool, onvalue="True", offvalue="False")
-    app.rev_check.grid(row=0, column=1)
+    app.rev_check.grid(row=1, column=1)
     
     app.nascar = StringVar(value = options['nascar_mode'])
     app.nascar_check = Checkbutton(app.options_selection_frame, text= "Nascar mode",
                                   variable=app.nascar, onvalue="True", offvalue="False")
-    app.nascar_check.grid(row=1, column=1)
+    app.nascar_check.grid(row=1, column=2)
     
     app.mem_var = StringVar(value = options['mem_mode'])
     app.mem_check = Checkbutton(app.memory_selection_frame, text= "Active",
@@ -372,6 +417,8 @@ def windows_updater():
     app.dosbase_key_entry.insert(0, options['db_base_addr'])
     app.offset_key_entry.delete(0, 12)
     app.offset_key_entry.insert(0, options['offset'])
+    app.neutral_delay_entry.delete(0, 12)
+    app.neutral_delay_entry.insert(0, options['neutral_wait_time'])
 
     # Update gear values
     app.first_gear_value_entry.delete(0, 12)
@@ -590,6 +637,13 @@ class GUI(Tk):
                                         variable=self.neutral_var, onvalue="True", offvalue="False")
         self.neutral_check.grid(row=0, column=0)
 
+        
+        self.neutral_delay_label = Label(self.options_selection_frame, text = "             Neutral Delay")
+        self.neutral_delay_label.grid(row = 0, column = 1)
+        self.neutral_delay_entry = Entry(self.options_selection_frame, width= 4)
+        self.neutral_delay_entry.insert(0, options['neutral_wait_time'])
+        self.neutral_delay_entry.grid(row = 0, column = 2)
+
         self.seven_var = StringVar(value = options['seven_gears'])
         self.seven_check = Checkbutton(self.options_selection_frame, text= "Use seventh gear",
                                         variable=self.seven_var, onvalue="True", offvalue="False")
@@ -598,12 +652,12 @@ class GUI(Tk):
         self.rev_bool = StringVar(value = options['rev_button'])
         self.rev_check = Checkbutton(self.options_selection_frame, text= "Reverse is a button",
                                         variable=self.rev_bool, onvalue="True", offvalue="False")
-        self.rev_check.grid(row=0, column=1)
+        self.rev_check.grid(row=1, column=1)
 
         self.nascar = StringVar(value = options['nascar_mode'])
         self.nascar_check = Checkbutton(self.options_selection_frame, text= "Nascar mode",
                                         variable=self.nascar, onvalue="True", offvalue="False")
-        self.nascar_check.grid(row=1, column=1)
+        self.nascar_check.grid(row=1, column=2)
 
         # Mem mode
         self.memory_selection_frame = LabelFrame(self.frame, text = "Memory mode")
