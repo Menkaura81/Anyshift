@@ -365,8 +365,9 @@ def windows_updater():
     app.seventh_gear_value.config(text = options['seventh'])
     app.reverse_gear_value.config(text = options['reverse'])
     
+    app.clutch_axis_value.destroy()
     app.clutch_axis_value = Label(app.gears_selection_frame, text = options['clutch_axis'])  
-    app.clutch_axis_value.grid(row = 3, column = 4, padx=(25,10))
+    app.clutch_axis_value.grid(row = 3, column = 4, padx=(25,0))
 
     app.upshift_key_entry.delete(0, 4)  
     app.upshift_key_entry.insert(0, options['up_key'])
