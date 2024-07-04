@@ -16,11 +16,11 @@ from tkinter import Tk, Button
 from tkinter import *  # Toplevel window
 from tkinter import ttk  # GUI combobox
 import csv  # Load and write csv files
-from ReadWriteMemory import ReadWriteMemory  # Memory writing
 from Gearbox import joystick_loop
 from ShifterConfig import gear_selection, joystick_lister
 from ReadWriteSaves import ini_reader, ini_writer, hex_convert, char_convert
 import webbrowser
+import threading
 
 # Open buymeacoffee link
 def callback(url):
@@ -465,7 +465,8 @@ def run_any():
     # Update button text
     app.run_button.config(text="Anyshift running. Press 'End' to stop")
     app.update() 
-    joystick_loop(options, app)        
+    threading.Thread(target=joystick_loop(options, app)).start()    
+            
     app.run_button.config(text="Run Anyshift")  # Return button to normal text
 
 # Tkinter window class

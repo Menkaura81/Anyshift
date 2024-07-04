@@ -19,7 +19,7 @@ def ini_reader():
     options['seven_gears'] = config['OPTIONS']['seven gears']
     options['rev_button'] = config['OPTIONS']['reverse is button']
     options['neutral'] = config['OPTIONS']['neutral detection']
-    options['neutral_wait_time'] = float(config['OPTIONS']['neutral delay'])
+    options['neutral_wait_time'] = config['OPTIONS']['neutral delay']
     options['clutch'] = config['OPTIONS']['require clutch']
     options['clutch_id'] = config['SHIFTER']['clutch id']
     options['clutch_axis'] = config['SHIFTER']['clutch axis']
@@ -28,20 +28,20 @@ def ini_reader():
     options['db_base_addr'] = config['OPTIONS']['base address']
     options['offset'] = config['OPTIONS']['memory value offset']
     options['joy_id'] = config['SHIFTER']['joystick id']
-    options['first'] = int(config['SHIFTER']['first gear'])
-    options['second'] = int(config['SHIFTER']['second gear'])
-    options['third'] = int(config['SHIFTER']['third gear'])
-    options['fourth'] = int(config['SHIFTER']['fourth gear'])
-    options['fifth'] = int(config['SHIFTER']['fifth gear'])
-    options['sixth'] = int(config['SHIFTER']['sixth gear'])
-    options['seventh'] = int(config['SHIFTER']['seventh gear'])
-    options['reverse'] = int(config['SHIFTER']['reverse'])
+    options['first'] = config['SHIFTER']['first gear']
+    options['second'] = config['SHIFTER']['second gear']
+    options['third'] = config['SHIFTER']['third gear']
+    options['fourth'] = config['SHIFTER']['fourth gear']
+    options['fifth'] = config['SHIFTER']['fifth gear']
+    options['sixth'] = config['SHIFTER']['sixth gear']
+    options['seventh'] = config['SHIFTER']['seventh gear']
+    options['reverse'] = config['SHIFTER']['reverse']
     options['neut_key'] = config['KEYS']['neutral key']
     options['up_key'] = config['KEYS']['upshift']
     options['down_key'] = config['KEYS']['downshift']
     options['rev_key'] = config['KEYS']['reverse']
-    options['presskey_timer'] = float(config['OPTIONS']['presskey timer'])
-    options['releasekey_timer'] = float(config['OPTIONS']['releasekey timer'])
+    options['presskey_timer'] = config['OPTIONS']['presskey timer']
+    options['releasekey_timer'] = config['OPTIONS']['releasekey timer']
     options['first_value'] = config['OPTIONS']['first gear value']
     options['second_value'] = config['OPTIONS']['second gear value']
     options['third_value'] = config['OPTIONS']['third gear value']
@@ -51,7 +51,7 @@ def ini_reader():
     options['seventh_value'] = config['OPTIONS']['seventh gear value']
     options['reverse_value'] = config['OPTIONS']['reverse gear value']
     options['neutral_value'] = config['OPTIONS']['neutral value']
-    options['bitepoint'] = int(config['OPTIONS']['clutch bitepoint'])
+    options['bitepoint'] = config['OPTIONS']['clutch bitepoint']
     options['comport'] = config['EXTRAS']['comport']
 
     return options
