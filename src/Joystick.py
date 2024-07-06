@@ -346,7 +346,7 @@ def joystick_loop(options):
 
         # Close Anyshift if end is pressed
         if keyboard.is_pressed('End'):
-            done = True        
+            Global.done = True        
 
     # Close pygame and arduino   
     pygame.quit()

@@ -7,7 +7,7 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGroupBox,
-    QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox,
+    QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox, QFileDialog,
     QMenuBar, QPushButton, QRadioButton, QSizePolicy,
     QStatusBar, QWidget)
 

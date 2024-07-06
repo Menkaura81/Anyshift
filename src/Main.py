@@ -12,7 +12,10 @@
 # 2023 Menkaura Soft
 #########################################################################################################
 
-from PySide6.QtWidgets import (QMainWindow, QMessageBox)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGroupBox,
+    QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox, QFileDialog,
+    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
+    QStatusBar, QWidget)
 from PySide6 import QtWidgets
 import sys
 from ReadWriteSaves import *
@@ -20,6 +23,8 @@ from Joystick import *
 import Global
 import webbrowser
 from UI import Ui_MainWindow
+from Presets import *
+import os
 
 class MyWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -33,13 +38,30 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.actionSave_and_Exit.triggered.connect(lambda: self.menuButton('e'))
         self.actionGuides.triggered.connect(lambda: self.menuButton('g'))
         self.actionAbout_2.triggered.connect(lambda: self.menuButton('a'))
+        self.actionLoad_Profile.triggered.connect(self.loadProfile)
 
         self.updateWindow()
 
+    def loadProfile(self):
+        global options
+
+        # Get path for .xml location    
+        # determine if application is a script file or frozen exe
+        if getattr(sys, 'frozen', False):
+            application_path = os.path.dirname(sys.executable)
+        elif __file__:
+            application_path = os.path.dirname(__file__)
+        path = application_path + "/Presets/"
+        
+        fname = QFileDialog.getOpenFileName(self, 'Open file', 
+        path,"Anyshift files (*.any)")
+
+        options = ini_reader(fname)
+        self.updateWindow()
+        
 
     def menuButton(self, page): 
-        global options 
-        print('entramos')            
+        global options            
         if page == 'g':
             webbrowser.open('https://github.com/Menkaura81/Anyshift/tree/main/Guides') 
         if page == 'a':            
@@ -84,6 +106,8 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.bitepointLineEdit.setText(str(options['bitepoint']))
         if options['clutch'] == 'True':
             self.clutchRadioButton.setChecked(True)
+        else:
+            self.clutchRadioButton.setChecked(False)
         
         self.firstGearLabel.setText(str(options['first']))
         self.secondGearLabel.setText(str(options['second']))
@@ -104,6 +128,8 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         
         if options['mem_mode'] == 'True':
             self.memmodeRadioButton.setChecked(True)
+        else:
+            self.memmodeRadioButton.setChecked(False)
         self.processNameLineEdit.setText(str(options['process']))
         self.baseAddressLineEdit.setText(str(options['db_base_addr']))
         self.offsetLineEdit.setText(str(options['offset']))
@@ -119,12 +145,20 @@ class MyWindow(QMainWindow, Ui_MainWindow):
 
         if options['seven_gears'] == 'True':
             self.sevenGearsCheckBox.setChecked(True)
+        else:
+            self.sevenGearsCheckBox.setChecked(False)
         if options['neutral'] == 'True':
-            self.neutralCheckBox.setChecked(True)        
+            self.neutralCheckBox.setChecked(True)
+        else:
+            self.neutralCheckBox.setChecked(False)        
         if options['nascar_mode'] == 'True':
             self.nascarCheckBox.setChecked(True)
+        else:
+            self.nascarCheckBox.setChecked(False)
         if options['rev_button'] == 'True':
             self.reverseCheckBox.setChecked(True)
+        else:
+            self.reverseCheckBox.setChecked(False)
         self.neutralDelayLineEdit.setText(str(options['neutral_wait_time']))
         self.ArduinoLineEdit.setText(str(options['comport']))
 
@@ -283,7 +317,7 @@ if __name__ == '__main__':
     global options
     global first_click
     first_click = True
-    options = ini_reader()
+    options = ini_reader('Anyshift.ini')
     # Get list of joystick ids and save them into joys list
     joys, num_joy = joystick_lister()  # Get joystick list and count     
     app = QtWidgets.QApplication(sys.argv)

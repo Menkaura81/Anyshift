@@ -7,12 +7,12 @@
 
 import configparser  # Write and read ini files
 
-def ini_reader():
+def ini_reader(file):
 
     options = {}
     # Create a config objet and read config values
     config = configparser.ConfigParser()
-    config.read('Anyshift.ini')
+    config.read(file)
     
     # Save values into dictionay
     options['nascar_mode'] = config['OPTIONS']['nascar racing mode']
