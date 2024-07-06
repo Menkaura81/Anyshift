@@ -1,5 +1,5 @@
 ################################################################################################
-# Gearbox module provides all the shifting logic to Anyshift software
+# Joystick module provides all the shifting logic and joystick management to Anyshift software
 #
 # There is no warranty for the program, to the extent permitted by applicable law. Except 
 # when otherwise stated in writing the copyright holders and/or other parties provide the
@@ -19,10 +19,11 @@ import keyboard  # Normal key presses
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
 import serial # Arduino serial comunication
 from PlaySound import play_sound
-from tkinter import *  # Toplevel window
+from PySide6.QtWidgets import QMessageBox
+import Global
 
 
-def joystick_loop(options, app):
+def joystickLoop(options):
     ##############################################################################################################
     # INITIALIZE PYGAME
     ##############################################################################################################
@@ -50,7 +51,7 @@ def joystick_loop(options, app):
     ##############################################################################################################
     # Create clutch joystick object and initialize it if clutch = true
     ##############################################################################################################
-    if options['clutch'] == 'True':
+    if options['clutch'] == True:
         clutch = pygame.joystick.Joystick(int(options['clutch_id']))
         clutch.init()
     clutch_pressed = False
@@ -59,20 +60,19 @@ def joystick_loop(options, app):
     ##############################################################################################################
     # Initialize mem mode if enabled
     ##############################################################################################################
-    if options['mem_mode'] == 'True':
+    if options['mem_mode'] == True:
         # Open DosBox process and check for process opened
         rwm = ReadWriteMemory()
         try:
             process = rwm.get_process_by_name(options['process'])
             process.open()        
         except:
-            error_window = Toplevel(app)        
-            error_window.title("Error")
-            error_window.config(width=200, height=50)
-            error_frame = Frame(error_window)
-            error_frame.pack()
-            error_label = Label(error_frame, text = "Process not found. Open it before Anyshift")
-            error_label.grid(row = 0, column = 0)            
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText('Process not found. Open it before Anyshift')
+            msg.setWindowTitle("Error")
+            msg.exec_()             
             return    
         
         # Base address. Got from the pointer we have
@@ -92,18 +92,17 @@ def joystick_loop(options, app):
     gear_selected = 0 
     actual_gear = 0
     gear_detected = False
-    release_gear_time = time.time()
-    done = False
+    release_gear_time = time.time()     
     validKey = False 
-    while not done:
+    while Global.done == False:
                 
         for event in pygame.event.get():
             # Event for end the loop
             if event.type == pygame.QUIT:
                 done = True  
             # First we check if clutch if pressed or not
-            if options['clutch'] == 'True':
-                if clutch.get_axis(int(options['clutch_axis'])) > clutch_value:  # First we check if clutch if pressed or not
+            if options['clutch'] == True:
+                if clutch.get_axis(options['clutch_axis']) > clutch_value:  # First we check if clutch if pressed or not
                     clutch_pressed = True
                 else:
                     clutch_pressed = False
@@ -132,10 +131,10 @@ def joystick_loop(options, app):
                     inNeutral = True
                 ####################################### FIRST GEAR ####################################################
                 if shifter.get_button(options['first']) == True :                    
-                    if options['clutch'] == 'False': 
+                    if options['clutch'] == False: 
                         gear_detected = True                  
                         gear_selected = 1
-                        if options['mem_mode'] == 'True':
+                        if options['mem_mode'] == True:
                             process.write(address, int(options['first_value']))
                         else:
                             actual_gear = sendKeystrokes(gear_selected, actual_gear, options)                        
@@ -145,7 +144,7 @@ def joystick_loop(options, app):
                         if clutch_pressed == True: 
                             gear_detected = True                       
                             gear_selected = 1
-                            if options['mem_mode'] == 'True':
+                            if options['mem_mode'] == True:
                                 process.write(address, int(options['first_value']))
                             else:
                                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
@@ -154,10 +153,10 @@ def joystick_loop(options, app):
                             sound = False   
                 ####################################### SECOND GEAR ####################################################
                 if shifter.get_button(options['second']) == True:
-                    if options['clutch'] == 'False':
+                    if options['clutch'] == False:
                         gear_detected = True
                         gear_selected = 2
-                        if options['mem_mode'] == 'True':
+                        if options['mem_mode'] == True:
                             process.write(address, int(options['second_value']))
                         else:
                             actual_gear = sendKeystrokes(gear_selected, actual_gear, options)                        
@@ -167,7 +166,7 @@ def joystick_loop(options, app):
                         if clutch_pressed == True:
                             gear_detected = True
                             gear_selected = 2
-                            if options['mem_mode'] == 'True':
+                            if options['mem_mode'] == True:
                                 process.write(address, int(options['second_value']))                            
                             else:
                                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
@@ -176,10 +175,10 @@ def joystick_loop(options, app):
                             sound = False
                 ####################################### THIRD GEAR ####################################################
                 if shifter.get_button(options['third']) == True:
-                    if options['clutch'] == 'False':
+                    if options['clutch'] == False:
                         gear_detected = True
                         gear_selected = 3
-                        if options['mem_mode'] == 'True':
+                        if options['mem_mode'] == True:
                             process.write(address, int(options['third_value']))
                         else:
                             actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
@@ -189,7 +188,7 @@ def joystick_loop(options, app):
                         if clutch_pressed == True:
                             gear_detected = True
                             gear_selected = 3
-                            if options['mem_mode'] == 'True':
+                            if options['mem_mode'] == True:
                                 process.write(address, int(options['third_value']))
                             else:
                                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options)                         
@@ -198,10 +197,10 @@ def joystick_loop(options, app):
                             sound = False
                 ####################################### FOURTH GEAR ####################################################
                 if shifter.get_button(options['fourth']) == True:
-                    if options['clutch'] == 'False':
+                    if options['clutch'] == False:
                         gear_detected = True
                         gear_selected = 4
-                        if options['mem_mode'] == 'True':
+                        if options['mem_mode'] == True:
                             process.write(address, int(options['fourth_value']))
                         else:
                             actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
@@ -211,7 +210,7 @@ def joystick_loop(options, app):
                         if clutch_pressed == True:
                             gear_detected = True
                             gear_selected = 4
-                            if options['mem_mode'] == 'True':
+                            if options['mem_mode'] == True:
                                 process.write(address, int(options['fourth_value']))
                             else:
                                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
@@ -220,10 +219,10 @@ def joystick_loop(options, app):
                             sound = False
                 ####################################### FIFTH GEAR ####################################################
                 if shifter.get_button(options['fifth']) == True:
-                    if options['clutch'] == 'False':
+                    if options['clutch'] == False:
                         gear_detected = True
                         gear_selected = 5
-                        if options['mem_mode'] == 'True':
+                        if options['mem_mode'] == True:
                             process.write(address, int(options['fifth_value']))
                         else:
                             actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
@@ -233,7 +232,7 @@ def joystick_loop(options, app):
                         if clutch_pressed == True:
                             gear_detected = True
                             gear_selected = 5
-                            if options['mem_mode'] == 'True':
+                            if options['mem_mode'] == True:
                                 process.write(address, int(options['fifth_value']))
                             else:
                                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
@@ -245,7 +244,7 @@ def joystick_loop(options, app):
                     if options['clutch'] == 'False':
                         gear_detected = True
                         gear_selected = 6
-                        if options['mem_mode'] == 'True':
+                        if options['mem_mode'] == True:
                             process.write(address, int(options['sixth_value']))
                         else:
                             actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
@@ -255,7 +254,7 @@ def joystick_loop(options, app):
                         if clutch_pressed == True:
                             gear_detected = True
                             gear_selected = 6
-                            if options['mem_mode'] == 'True':
+                            if options['mem_mode'] == True:
                                 process.write(address, int(options['sixth_value']))
                             else:
                                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
@@ -265,10 +264,10 @@ def joystick_loop(options, app):
                 ##################################### SEVENTH GEAR ####################################################
                 if options['seven_gears'] == 'True':  # To avoid invalid button error
                     if shifter.get_button(options['seventh']) == True:
-                        if options['clutch'] == 'False':
+                        if options['clutch'] == False:
                             gear_detected = True
                             gear_selected = 7
-                            if options['mem_mode'] == 'True':
+                            if options['mem_mode'] == True:
                                 process.write(address, int(options['seventh_value']))
                             else:
                                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
@@ -278,7 +277,7 @@ def joystick_loop(options, app):
                             if clutch_pressed == True:
                                 gear_detected = True
                                 gear_selected = 7
-                                if options['mem_mode'] == 'True':
+                                if options['mem_mode'] == True:
                                     process.write(address, int(options['seventh_value']))
                                 else:
                                     actual_gear = sendKeystrokes(gear_selected, actual_gear, options) 
@@ -287,11 +286,11 @@ def joystick_loop(options, app):
                                 sound = False  
                 ######################################### REVERSE ####################################################
                 if shifter.get_button(options['reverse']) == True:
-                    if options['rev_button'] == 'False':
-                        if options['clutch'] == 'False':
+                    if options['rev_button'] == False:
+                        if options['clutch'] == False:
                             gear_detected = True
                             gear_selected = -1
-                            if options['mem_mode'] == 'True':
+                            if options['mem_mode'] == True:
                                 process.write(address, int(options['reverse_value']))
                             else:
                                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options)                             
@@ -299,7 +298,7 @@ def joystick_loop(options, app):
                             if clutch_pressed == True:
                                 gear_detected = True
                                 gear_selected = -1
-                                if options['mem_mode'] == 'True':
+                                if options['mem_mode'] == True:
                                     process.write(address, int(options['reverse_value']))
                                 else:
                                     actual_gear = sendKeystrokes(gear_selected, actual_gear, options)
@@ -311,22 +310,22 @@ def joystick_loop(options, app):
                         gear_detected = True
 
                 # Play sound if clutch was not pressed and the key pressed was one of the defined keys for changing gear 
-                if sound == True and validKey == True and inNeutral == False and options['clutch'] == 'True': 
+                if sound == True and validKey == True and inNeutral == False and options['clutch'] == True: 
                     play_sound()                             
                                 
                 print(f"Gear in joystick: {gear_selected}   ",  end="\r")
             
             # Release de reverse key just in case we came from reverse and start the timer for Detect Neutral 
             if event.type == pygame.JOYBUTTONUP:        
-                KeyRelease_rev(options) 
+                KeyRelease_rev(options)
                 release_gear_time = time.time()
                 gear_detected = False
             
         #################################################### NEUTRAL ##############################################################    
         # Change to neutral if the option is enabled and the timer is greater than neutral_wait_time                 
-        if (time.time() - release_gear_time) >= options['neutral_wait_time'] and options['neutral'] == 'True' and gear_detected == False and validKey == True:
+        if (time.time() - release_gear_time) >= options['neutral_wait_time'] and options['neutral'] == True and gear_detected == False and validKey == True:
             gear_selected = 0
-            if options['mem_mode'] == 'True':
+            if options['mem_mode'] == True:
                 process.write(address, int(options['neutral_value']))
             else:
                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
@@ -337,7 +336,7 @@ def joystick_loop(options, app):
         # Select neutral if this key is pressed
         if keyboard.is_pressed(options['neut_key']):
             gear_selected = 0
-            if options['mem_mode'] == 'True':
+            if options['mem_mode'] == True:
                 process.write(address, int(options['neutral_value']))
             else:
                 actual_gear = sendKeystrokes(gear_selected, actual_gear, options)  
@@ -347,10 +346,238 @@ def joystick_loop(options, app):
 
         # Close Anyshift if end is pressed
         if keyboard.is_pressed('End'):
-            done = True
+            Global.done = True        
 
     # Close pygame and arduino   
     pygame.quit()
     if arduino_conected == True:
         arduino.write(b'9')  # Blank the display    
         arduino.close()  # Closing arduino
+
+
+# Get list of joystick ids and save them into joys list
+def joystickLister():
+
+    pygame.joystick.init()
+    num_joy = pygame.joystick.get_count()
+    joys = []
+    for i in range(num_joy):
+        joy = pygame.joystick.Joystick(i)
+        joy_id = joy.get_name()
+        joys.append(joy_id)
+        joy.quit()
+
+    return joys, num_joy
+
+ 
+def selectFirst(options):    
+    pygame.init()
+    try:
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
+        shifter.init()
+        num_buttons = shifter.get_numbuttons()
+    except:
+        pygame.quit()
+        return
+    
+    while Global.done == False:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                for i in range(num_buttons):
+                    if shifter.get_button(i) == True:
+                        options['first'] = i
+                        Global.done = True
+        if keyboard.is_pressed('End'):
+            Global.done = True
+    pygame.quit() 
+    Global.done = False    
+    return options
+
+
+def selectSecond(options):
+    pygame.init()
+    try:
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
+        shifter.init()
+        num_buttons = shifter.get_numbuttons()
+    except:
+        pygame.quit()
+        return
+    
+    while Global.done == False:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                for i in range(num_buttons):
+                    if shifter.get_button(i) == True:
+                        options['second'] = i
+                        Global.done = True
+        if keyboard.is_pressed('End'):
+            Global.done = True
+    pygame.quit()
+    Global.done = False 
+    return options
+
+
+def selectThird(options):    
+    pygame.init()
+    try:
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
+        shifter.init()
+        num_buttons = shifter.get_numbuttons()
+    except:
+        pygame.quit()
+        return
+    
+    while Global.done == False:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                for i in range(num_buttons):
+                    if shifter.get_button(i) == True:
+                        options['third'] = i
+                        Global.done = True
+        if keyboard.is_pressed('End'):
+            Global.done = True
+    pygame.quit()
+    Global.done = False 
+    return options
+
+
+def selectFourth(options):    
+    pygame.init()
+    try:
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
+        shifter.init()
+        num_buttons = shifter.get_numbuttons()
+    except:
+        pygame.quit()
+        return
+    
+    while Global.done == False:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                for i in range(num_buttons):
+                    if shifter.get_button(i) == True:
+                        options['fourth'] = i
+                        Global.done = True
+        if keyboard.is_pressed('End'):
+            Global.done = True
+    pygame.quit()
+    Global.done = False 
+    return options
+
+
+def selectFifth(options):    
+    pygame.init()
+    try:
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
+        shifter.init()
+        num_buttons = shifter.get_numbuttons()
+    except:
+        pygame.quit()
+        return
+    
+    while Global.done == False:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                for i in range(num_buttons):
+                    if shifter.get_button(i) == True:
+                        options['fifth'] = i
+                        Global.done = True
+        if keyboard.is_pressed('End'):
+            Global.done = True
+    pygame.quit()
+    Global.done = False 
+    return options
+
+
+def selectSixth(options):    
+    pygame.init()
+    try:
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
+        shifter.init()
+        num_buttons = shifter.get_numbuttons()
+    except:
+        pygame.quit()
+        return
+    
+    while Global.done == False:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                for i in range(num_buttons):
+                    if shifter.get_button(i) == True:
+                        options['sixth'] = i
+                        Global.done = True
+        if keyboard.is_pressed('End'):
+            Global.done = True
+    pygame.quit()
+    Global.done = False 
+    return options
+    
+
+def selectSeventh(options):    
+    pygame.init()
+    try:
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
+        shifter.init()
+        num_buttons = shifter.get_numbuttons()
+    except:
+        pygame.quit()
+        return    
+    
+    while Global.done == False:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                for i in range(num_buttons):
+                    if shifter.get_button(i) == True:
+                        options['seventh'] = i
+                        Global.done = True
+        if keyboard.is_pressed('End'):
+            Global.done = True
+    pygame.quit()
+    Global.done = False 
+    return options
+
+
+def selectReverse(options):    
+    pygame.init()
+    try:
+        shifter = pygame.joystick.Joystick(int(options['joy_id']))
+        shifter.init()
+        num_buttons = shifter.get_numbuttons()
+    except:
+        pygame.quit()
+        return    
+    
+    while Global.done == False:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                for i in range(num_buttons):
+                    if shifter.get_button(i) == True:
+                        options['reverse'] = i
+                        Global.done = True
+        if keyboard.is_pressed('End'):
+            Global.done = True
+    pygame.quit()
+    Global.done = False 
+    return options
+
+
+def selectAxis(options):    
+    pygame.init()
+    try:
+        clutch = pygame.joystick.Joystick(options['clutch_id'])
+        clutch.init()
+    except:
+        pygame.quit()
+        return    
+    
+    while Global.done == False:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYAXISMOTION:
+                options['clutch_axis'] = event.axis
+                Global.done = True
+        if keyboard.is_pressed('End'):
+            Global.done = True
+    pygame.quit()
+    Global.done = False    
+    return options

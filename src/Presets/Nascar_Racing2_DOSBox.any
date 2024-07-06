@@ -1,8 +1,8 @@
 [SHIFTER]
 ; this is the id number of the shifter you want to use
-joystick id = 3
+joystick id = 0
 ; this is the id number of the controller you wanth to use for clutch
-clutch id = 1
+clutch id = 0
 ; selected controller axis for the clutch
 clutch axis = 2
 ; joystick buttons for each gear
@@ -17,7 +17,7 @@ reverse = 7
 
 [KEYS]
 ; upshift, downshift, neutral and reverse key
-upshift = s
+upshift = a
 downshift = z
 reverse = c
 neutral key = n
@@ -37,7 +37,7 @@ clutch bitepoint = 75
 reverse is button = True
 ; unique mode for old papyrus games where the game remember the gear you were in when you changed to
 ; reverse. this will change all way down to first gear and then press reverse to avoid desynchronization
-nascar racing mode = False
+nascar racing mode = True
 ; instead of key presses it writes data to memory. i only included it because of grand prix 2
 ; each game has different memory values. no offical support for this one
 memory write mode = False
@@ -49,13 +49,13 @@ base address = 0
 memory value offset = 0
 ; values that the game uses for each gear
 neutral value = -
-first gear value = 1
-second gear value = 2
-third gear value = 3
-fourth gear value = 4
-fifth gear value = 5
-sixth gear value = 6
-seventh gear value = 7
+first gear value = 0
+second gear value = 1
+third gear value = 2
+fourth gear value = 3
+fifth gear value = -
+sixth gear value = -
+seventh gear value = -
 reverse gear value = -
 ; delays for key presses and releases. tinker with this if game doesnt detect key presses
 presskey timer = 0.08

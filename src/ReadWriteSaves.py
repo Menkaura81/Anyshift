@@ -7,41 +7,59 @@
 
 import configparser  # Write and read ini files
 
-def ini_reader():
+def iniReader(file):
 
     options = {}
     # Create a config objet and read config values
     config = configparser.ConfigParser()
-    config.read('Anyshift.ini')
+    config.read(file)
     
     # Save values into dictionay
-    options['nascar_mode'] = config['OPTIONS']['nascar racing mode']
-    options['seven_gears'] = config['OPTIONS']['seven gears']
-    options['rev_button'] = config['OPTIONS']['reverse is button']
-    options['neutral'] = config['OPTIONS']['neutral detection']
-    options['neutral_wait_time'] = float(config['OPTIONS']['neutral delay'])
-    options['clutch'] = config['OPTIONS']['require clutch']
+    if config['OPTIONS']['nascar racing mode'] == 'True':
+         options['nascar_mode'] = True
+    else:
+        options['nascar_mode'] = False
+    if config['OPTIONS']['seven gears'] == 'True':
+        options['seven_gears']= True
+    else:
+        options['seven_gears'] = False
+    if config['OPTIONS']['reverse is button'] == 'True':
+        options['rev_button'] = True
+    else:
+        options['rev_button'] = False
+    if config['OPTIONS']['neutral detection'] == 'True':
+        options['neutral'] = True
+    else:
+        options['neutral'] = False
+    options['neutral_wait_time'] = config['OPTIONS']['neutral delay']
+    if config['OPTIONS']['require clutch'] == 'True':
+        options['clutch'] = True
+    else:
+        options['clutch'] = False
     options['clutch_id'] = config['SHIFTER']['clutch id']
     options['clutch_axis'] = config['SHIFTER']['clutch axis']
-    options['mem_mode'] = config['OPTIONS']['memory write mode']
+    if config['OPTIONS']['memory write mode'] == 'True':
+        options['mem_mode'] = True
+    else:
+        options['mem_mode'] = False
     options['process'] = config['OPTIONS']['process name']
     options['db_base_addr'] = config['OPTIONS']['base address']
     options['offset'] = config['OPTIONS']['memory value offset']
     options['joy_id'] = config['SHIFTER']['joystick id']
-    options['first'] = int(config['SHIFTER']['first gear'])
-    options['second'] = int(config['SHIFTER']['second gear'])
-    options['third'] = int(config['SHIFTER']['third gear'])
-    options['fourth'] = int(config['SHIFTER']['fourth gear'])
-    options['fifth'] = int(config['SHIFTER']['fifth gear'])
-    options['sixth'] = int(config['SHIFTER']['sixth gear'])
-    options['seventh'] = int(config['SHIFTER']['seventh gear'])
-    options['reverse'] = int(config['SHIFTER']['reverse'])
+    options['first'] = config['SHIFTER']['first gear']
+    options['second'] = config['SHIFTER']['second gear']
+    options['third'] = config['SHIFTER']['third gear']
+    options['fourth'] = config['SHIFTER']['fourth gear']
+    options['fifth'] = config['SHIFTER']['fifth gear']
+    options['sixth'] = config['SHIFTER']['sixth gear']
+    options['seventh'] = config['SHIFTER']['seventh gear']
+    options['reverse'] = config['SHIFTER']['reverse']
     options['neut_key'] = config['KEYS']['neutral key']
     options['up_key'] = config['KEYS']['upshift']
     options['down_key'] = config['KEYS']['downshift']
     options['rev_key'] = config['KEYS']['reverse']
-    options['presskey_timer'] = float(config['OPTIONS']['presskey timer'])
-    options['releasekey_timer'] = float(config['OPTIONS']['releasekey timer'])
+    options['presskey_timer'] = config['OPTIONS']['presskey timer']
+    options['releasekey_timer'] = config['OPTIONS']['releasekey timer']
     options['first_value'] = config['OPTIONS']['first gear value']
     options['second_value'] = config['OPTIONS']['second gear value']
     options['third_value'] = config['OPTIONS']['third gear value']
@@ -51,13 +69,13 @@ def ini_reader():
     options['seventh_value'] = config['OPTIONS']['seventh gear value']
     options['reverse_value'] = config['OPTIONS']['reverse gear value']
     options['neutral_value'] = config['OPTIONS']['neutral value']
-    options['bitepoint'] = int(config['OPTIONS']['clutch bitepoint'])
+    options['bitepoint'] = config['OPTIONS']['clutch bitepoint']
     options['comport'] = config['EXTRAS']['comport']
 
     return options
 
 
-def ini_writer(options, upshift, downshift, rev_key):
+def iniWriter(options, upshift, downshift, rev_key, file):
     
     # Create object config
     config = configparser.ConfigParser(allow_no_value=True)
@@ -131,12 +149,12 @@ def ini_writer(options, upshift, downshift, rev_key):
                        }     
 
     # Write the file
-    with open("Anyshift.ini", "w") as configfile:
+    with open(file, "w") as configfile:
         config.write(configfile)        
 
 
 # Convert keys char into hex code
-def hex_convert(key):
+def hexConvert(key):
 
     # Dictionary for converting input keys to hex values
     keys = {
@@ -184,7 +202,7 @@ def hex_convert(key):
     return result
 
 
-def char_convert(key):
+def charConvert(key):
 
     # Dictionary for converting hex values to char
     keys = {

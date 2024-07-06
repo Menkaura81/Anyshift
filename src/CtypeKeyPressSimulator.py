@@ -83,7 +83,7 @@ def ReleaseKey(hexKeyCode):
 # (code by Menkaura)
 # Function to send key presses for upshift
 def KeyPress_up(options):
-    time.sleep(float(options['presskey_timer']))
+    time.sleep(float(options['presskey_timer']))    
     PressKey(int(options['up_key'], 16))  # press
     time.sleep(float(options['releasekey_timer']))
     ReleaseKey(int(options['up_key'], 16))  # release
@@ -114,8 +114,8 @@ def KeyRelease_rev(options):
 first_time = True
 def sendKeystrokes(gear_selected, actual_gear, options):
     global first_time
-    if options['nascar_mode'] == 'True':
-        if options['rev_button'] == 'True' and gear_selected == -1:
+    if options['nascar_mode'] == True:
+        if options['rev_button'] == True and gear_selected == -1:
             while actual_gear != 1:
                 KeyPress_down(options)
                 actual_gear -= 1
@@ -123,7 +123,7 @@ def sendKeystrokes(gear_selected, actual_gear, options):
             act_gear = 1
         else:  # Reverse is a gear, not a button   
             KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse is a button mode
-            if options['neutral'] == 'True':  # Normal operation with gear 0 for neutral
+            if options['neutral'] == True:  # Normal operation with gear 0 for neutral
                 act_gear = actual_gear
                 while act_gear != gear_selected:
                     if act_gear < gear_selected:
@@ -152,12 +152,12 @@ def sendKeystrokes(gear_selected, actual_gear, options):
                             KeyPress_down(options)
     else:
         # Press key selected for reverse
-        if options['rev_button'] == 'True' and gear_selected == -1:
+        if options['rev_button'] == True and gear_selected == -1:
             KeyPress_rev(options) 
             act_gear = -1
         else:  # Reverse is a gear, not a button   
             KeyRelease_rev(options)  # Release de reverse key just in case we came from reverse is a button mode
-            if options['neutral'] == 'True':  # Normal operation with gear 0 for neutral
+            if options['neutral'] == True:  # Normal operation with gear 0 for neutral
                 act_gear = actual_gear
                 while act_gear != gear_selected:
                     if act_gear < gear_selected:
