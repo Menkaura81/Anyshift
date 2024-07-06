@@ -12,10 +12,7 @@
 # 2023 Menkaura Soft
 #########################################################################################################
 
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGroupBox,
-    QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox, QFileDialog,
-    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
-    QStatusBar, QWidget)
+from PySide6.QtWidgets import (QMainWindow, QMessageBox, QFileDialog)
 from PySide6 import QtWidgets
 import sys
 from ReadWriteSaves import *
@@ -29,22 +26,37 @@ import os
 class MyWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
-
         # Set up the user interface from Designer.
         self.setupUi(self)
-
         # Make some local modifications.        
         self.runAnyButton.clicked.connect(self.runAny)
         self.actionSave_and_Exit.triggered.connect(lambda: self.menuButton('e'))
         self.actionGuides.triggered.connect(lambda: self.menuButton('g'))
         self.actionAbout_2.triggered.connect(lambda: self.menuButton('a'))
         self.actionLoad_Profile.triggered.connect(self.loadProfile)
-
+        self.actionSave_Profile.triggered.connect(self.saveProfile)
+        self.clutchAxisButton.clicked.connect(self.clutchAxis)
+        # Update window
         self.updateWindow()
+
+    
+    def clutchAxis(self):
+        global options
+        print(options)
+        valid = self.readWindow()
+        if valid == True:
+            get_axis(options)
+
+        print(options)
+        options['up_key'] = char_convert(options['up_key'])
+        options['down_key'] = char_convert(options['down_key'])
+        options['rev_key']= char_convert(options['rev_key'])
+        
+        self.updateWindow()
+
 
     def loadProfile(self):
         global options
-
         # Get path for .xml location    
         # determine if application is a script file or frozen exe
         if getattr(sys, 'frozen', False):
@@ -52,28 +64,54 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         elif __file__:
             application_path = os.path.dirname(__file__)
         path = application_path + "/Presets/"
-        
+        # Open select file window
         fname = QFileDialog.getOpenFileName(self, 'Open file', 
         path,"Anyshift files (*.any)")
-
+        # read options from the selected file
         options = ini_reader(fname)
+        # Update the window
         self.updateWindow()
+
+
+    def saveProfile(self):
+        global options
+        # Get path for .xml location    
+        # determine if application is a script file or frozen exe
+        if getattr(sys, 'frozen', False):
+            application_path = os.path.dirname(sys.executable)
+        elif __file__:
+            application_path = os.path.dirname(__file__)
+        path = application_path + "/Presets/"
+        fname = QFileDialog.getSaveFileName(self, 'Open file', 
+        path,"Anyshift files (*.any)")
+        # read options from window
+        self.readWindow()
+        # make some changes to the data to store it
+        upshift = char_convert(options['up_key'])
+        downshift = char_convert(options['down_key'])
+        rev_key = char_convert(options['rev_key'])
+        # Write ini file
+        ini_writer(options, upshift, downshift, rev_key, fname[0])
         
 
     def menuButton(self, page): 
-        global options            
+        global options 
+        # Open guides webpage           
         if page == 'g':
             webbrowser.open('https://github.com/Menkaura81/Anyshift/tree/main/Guides') 
+            return
+        # Open anyshift repository
         if page == 'a':            
             webbrowser.open('https://github.com/Menkaura81/Anyshift/')                         
-            return            
-        # No funciona
+            return       
+        # Save options into ini file
         if page == 'e':            
             self.readWindow()
             upshift = char_convert(options['up_key'])
             downshift = char_convert(options['down_key'])
             rev_key = char_convert(options['rev_key'])
-            ini_writer(options, upshift, downshift, rev_key) 
+            file = 'Anyshift.ini'
+            ini_writer(options, upshift, downshift, rev_key, file) 
             # sys.exit()           
             return   
 
@@ -82,18 +120,34 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         global options   
         global first_click     
         # Read the actual configuration displayed
-        self.readWindow()
-        # If it´s the first click of the button, launch anyshift and change the button text       
-        if first_click == True:                      
-            first_click = False
-            Global.done = False
-            self.runAnyButton.setText('Press to stop')            
-            joystick_loop(options)
-        # Else set Global.done True, end joystick loop and change button text
-        else:
-            Global.done = True
-            first_click = True
-            self.runAnyButton.setText('Run Anyshift')
+        valid = self.readWindow()
+        # Check for process running
+        if options['mem_mode'] == True:
+            # Open DosBox process and check for process opened
+            rwm = ReadWriteMemory()
+            try:
+                process = rwm.get_process_by_name(options['process'])
+                process.open()        
+            except:
+                valid = False
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setText("Error")
+                msg.setInformativeText('Process not found. Open it before Anyshift')
+                msg.setWindowTitle("Error")
+                msg.exec()             
+                return
+        if valid == True:# If it´s the first click of the button, launch anyshift and change the button text       
+            if first_click == True:                      
+                first_click = False
+                Global.done = False
+                self.runAnyButton.setText('Press to stop')            
+                joystick_loop(options)
+            # Else set Global.done True, end joystick loop and change button text
+            else:
+                Global.done = True
+                first_click = True
+                self.runAnyButton.setText('Run Anyshift')
        
 
     def updateWindow(self):
@@ -104,7 +158,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.ClutchComboBox.addItems(joys)
         self.ClutchComboBox.setCurrentIndex(int(options['clutch_id']))
         self.bitepointLineEdit.setText(str(options['bitepoint']))
-        if options['clutch'] == 'True':
+        if options['clutch'] == True:
             self.clutchRadioButton.setChecked(True)
         else:
             self.clutchRadioButton.setChecked(False)
@@ -126,7 +180,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.presskeydelayLineEdit.setText(str(options['presskey_timer']))
         self.reversekeydelayLineEdit.setText(str(options['releasekey_timer']))                  
         
-        if options['mem_mode'] == 'True':
+        if options['mem_mode'] == True:
             self.memmodeRadioButton.setChecked(True)
         else:
             self.memmodeRadioButton.setChecked(False)
@@ -143,19 +197,19 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.neutralValueLineEdit.setText(str(options['neutral_value']))
         self.reverseValueLineEdit.setText(str(options['reverse_value']))
 
-        if options['seven_gears'] == 'True':
+        if options['seven_gears'] == True:
             self.sevenGearsCheckBox.setChecked(True)
         else:
             self.sevenGearsCheckBox.setChecked(False)
-        if options['neutral'] == 'True':
+        if options['neutral'] == True:
             self.neutralCheckBox.setChecked(True)
         else:
-            self.neutralCheckBox.setChecked(False)        
-        if options['nascar_mode'] == 'True':
+            self.neutralCheckBox.setChecked(False)               
+        if options['nascar_mode'] == True:
             self.nascarCheckBox.setChecked(True)
         else:
             self.nascarCheckBox.setChecked(False)
-        if options['rev_button'] == 'True':
+        if options['rev_button'] == True:
             self.reverseCheckBox.setChecked(True)
         else:
             self.reverseCheckBox.setChecked(False)
@@ -179,7 +233,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setInformativeText('Upshift key error. Only one char (a to z)')
             msg.setWindowTitle("Error")
             msg.exec_()            
-            return 
+            return False
 
         downshift = self.downshiftLineEdit.text()[:1].lower()
         if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
@@ -192,7 +246,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setInformativeText('Downshift key error. Repeated or not a to z char')
             msg.setWindowTitle("Error")
             msg.exec_()             
-            return 
+            return False
         
         rev_key = self.reverseLineEdit.text()[:1].lower() 
         if ord(rev_key) >= 97 and ord(rev_key) <= 122 and rev_key not in keys:
@@ -205,7 +259,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setInformativeText('Reverse key error. Repeated or not a to z char')
             msg.setWindowTitle("Error")
             msg.exec_()   
-            return 
+            return False
         
         neut_key = self.neutralLineEdit.text()[:1].lower()
         if ord(neut_key) >= 97 and ord(neut_key) <= 122 and neut_key not in keys:
@@ -218,7 +272,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setInformativeText('Neutral key error. Only one char (a to z)')
             msg.setWindowTitle("Error")
             msg.exec_()           
-            return
+            return False
 
         neutDelay = self.neutralDelayLineEdit.text()
         try:
@@ -231,7 +285,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 msg.setInformativeText('Neutral delay error. Must be a float between 0 and 2')
                 msg.setWindowTitle("Error")
                 msg.exec_()                 
-                return
+                return False
         except:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
@@ -239,7 +293,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setInformativeText('Neutral delay error. Must be a float between 0 and 2')
             msg.setWindowTitle("Error")
             msg.exec_()                 
-            return
+            return False
 
         options['joy_id'] = self.shifterComboBox.currentIndex()
         options['clutch_id'] = self.ClutchComboBox.currentIndex()
@@ -297,9 +351,11 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             options['rev_button'] = False        
            
         options['neutral_wait_time'] = float(self.neutralDelayLineEdit.text())
-        options['comport'] = self.ArduinoLineEdit.text()     
+        options['comport'] = self.ArduinoLineEdit.text() 
 
-    
+        return True 
+
+
     def closeEvent(self, event):
         # Make sure Anyshift is not running
         Global.done = True
@@ -317,9 +373,11 @@ if __name__ == '__main__':
     global options
     global first_click
     first_click = True
+    # Read options
     options = ini_reader('Anyshift.ini')
     # Get list of joystick ids and save them into joys list
     joys, num_joy = joystick_lister()  # Get joystick list and count     
+    # Launch GUI
     app = QtWidgets.QApplication(sys.argv)
     window = MyWindow()
     window.show()

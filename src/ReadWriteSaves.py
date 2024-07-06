@@ -15,15 +15,33 @@ def ini_reader(file):
     config.read(file)
     
     # Save values into dictionay
-    options['nascar_mode'] = config['OPTIONS']['nascar racing mode']
-    options['seven_gears'] = config['OPTIONS']['seven gears']
-    options['rev_button'] = config['OPTIONS']['reverse is button']
-    options['neutral'] = config['OPTIONS']['neutral detection']
+    if config['OPTIONS']['nascar racing mode'] == 'True':
+         options['nascar_mode'] = True
+    else:
+        options['nascar_mode'] = False
+    if config['OPTIONS']['seven gears'] == 'True':
+        options['seven_gears']= True
+    else:
+        options['seven_gears'] = False
+    if config['OPTIONS']['reverse is button'] == 'True':
+        options['rev_button'] = True
+    else:
+        options['rev_button'] = False
+    if config['OPTIONS']['neutral detection'] == 'True':
+        options['neutral'] = True
+    else:
+        options['neutral'] = False
     options['neutral_wait_time'] = config['OPTIONS']['neutral delay']
-    options['clutch'] = config['OPTIONS']['require clutch']
+    if config['OPTIONS']['require clutch'] == 'True':
+        options['clutch'] = True
+    else:
+        options['clutch'] = False
     options['clutch_id'] = config['SHIFTER']['clutch id']
     options['clutch_axis'] = config['SHIFTER']['clutch axis']
-    options['mem_mode'] = config['OPTIONS']['memory write mode']
+    if config['OPTIONS']['memory write mode'] == 'True':
+        options['mem_mode'] = True
+    else:
+        options['mem_mode'] = False
     options['process'] = config['OPTIONS']['process name']
     options['db_base_addr'] = config['OPTIONS']['base address']
     options['offset'] = config['OPTIONS']['memory value offset']
@@ -57,7 +75,7 @@ def ini_reader(file):
     return options
 
 
-def ini_writer(options, upshift, downshift, rev_key):
+def ini_writer(options, upshift, downshift, rev_key, file):
     
     # Create object config
     config = configparser.ConfigParser(allow_no_value=True)
@@ -131,7 +149,7 @@ def ini_writer(options, upshift, downshift, rev_key):
                        }     
 
     # Write the file
-    with open("Anyshift.ini", "w") as configfile:
+    with open(file, "w") as configfile:
         config.write(configfile)        
 
 

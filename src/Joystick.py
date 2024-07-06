@@ -597,7 +597,7 @@ def get_axis(options):
     
     pygame.init()
     try:
-        clutch = pygame.joystick.Joystick(int(options['clutch_id']))
+        clutch = pygame.joystick.Joystick(options['clutch_id'])
         clutch.init()
     except:
         pygame.quit()

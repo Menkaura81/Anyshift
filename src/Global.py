@@ -12,4 +12,5 @@
 # 2023 Menkaura Soft
 #########################################################################################################
 
+# This variable is for stopping joystick loop from main
 done = False

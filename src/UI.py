@@ -89,9 +89,11 @@ class Ui_MainWindow(object):
         self.fourthGearLabel.setObjectName(u"fourthGearLabel")
         self.fourthGearLabel.setGeometry(QRect(38, 100, 16, 21))
         self.fourthGearLabel.setFont(font)
+
         self.clutchAxisButton = QPushButton(self.groupBox_2)
-        self.clutchAxisButton.setObjectName(u"clutchAxisButton")
+        self.clutchAxisButton.setObjectName(u"clutchAxisButton")        
         self.clutchAxisButton.setGeometry(QRect(110, 20, 75, 24))
+        
         self.configFistButton = QPushButton(self.groupBox_2)
         self.configFistButton.setObjectName(u"configFistButton")
         self.configFistButton.setGeometry(QRect(10, 20, 21, 31))
