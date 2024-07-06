@@ -17,7 +17,7 @@ reverse = 7
 
 [KEYS]
 ; upshift, downshift, neutral and reverse key
-upshift = s
+upshift = a
 downshift = z
 reverse = c
 neutral key = n

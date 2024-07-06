@@ -17,7 +17,7 @@ reverse = 7
 
 [KEYS]
 ; upshift, downshift, neutral and reverse key
-upshift = s
+upshift = a
 downshift = z
 reverse = c
 neutral key = n
@@ -26,7 +26,7 @@ neutral key = n
 ; true if you have a shifter with seven gears. seventh gear button must be configured or anyshift will crash 
 seven gears = False
 ; true if you want to change to neutral if no gear is selected in shifter. most old games doesnt support this
-neutral detection = False
+neutral detection = True
 ; time the shifter must stay in neutral to engage it
 neutral delay = 0.5
 ; true if clutch is needed to change gears
@@ -34,29 +34,29 @@ require clutch = False
 ; percent of the clutch that needs to be pressed to allow gear change
 clutch bitepoint = 75
 ; true if the game uses a separated button for reverse. gran turismo or nascar racing for example
-reverse is button = True
+reverse is button = False
 ; unique mode for old papyrus games where the game remember the gear you were in when you changed to
 ; reverse. this will change all way down to first gear and then press reverse to avoid desynchronization
-nascar racing mode = True
+nascar racing mode = False
 ; instead of key presses it writes data to memory. i only included it because of grand prix 2
 ; each game has different memory values. no offical support for this one
-memory write mode = False
+memory write mode = True
 ; name of the process of the game
-process name = -
+process name = DOSBox.exe
 ; base address. ex: 0.74 = 0x01d3a1a0 
-base address = 0
+base address = 0x01D3A1A0
 ; memory value offset from base addres 
-memory value offset = 0
+memory value offset = 0x291BF0
 ; values that the game uses for each gear
 neutral value = -
-first gear value = 0
-second gear value = 1
-third gear value = 2
-fourth gear value = 3
-fifth gear value = -
-sixth gear value = -
-seventh gear value = -
-reverse gear value = -
+first gear value = 1
+second gear value = 2
+third gear value = 3
+fourth gear value = 4
+fifth gear value = 5
+sixth gear value = 6
+seventh gear value = 7
+reverse gear value = -1
 ; delays for key presses and releases. tinker with this if game doesnt detect key presses
 presskey timer = 0.08
 releasekey timer = 0.1
