@@ -317,7 +317,7 @@ def joystickLoop(options):
             
             # Release de reverse key just in case we came from reverse and start the timer for Detect Neutral 
             if event.type == pygame.JOYBUTTONUP:        
-                KeyRelease_rev(options) 
+                KeyRelease_rev(options)
                 release_gear_time = time.time()
                 gear_detected = False
             

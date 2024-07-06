@@ -17,9 +17,9 @@ reverse = 7
 
 [KEYS]
 ; upshift, downshift, neutral and reverse key
-upshift = a
+upshift = s
 downshift = z
-reverse = c
+reverse = t
 neutral key = n
 
 [OPTIONS]
@@ -30,7 +30,7 @@ neutral detection = False
 ; time the shifter must stay in neutral to engage it
 neutral delay = 0.5
 ; true if clutch is needed to change gears
-require clutch = False
+require clutch = True
 ; percent of the clutch that needs to be pressed to allow gear change
 clutch bitepoint = 75
 ; true if the game uses a separated button for reverse. gran turismo or nascar racing for example
@@ -64,3 +64,4 @@ releasekey timer = 0.1
 [EXTRAS]
 ; select arduino com port
 comport = COM13
+
