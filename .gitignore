@@ -5,12 +5,10 @@
 src/__pycache__
 src/build
 src/dist
-src/any_ico.ico
 # Ignore files
 
 *.pyc
 *.spec
-*.ico
 cmd.py
 presets.py
 any_clean.py
