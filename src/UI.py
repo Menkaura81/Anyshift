@@ -1,27 +1,37 @@
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'AnyshiftGbLsgC.ui'
+##
+## Created by: Qt User Interface Compiler version 6.4.3
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
 from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
-    QCursor, QFont, QFontDatabase, QGradient, QIcon,
+    QCursor, QFont, QFontDatabase, QGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QCheckBox, QComboBox, QGroupBox,
-    QLabel, QLineEdit, QMenu, QMessageBox, QFileDialog,
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGroupBox,
+    QLabel, QLineEdit, QMainWindow, QMenu,
     QMenuBar, QPushButton, QRadioButton, QSizePolicy,
     QStatusBar, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(540, 494)
+        MainWindow.resize(540, 484)
         sizePolicy = QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())        
-        
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setAnimated(False)
         self.actionLoad_Profile = QAction(MainWindow)
         self.actionLoad_Profile.setObjectName(u"actionLoad_Profile")
         self.actionSave_Profile = QAction(MainWindow)
@@ -38,8 +48,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.runAnyButton = QPushButton(self.centralwidget)
         self.runAnyButton.setObjectName(u"runAnyButton")
-        self.runAnyButton.setGeometry(QRect(380, 370, 91, 51))        
-        
+        self.runAnyButton.setGeometry(QRect(380, 360, 91, 51))
         self.groupBox = QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(u"groupBox")
         self.groupBox.setGeometry(QRect(10, 10, 521, 80))
@@ -54,8 +63,7 @@ class Ui_MainWindow(object):
         self.ClutchComboBox.setGeometry(QRect(290, 50, 221, 22))
         self.clutchRadioButton = QRadioButton(self.groupBox)
         self.clutchRadioButton.setObjectName(u"clutchRadioButton")
-        self.clutchRadioButton.setGeometry(QRect(290, 30, 89, 20))        
-        
+        self.clutchRadioButton.setGeometry(QRect(290, 30, 89, 20))
         self.groupBox_2 = QGroupBox(self.centralwidget)
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.groupBox_2.setGeometry(QRect(10, 90, 211, 121))
@@ -73,40 +81,38 @@ class Ui_MainWindow(object):
         self.configSeventhButton.setGeometry(QRect(70, 20, 21, 31))
         self.reverseGearLabel = QLabel(self.groupBox_2)
         self.reverseGearLabel.setObjectName(u"reverseGearLabel")
-        self.reverseGearLabel.setGeometry(QRect(78, 100, 16, 21))
+        self.reverseGearLabel.setGeometry(QRect(70, 100, 16, 21))
         font = QFont()
         font.setPointSize(10)
         self.reverseGearLabel.setFont(font)
         self.sixthGearLabel = QLabel(self.groupBox_2)
         self.sixthGearLabel.setObjectName(u"sixthGearLabel")
-        self.sixthGearLabel.setGeometry(QRect(58, 100, 16, 21))
+        self.sixthGearLabel.setGeometry(QRect(50, 100, 16, 21))
         self.sixthGearLabel.setFont(font)
         self.FifthGearLabel = QLabel(self.groupBox_2)
         self.FifthGearLabel.setObjectName(u"FifthGearLabel")
-        self.FifthGearLabel.setGeometry(QRect(58, 50, 16, 21))
+        self.FifthGearLabel.setGeometry(QRect(50, 50, 16, 21))
         self.FifthGearLabel.setFont(font)
         self.fourthGearLabel = QLabel(self.groupBox_2)
         self.fourthGearLabel.setObjectName(u"fourthGearLabel")
-        self.fourthGearLabel.setGeometry(QRect(38, 100, 16, 21))
+        self.fourthGearLabel.setGeometry(QRect(30, 100, 16, 21))
         self.fourthGearLabel.setFont(font)
-
         self.clutchAxisButton = QPushButton(self.groupBox_2)
-        self.clutchAxisButton.setObjectName(u"clutchAxisButton")        
+        self.clutchAxisButton.setObjectName(u"clutchAxisButton")
         self.clutchAxisButton.setGeometry(QRect(110, 20, 75, 24))
-        
         self.configFistButton = QPushButton(self.groupBox_2)
         self.configFistButton.setObjectName(u"configFistButton")
         self.configFistButton.setGeometry(QRect(10, 20, 21, 31))
         self.bitepointLabel = QLabel(self.groupBox_2)
         self.bitepointLabel.setObjectName(u"bitepointLabel")
-        self.bitepointLabel.setGeometry(QRect(110, 82, 49, 16))
+        self.bitepointLabel.setGeometry(QRect(110, 80, 49, 16))
         self.thirdGearLabel = QLabel(self.groupBox_2)
         self.thirdGearLabel.setObjectName(u"thirdGearLabel")
-        self.thirdGearLabel.setGeometry(QRect(38, 50, 16, 21))
+        self.thirdGearLabel.setGeometry(QRect(30, 50, 16, 21))
         self.thirdGearLabel.setFont(font)
         self.firstGearLabel = QLabel(self.groupBox_2)
         self.firstGearLabel.setObjectName(u"firstGearLabel")
-        self.firstGearLabel.setGeometry(QRect(18, 50, 16, 21))
+        self.firstGearLabel.setGeometry(QRect(10, 50, 16, 21))
         sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy1.setHorizontalStretch(2)
         sizePolicy1.setVerticalStretch(0)
@@ -121,14 +127,14 @@ class Ui_MainWindow(object):
         self.configSixthButton.setGeometry(QRect(50, 70, 21, 31))
         self.seventhGearLabel = QLabel(self.groupBox_2)
         self.seventhGearLabel.setObjectName(u"seventhGearLabel")
-        self.seventhGearLabel.setGeometry(QRect(78, 50, 16, 21))
+        self.seventhGearLabel.setGeometry(QRect(70, 50, 16, 21))
         self.seventhGearLabel.setFont(font)
         self.clutchAxisLabel = QLabel(self.groupBox_2)
         self.clutchAxisLabel.setObjectName(u"clutchAxisLabel")
-        self.clutchAxisLabel.setGeometry(QRect(145, 40, 16, 21))
+        self.clutchAxisLabel.setGeometry(QRect(140, 50, 16, 21))
         self.secondGearLabel = QLabel(self.groupBox_2)
         self.secondGearLabel.setObjectName(u"secondGearLabel")
-        self.secondGearLabel.setGeometry(QRect(18, 100, 16, 21))
+        self.secondGearLabel.setGeometry(QRect(10, 100, 16, 21))
         self.secondGearLabel.setFont(font)
         self.bitepointLineEdit = QLineEdit(self.groupBox_2)
         self.bitepointLineEdit.setObjectName(u"bitepointLineEdit")
@@ -141,8 +147,7 @@ class Ui_MainWindow(object):
         self.configReverseButton.setGeometry(QRect(70, 70, 21, 31))
         self.configSecondButton = QPushButton(self.groupBox_2)
         self.configSecondButton.setObjectName(u"configSecondButton")
-        self.configSecondButton.setGeometry(QRect(10, 70, 21, 31))        
-        
+        self.configSecondButton.setGeometry(QRect(10, 70, 21, 31))
         self.groupBox_3 = QGroupBox(self.centralwidget)
         self.groupBox_3.setObjectName(u"groupBox_3")
         self.groupBox_3.setGeometry(QRect(230, 90, 301, 121))
@@ -184,7 +189,7 @@ class Ui_MainWindow(object):
         self.neutralLabel.setGeometry(QRect(170, 30, 49, 16))
         self.groupBox_4 = QGroupBox(self.centralwidget)
         self.groupBox_4.setObjectName(u"groupBox_4")
-        self.groupBox_4.setGeometry(QRect(50, 220, 441, 131))
+        self.groupBox_4.setGeometry(QRect(40, 210, 441, 131))
         self.reverseValueLineEdit = QLineEdit(self.groupBox_4)
         self.reverseValueLineEdit.setObjectName(u"reverseValueLineEdit")
         self.reverseValueLineEdit.setGeometry(QRect(400, 100, 31, 22))
@@ -265,7 +270,7 @@ class Ui_MainWindow(object):
         self.sevenValueLabel.setGeometry(QRect(390, 40, 16, 16))
         self.groupBox_5 = QGroupBox(self.centralwidget)
         self.groupBox_5.setObjectName(u"groupBox_5")
-        self.groupBox_5.setGeometry(QRect(10, 350, 321, 91))
+        self.groupBox_5.setGeometry(QRect(10, 340, 321, 91))
         self.reverseCheckBox = QCheckBox(self.groupBox_5)
         self.reverseCheckBox.setObjectName(u"reverseCheckBox")
         self.reverseCheckBox.setGeometry(QRect(150, 20, 121, 20))
@@ -298,34 +303,24 @@ class Ui_MainWindow(object):
         self.menuMenu.setObjectName(u"menuMenu")
         self.menuHelp = QMenu(self.menubar)
         self.menuHelp.setObjectName(u"menuHelp")
-        MainWindow.setMenuBar(self.menubar)        
+        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)        
+        MainWindow.setStatusBar(self.statusbar)
+
         self.menubar.addAction(self.menuMenu.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
         self.menuMenu.addAction(self.actionLoad_Profile)
         self.menuMenu.addAction(self.actionSave_Profile)
-        
-        # Save and exit menu
         self.menuMenu.addSeparator()
         self.menuMenu.addAction(self.actionSave_and_Exit)
-        
-        
-        # Guides menu
         self.menuHelp.addAction(self.actionGuides)
-        
-        
-        # About menu
         self.menuHelp.addSeparator()
         self.menuHelp.addAction(self.actionAbout_2)
-        
 
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
-        # update created window with config values
-        
     # setupUi
 
     def retranslateUi(self, MainWindow):
@@ -335,7 +330,7 @@ class Ui_MainWindow(object):
         self.actionGuides.setText(QCoreApplication.translate("MainWindow", u"Guides", None))
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.actionAbout_2.setText(QCoreApplication.translate("MainWindow", u"About", None))
-        self.actionSave_and_Exit.setText(QCoreApplication.translate("MainWindow", u"Remember Options", None))
+        self.actionSave_and_Exit.setText(QCoreApplication.translate("MainWindow", u"Save and Exit", None))
         self.runAnyButton.setText(QCoreApplication.translate("MainWindow", u"Run AnyShift", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Joystick Selection", None))
         self.shifterLabel.setText(QCoreApplication.translate("MainWindow", u"Shifter", None))
@@ -392,4 +387,5 @@ class Ui_MainWindow(object):
         self.neutralDelayLabel.setText(QCoreApplication.translate("MainWindow", u"Neutral Delay", None))
         self.menuMenu.setTitle(QCoreApplication.translate("MainWindow", u"Menu", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
-    # retranslateUi  
+    # retranslateUi
+
