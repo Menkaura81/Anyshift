@@ -58,6 +58,16 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         global options
         # Read window options
         valid = self.readWindow()
+        # Check for joystick connected
+        if num_joy == 0:
+            valid = False
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText('No joystick found. Connect it before Anyshift')
+            msg.setWindowTitle("Error")
+            msg.exec()             
+            return
          # If success configure axis
         if valid == True:
             msg = QMessageBox()
@@ -165,6 +175,15 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 msg.setWindowTitle("Error")
                 msg.exec()             
                 return
+        if num_joy == 0:
+            valid = False
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText('No joystick found. Connect it before Anyshift')
+            msg.setWindowTitle("Error")
+            msg.exec()             
+            return
         if valid == True:# If it´s the first click of the button, launch anyshift and change the button text       
             if first_click == True:                      
                 first_click = False
