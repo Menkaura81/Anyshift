@@ -19,7 +19,8 @@ import keyboard  # Normal key presses
 from ReadWriteMemory import ReadWriteMemory  # Memory writing
 import serial # Arduino serial comunication
 from PlaySound import play_sound
-from tkinter import *  # Toplevel window
+from PySide6.QtWidgets import QMessageBox
+import Global
 
 
 def joystick_loop(options):
@@ -66,15 +67,12 @@ def joystick_loop(options):
             process = rwm.get_process_by_name(options['process'])
             process.open()        
         except:
-            print('error')  
-            '''                   
-            error_window = Toplevel(app)        
-            error_window.title("Error")
-            error_window.config(width=200, height=50)
-            error_frame = Frame(error_window)
-            error_frame.pack()
-            error_label = Label(error_frame, text = "Process not found. Open it before Anyshift")
-            error_label.grid(row = 0, column = 0) '''                  
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText('Process not found. Open it before Anyshift')
+            msg.setWindowTitle("Error")
+            msg.exec_()             
             return    
         
         # Base address. Got from the pointer we have
@@ -94,10 +92,9 @@ def joystick_loop(options):
     gear_selected = 0 
     actual_gear = 0
     gear_detected = False
-    release_gear_time = time.time()
-    done = False
+    release_gear_time = time.time()     
     validKey = False 
-    while not done:
+    while Global.done == False:
                 
         for event in pygame.event.get():
             # Event for end the loop
@@ -349,7 +346,7 @@ def joystick_loop(options):
 
         # Close Anyshift if end is pressed
         if keyboard.is_pressed('End'):
-            done = True
+            done = True        
 
     # Close pygame and arduino   
     pygame.quit()

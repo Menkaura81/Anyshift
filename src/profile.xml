@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<config>
+    <!-- <shifter>
+        <joystick id="6"/> 
+        <clutch id="1" axis="2"/>
+        <gears>
+            <first button="0"/>
+            <second button="1"/>
+            <third button="2"/>
+            <fourth button="3"/>
+            <fifth button="4"/>
+            <sixth button="5"/>
+            <seventh button="6"/>
+            <reverse button="7"/>
+        </gears>       
+    </shifter> -->
+    <keys>
+        <upshift key="s"/>
+        <downshift key="z"/>
+        <reverse key="c"/>
+        <neutral key="n"/>
+    </keys>
+    <options>
+        <seven_gears value="False"/>
+        <neutral_detection value="True"/>
+        <neutral_delay time="0.5"/>
+        <require_clutch value="False" bitepoint="75"/>
+        <reverse_button value="False"/>
+        <nascar_mode value="False"/>
+        <memory_mode value="False"/>
+        <process name="-"/>
+        <base_address value="0"/>
+        <offset value="0"/>
+        <neutral_mem value="-"/>
+        <first_mem value="0"/>
+        <second_mem value="1"/>
+        <third_mem value="2"/>
+        <fourth_mem value="3"/>
+        <fifth_mem value="-"/>
+        <sixth_mem value="-"/>
+        <seventh_mem value="-"/>
+        <reverse_mem value="-"/>
+        <presskey_timer time="0.08"/>
+        <releasekey_timer time="0.1"/>
+    </options>
+    <extras>
+        <arduino comport="COM13"/>
+    </extras>
+</config>
