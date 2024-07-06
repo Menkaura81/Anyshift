@@ -23,7 +23,7 @@ from PySide6.QtWidgets import QMessageBox
 import Global
 
 
-def joystick_loop(options):
+def joystickLoop(options):
     ##############################################################################################################
     # INITIALIZE PYGAME
     ##############################################################################################################
@@ -356,7 +356,7 @@ def joystick_loop(options):
 
 
 # Get list of joystick ids and save them into joys list
-def joystick_lister():
+def joystickLister():
 
     pygame.joystick.init()
     num_joy = pygame.joystick.get_count()
@@ -369,32 +369,8 @@ def joystick_lister():
 
     return joys, num_joy
 
-
-# Function to choose wich gear config
-def gear_selection(options, gear):
-
-    if gear == 1:
-        select_first(options)
-    elif gear == 2:
-        select_second(options)
-    elif gear == 3:
-        select_third(options)
-    elif gear == 4:
-        select_fourth(options)
-    elif gear == 5:
-        select_fifth(options)
-    elif gear == 6:
-        select_sixth(options)
-    elif gear == 7:
-        select_seventh(options)
-    elif gear == 8:
-        select_reverse(options)
-    elif gear == 10:  # clutch axis
-        get_axis(options)
-
  
-def select_first(options):
-
+def selectFirst(options):    
     pygame.init()
     try:
         shifter = pygame.joystick.Joystick(int(options['joy_id']))
@@ -404,22 +380,21 @@ def select_first(options):
         pygame.quit()
         return
     
-    done = False
-    while not done:
+    while Global.done == False:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
                         options['first'] = i
-                        done = True
+                        Global.done = True
         if keyboard.is_pressed('End'):
-            done = True
-    pygame.quit()    
+            Global.done = True
+    pygame.quit() 
+    Global.done = False    
     return options
 
 
-def select_second(options):
-
+def selectSecond(options):
     pygame.init()
     try:
         shifter = pygame.joystick.Joystick(int(options['joy_id']))
@@ -429,22 +404,21 @@ def select_second(options):
         pygame.quit()
         return
     
-    done = False
-    while not done:
+    while Global.done == False:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
                         options['second'] = i
-                        done = True
+                        Global.done = True
         if keyboard.is_pressed('End'):
-            done = True
+            Global.done = True
     pygame.quit()
+    Global.done = False 
     return options
 
 
-def select_third(options):
-    
+def selectThird(options):    
     pygame.init()
     try:
         shifter = pygame.joystick.Joystick(int(options['joy_id']))
@@ -454,22 +428,21 @@ def select_third(options):
         pygame.quit()
         return
     
-    done = False
-    while not done:
+    while Global.done == False:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
                         options['third'] = i
-                        done = True
+                        Global.done = True
         if keyboard.is_pressed('End'):
-            done = True
+            Global.done = True
     pygame.quit()
+    Global.done = False 
     return options
 
 
-def select_fourth(options):
-    
+def selectFourth(options):    
     pygame.init()
     try:
         shifter = pygame.joystick.Joystick(int(options['joy_id']))
@@ -479,22 +452,21 @@ def select_fourth(options):
         pygame.quit()
         return
     
-    done = False
-    while not done:
+    while Global.done == False:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
                         options['fourth'] = i
-                        done = True
+                        Global.done = True
         if keyboard.is_pressed('End'):
-            done = True
+            Global.done = True
     pygame.quit()
+    Global.done = False 
     return options
 
 
-def select_fifth(options):
-    
+def selectFifth(options):    
     pygame.init()
     try:
         shifter = pygame.joystick.Joystick(int(options['joy_id']))
@@ -504,22 +476,21 @@ def select_fifth(options):
         pygame.quit()
         return
     
-    done = False
-    while not done:
+    while Global.done == False:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
                         options['fifth'] = i
-                        done = True
+                        Global.done = True
         if keyboard.is_pressed('End'):
-            done = True
+            Global.done = True
     pygame.quit()
+    Global.done = False 
     return options
 
 
-def select_sixth(options):
-    
+def selectSixth(options):    
     pygame.init()
     try:
         shifter = pygame.joystick.Joystick(int(options['joy_id']))
@@ -529,22 +500,21 @@ def select_sixth(options):
         pygame.quit()
         return
     
-    done = False
-    while not done:
+    while Global.done == False:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
                         options['sixth'] = i
-                        done = True
+                        Global.done = True
         if keyboard.is_pressed('End'):
-            done = True
+            Global.done = True
     pygame.quit()
+    Global.done = False 
     return options
     
 
-def select_seventh(options):
-    
+def selectSeventh(options):    
     pygame.init()
     try:
         shifter = pygame.joystick.Joystick(int(options['joy_id']))
@@ -552,24 +522,23 @@ def select_seventh(options):
         num_buttons = shifter.get_numbuttons()
     except:
         pygame.quit()
-        return
+        return    
     
-    done = False
-    while not done:
+    while Global.done == False:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
                         options['seventh'] = i
-                        done = True
+                        Global.done = True
         if keyboard.is_pressed('End'):
-            done = True
+            Global.done = True
     pygame.quit()
+    Global.done = False 
     return options
 
 
-def select_reverse(options):
-    
+def selectReverse(options):    
     pygame.init()
     try:
         shifter = pygame.joystick.Joystick(int(options['joy_id']))
@@ -577,40 +546,38 @@ def select_reverse(options):
         num_buttons = shifter.get_numbuttons()
     except:
         pygame.quit()
-        return
+        return    
     
-    done = False
-    while not done:
+    while Global.done == False:
         for event in pygame.event.get():
             if event.type == pygame.JOYBUTTONDOWN:
                 for i in range(num_buttons):
                     if shifter.get_button(i) == True:
                         options['reverse'] = i
-                        done = True
+                        Global.done = True
         if keyboard.is_pressed('End'):
-            done = True
+            Global.done = True
     pygame.quit()
+    Global.done = False 
     return options
 
 
-def get_axis(options):
-    
+def selectAxis(options):    
     pygame.init()
     try:
         clutch = pygame.joystick.Joystick(options['clutch_id'])
         clutch.init()
     except:
         pygame.quit()
-        return
+        return    
     
-    done = False
-    while not done:
+    while Global.done == False:
         for event in pygame.event.get():
             if event.type == pygame.JOYAXISMOTION:
                 options['clutch_axis'] = event.axis
-                done = True
+                Global.done = True
         if keyboard.is_pressed('End'):
-            done = True
+            Global.done = True
     pygame.quit()
-        
+    Global.done = False    
     return options

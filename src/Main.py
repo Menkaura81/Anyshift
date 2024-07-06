@@ -14,6 +14,7 @@
 
 from PySide6.QtWidgets import (QMainWindow, QMessageBox, QFileDialog)
 from PySide6 import QtWidgets
+from PySide6.QtGui import QIcon
 import sys
 from ReadWriteSaves import *
 from Joystick import *
@@ -28,72 +29,98 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         super(MyWindow, self).__init__()
         # Set up the user interface from Designer.
         self.setupUi(self)
-        # Make some local modifications.        
+        
+        # Make some local modifications. 
+        anyIco = application_path + "/Resources/any_ico.ico"
+               
+        self.setWindowIcon(QIcon(anyIco))
         self.runAnyButton.clicked.connect(self.runAny)
         self.actionSave_and_Exit.triggered.connect(lambda: self.menuButton('e'))
         self.actionGuides.triggered.connect(lambda: self.menuButton('g'))
         self.actionAbout_2.triggered.connect(lambda: self.menuButton('a'))
         self.actionLoad_Profile.triggered.connect(self.loadProfile)
-        self.actionSave_Profile.triggered.connect(self.saveProfile)
-        self.clutchAxisButton.clicked.connect(self.clutchAxis)
+        self.actionSave_Profile.triggered.connect(self.saveProfile)        
+        self.configFistButton.clicked.connect(lambda: self.shifterConfigButton(1))
+        self.configSecondButton.clicked.connect(lambda: self.shifterConfigButton(2))
+        self.configThirdButton.clicked.connect(lambda: self.shifterConfigButton(3))
+        self.configFourthButton.clicked.connect(lambda: self.shifterConfigButton(4))
+        self.configFifthButton.clicked.connect(lambda: self.shifterConfigButton(5))
+        self.configSixthButton.clicked.connect(lambda: self.shifterConfigButton(6))
+        self.configSeventhButton.clicked.connect(lambda: self.shifterConfigButton(7))
+        self.configReverseButton.clicked.connect(lambda: self.shifterConfigButton(8))
+        self.clutchAxisButton.clicked.connect(lambda: self.shifterConfigButton(9))
+
         # Update window
         self.updateWindow()
-
     
-    def clutchAxis(self):
-        global options
-        print(options)
-        valid = self.readWindow()
-        if valid == True:
-            get_axis(options)
 
-        print(options)
-        options['up_key'] = char_convert(options['up_key'])
-        options['down_key'] = char_convert(options['down_key'])
-        options['rev_key']= char_convert(options['rev_key'])
-        
-        self.updateWindow()
+    def shifterConfigButton(self, gear):
+        global options
+        # Read window options
+        valid = self.readWindow()
+         # If success configure axis
+        if valid == True:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)            
+            msg.setText("Clutch config")
+            msg.setInformativeText(f'Select shifter position for {gear}')
+            msg.setWindowTitle("Clutch")            
+            msg.show()            
+            if gear == 1:            
+                options = selectFirst(options)
+            elif gear == 2:
+                options = selectSecond(options)
+            elif gear == 3:
+                options = selectThird(options)
+            elif gear == 4:
+                options = selectFourth(options)
+            elif gear == 5:
+                options = selectFifth(options)
+            elif gear == 6:
+                options = selectSixth(options)
+            elif gear == 7:
+                options = selectSeventh(options)
+            elif gear == 8:
+                options = selectReverse(options)
+            elif gear == 9:
+                options = selectAxis(options)
+            msg.done(1) 
+        # Make some changes to display data
+        options['up_key'] = charConvert(options['up_key'])
+        options['down_key'] = charConvert(options['down_key'])
+        options['rev_key']= charConvert(options['rev_key'])         
+        # Update window        
+        self.updateWindow()      
 
 
     def loadProfile(self):
-        global options
-        # Get path for .xml location    
-        # determine if application is a script file or frozen exe
-        if getattr(sys, 'frozen', False):
-            application_path = os.path.dirname(sys.executable)
-        elif __file__:
-            application_path = os.path.dirname(__file__)
+        global options        
         path = application_path + "/Presets/"
         # Open select file window
         fname = QFileDialog.getOpenFileName(self, 'Open file', 
         path,"Anyshift files (*.any)")
         # read options from the selected file
-        options = ini_reader(fname)
+        options = iniReader(fname)
         # Update the window
         self.updateWindow()
 
 
     def saveProfile(self):
-        global options
-        # Get path for .xml location    
-        # determine if application is a script file or frozen exe
-        if getattr(sys, 'frozen', False):
-            application_path = os.path.dirname(sys.executable)
-        elif __file__:
-            application_path = os.path.dirname(__file__)
+        global options        
         path = application_path + "/Presets/"
         fname = QFileDialog.getSaveFileName(self, 'Open file', 
         path,"Anyshift files (*.any)")
         # read options from window
         self.readWindow()
         # make some changes to the data to store it
-        upshift = char_convert(options['up_key'])
-        downshift = char_convert(options['down_key'])
-        rev_key = char_convert(options['rev_key'])
+        upshift = charConvert(options['up_key'])
+        downshift = charConvert(options['down_key'])
+        rev_key = charConvert(options['rev_key'])
         # Write ini file
-        ini_writer(options, upshift, downshift, rev_key, fname[0])
+        iniWriter(options, upshift, downshift, rev_key, fname[0])
         
 
+    # Method for help menubar buttons
     def menuButton(self, page): 
         global options 
         # Open guides webpage           
@@ -107,15 +134,16 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         # Save options into ini file
         if page == 'e':            
             self.readWindow()
-            upshift = char_convert(options['up_key'])
-            downshift = char_convert(options['down_key'])
-            rev_key = char_convert(options['rev_key'])
+            upshift = charConvert(options['up_key'])
+            downshift = charConvert(options['down_key'])
+            rev_key = charConvert(options['rev_key'])
             file = 'Anyshift.ini'
-            ini_writer(options, upshift, downshift, rev_key, file) 
+            iniWriter(options, upshift, downshift, rev_key, file) 
             # sys.exit()           
             return   
 
 
+    # Method for Run Anyshift button
     def runAny(self):   
         global options   
         global first_click     
@@ -142,7 +170,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 first_click = False
                 Global.done = False
                 self.runAnyButton.setText('Press to stop')            
-                joystick_loop(options)
+                joystickLoop(options)
             # Else set Global.done True, end joystick loop and change button text
             else:
                 Global.done = True
@@ -150,6 +178,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
                 self.runAnyButton.setText('Run Anyshift')
        
 
+    # Method for updating the window
     def updateWindow(self):
         global options
         
@@ -217,6 +246,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.ArduinoLineEdit.setText(str(options['comport']))
 
 
+    # Method for reading the window
     def readWindow(self):
         global options
         # Fist check the element that can throw error so function exits before changing options
@@ -225,7 +255,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         upshift = self.UpshiftLineEdit.text()[:1].lower()
         if ord(upshift) >= 97 and ord(upshift) <= 122:
             keys.append(upshift)
-            options['up_key'] = hex_convert(upshift)
+            options['up_key'] = hexConvert(upshift)
         else:            
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
@@ -238,7 +268,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         downshift = self.downshiftLineEdit.text()[:1].lower()
         if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
             keys.append(downshift)
-            options['down_key'] = hex_convert(downshift)
+            options['down_key'] = hexConvert(downshift)
         else:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
@@ -250,7 +280,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         
         rev_key = self.reverseLineEdit.text()[:1].lower() 
         if ord(rev_key) >= 97 and ord(rev_key) <= 122 and rev_key not in keys:
-            options['rev_key'] = hex_convert(rev_key)
+            options['rev_key'] = hexConvert(rev_key)
             keys.append(rev_key)
         else:
             msg = QMessageBox()
@@ -356,6 +386,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         return True 
 
 
+    # Override closeEvent method
     def closeEvent(self, event):
         # Make sure Anyshift is not running
         Global.done = True
@@ -371,12 +402,18 @@ class MyWindow(QMainWindow, Ui_MainWindow):
 
 if __name__ == '__main__': 
     global options
-    global first_click
+    global first_click    
     first_click = True
+    # Get path for app location    
+    # determine if application is a script file or frozen exe
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+    elif __file__:
+        application_path = os.path.dirname(__file__)   
     # Read options
-    options = ini_reader('Anyshift.ini')
+    options = iniReader('Anyshift.ini')
     # Get list of joystick ids and save them into joys list
-    joys, num_joy = joystick_lister()  # Get joystick list and count     
+    joys, num_joy = joystickLister()  # Get joystick list and count     
     # Launch GUI
     app = QtWidgets.QApplication(sys.argv)
     window = MyWindow()

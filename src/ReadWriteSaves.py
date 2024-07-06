@@ -7,7 +7,7 @@
 
 import configparser  # Write and read ini files
 
-def ini_reader(file):
+def iniReader(file):
 
     options = {}
     # Create a config objet and read config values
@@ -75,7 +75,7 @@ def ini_reader(file):
     return options
 
 
-def ini_writer(options, upshift, downshift, rev_key, file):
+def iniWriter(options, upshift, downshift, rev_key, file):
     
     # Create object config
     config = configparser.ConfigParser(allow_no_value=True)
@@ -154,7 +154,7 @@ def ini_writer(options, upshift, downshift, rev_key, file):
 
 
 # Convert keys char into hex code
-def hex_convert(key):
+def hexConvert(key):
 
     # Dictionary for converting input keys to hex values
     keys = {
@@ -202,7 +202,7 @@ def hex_convert(key):
     return result
 
 
-def char_convert(key):
+def charConvert(key):
 
     # Dictionary for converting hex values to char
     keys = {

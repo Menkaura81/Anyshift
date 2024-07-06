@@ -2,12 +2,12 @@ from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
 from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
-    QCursor, QFont, QFontDatabase, QGradient,
+    QCursor, QFont, QFontDatabase, QGradient, QIcon,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGroupBox,
-    QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox, QFileDialog,
+from PySide6.QtWidgets import (QCheckBox, QComboBox, QGroupBox,
+    QLabel, QLineEdit, QMenu, QMessageBox, QFileDialog,
     QMenuBar, QPushButton, QRadioButton, QSizePolicy,
     QStatusBar, QWidget)
 
@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         sizePolicy = QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())        
         
         self.actionLoad_Profile = QAction(MainWindow)
         self.actionLoad_Profile.setObjectName(u"actionLoad_Profile")
