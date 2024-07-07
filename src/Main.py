@@ -28,11 +28,9 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
         # Set up the user interface from Designer.
-        self.setupUi(self)
-        
+        self.setupUi(self)        
         # Make some local modifications. 
-        anyIco = application_path + "/Resources/any_ico.ico"
-               
+        anyIco = application_path + "/Resources/any_ico.ico"               
         self.setWindowIcon(QIcon(anyIco))
         self.runAnyButton.clicked.connect(self.runAny)
         self.actionSave_and_Exit.triggered.connect(lambda: self.menuButton('e'))
@@ -40,16 +38,15 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.actionAbout_2.triggered.connect(lambda: self.menuButton('a'))
         self.actionLoad_Profile.triggered.connect(self.loadProfile)
         self.actionSave_Profile.triggered.connect(self.saveProfile)        
-        self.configFistButton.clicked.connect(lambda: self.shifterConfigButton(1))
-        self.configSecondButton.clicked.connect(lambda: self.shifterConfigButton(2))
-        self.configThirdButton.clicked.connect(lambda: self.shifterConfigButton(3))
-        self.configFourthButton.clicked.connect(lambda: self.shifterConfigButton(4))
-        self.configFifthButton.clicked.connect(lambda: self.shifterConfigButton(5))
-        self.configSixthButton.clicked.connect(lambda: self.shifterConfigButton(6))
-        self.configSeventhButton.clicked.connect(lambda: self.shifterConfigButton(7))
-        self.configReverseButton.clicked.connect(lambda: self.shifterConfigButton(8))
-        self.clutchAxisButton.clicked.connect(lambda: self.shifterConfigButton(9))
-
+        self.configFistButton.clicked.connect(lambda: self.shifterConfigButton('first'))
+        self.configSecondButton.clicked.connect(lambda: self.shifterConfigButton('second'))
+        self.configThirdButton.clicked.connect(lambda: self.shifterConfigButton('third'))
+        self.configFourthButton.clicked.connect(lambda: self.shifterConfigButton('fourth'))
+        self.configFifthButton.clicked.connect(lambda: self.shifterConfigButton('fifth'))
+        self.configSixthButton.clicked.connect(lambda: self.shifterConfigButton('sixth'))
+        self.configSeventhButton.clicked.connect(lambda: self.shifterConfigButton('seventh'))
+        self.configReverseButton.clicked.connect(lambda: self.shifterConfigButton('reverse'))
+        self.clutchAxisButton.clicked.connect(lambda: self.shifterConfigButton('clutch_axis'))
         # Update window
         self.updateWindow()
     
@@ -72,28 +69,14 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         if valid == True:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)            
-            msg.setText("Clutch config")
+            msg.setText("Joystick config")
             msg.setInformativeText(f'Select shifter position for {gear}')
-            msg.setWindowTitle("Clutch")            
-            msg.show()            
-            if gear == 1:            
-                options = selectFirst(options)
-            elif gear == 2:
-                options = selectSecond(options)
-            elif gear == 3:
-                options = selectThird(options)
-            elif gear == 4:
-                options = selectFourth(options)
-            elif gear == 5:
-                options = selectFifth(options)
-            elif gear == 6:
-                options = selectSixth(options)
-            elif gear == 7:
-                options = selectSeventh(options)
-            elif gear == 8:
-                options = selectReverse(options)
-            elif gear == 9:
+            msg.setWindowTitle("Config")            
+            msg.show() 
+            if gear == 'clutch_axis':
                 options = selectAxis(options)
+            else:                
+                options = selectGear(options, gear)            
             msg.done(1) 
         # Make some changes to display data
         options['up_key'] = charConvert(options['up_key'])
@@ -200,7 +183,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     # Method for updating the window
     def updateWindow(self):
         global options
-        
+        # Joystick group
         self.shifterComboBox.addItems(joys)
         self.shifterComboBox.setCurrentIndex(int(options['joy_id']))
         self.ClutchComboBox.addItems(joys)
@@ -210,7 +193,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             self.clutchRadioButton.setChecked(True)
         else:
             self.clutchRadioButton.setChecked(False)
-        
+        # Gears and axis buttons
         self.firstGearLabel.setText(str(options['first']))
         self.secondGearLabel.setText(str(options['second']))
         self.thirdGearLabel.setText(str(options['third']))
@@ -220,14 +203,14 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.seventhGearLabel.setText(str(options['seventh']))
         self.reverseGearLabel.setText(str(options['reverse']))
         self.clutchAxisLabel.setText(str(options['clutch_axis']))   
-
+        # key values
         self.UpshiftLineEdit.setText(str(options['up_key']))
         self.downshiftLineEdit.setText(str(options['down_key']))
         self.neutralLineEdit.setText(str(options['neut_key'])) 
         self.reverseLineEdit.setText(str(options['rev_key']))    
         self.presskeydelayLineEdit.setText(str(options['presskey_timer']))
         self.reversekeydelayLineEdit.setText(str(options['releasekey_timer']))                  
-        
+        # Mem mode
         if options['mem_mode'] == True:
             self.memmodeRadioButton.setChecked(True)
         else:
@@ -244,7 +227,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.seventhValueLineEdit.setText(str(options['seventh_value']))
         self.neutralValueLineEdit.setText(str(options['neutral_value']))
         self.reverseValueLineEdit.setText(str(options['reverse_value']))
-
+        # Options
         if options['seven_gears'] == True:
             self.sevenGearsCheckBox.setChecked(True)
         else:
@@ -270,7 +253,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         global options
         # Fist check the element that can throw error so function exits before changing options
         keys = []  # To keep track of already selected keys
-
+        # Upshift key
         upshift = self.UpshiftLineEdit.text()[:1].lower()
         if ord(upshift) >= 97 and ord(upshift) <= 122:
             keys.append(upshift)
@@ -283,7 +266,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setWindowTitle("Error")
             msg.exec_()            
             return False
-
+        # Downshift key
         downshift = self.downshiftLineEdit.text()[:1].lower()
         if ord(downshift) >= 97 and ord(downshift) <= 122 and downshift not in keys:
             keys.append(downshift)
@@ -296,7 +279,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setWindowTitle("Error")
             msg.exec_()             
             return False
-        
+        # Reverse key
         rev_key = self.reverseLineEdit.text()[:1].lower() 
         if ord(rev_key) >= 97 and ord(rev_key) <= 122 and rev_key not in keys:
             options['rev_key'] = hexConvert(rev_key)
@@ -309,7 +292,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setWindowTitle("Error")
             msg.exec_()   
             return False
-        
+        # Neutral key
         neut_key = self.neutralLineEdit.text()[:1].lower()
         if ord(neut_key) >= 97 and ord(neut_key) <= 122 and neut_key not in keys:
             options['neut_key'] = neut_key
@@ -322,7 +305,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setWindowTitle("Error")
             msg.exec_()           
             return False
-
+        # Neutral delay
         neutDelay = self.neutralDelayLineEdit.text()
         try:
             if float(neutDelay) > 0 and float(neutDelay) < 2:
@@ -343,14 +326,14 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             msg.setWindowTitle("Error")
             msg.exec_()                 
             return False
-
+        # Shifter and Clutch combobox
         options['joy_id'] = self.shifterComboBox.currentIndex()
         options['clutch_id'] = self.ClutchComboBox.currentIndex()
         if self.clutchRadioButton.isChecked():                       
             options['clutch'] = True
         else:
             options['clutch'] = False
-
+        # Gear values
         options['first'] = int(self.firstGearLabel.text())
         options['second'] = int(self.secondGearLabel.text())
         options['third'] = int(self.thirdGearLabel.text())
@@ -361,10 +344,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         options['reverse'] = int(self.reverseGearLabel.text())
         options['clutch_axis'] = int(self.clutchAxisLabel.text())
         options['bitepoint'] = int(self.bitepointLineEdit.text())         
-        
+        # Key timers
         options['presskey_timer'] = self.presskeydelayLineEdit.text()
         options['releasekey_timer'] = self.reversekeydelayLineEdit.text()
-
+        # Mem mode
         if self.memmodeRadioButton.isChecked():
             options['mem_mode'] = True
         else:    
@@ -381,7 +364,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         options['seventh_value'] = self.seventhValueLineEdit.text()
         options['reverse_value'] = self.reverseValueLineEdit.text()
         options['neutral_value'] = self.neutralValueLineEdit.text()
-
+        # Options
         if self.neutralCheckBox.isChecked():             
             options['neutral'] = True
         else:
@@ -398,10 +381,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             options['rev_button'] = True
         else:
             options['rev_button'] = False        
-           
+        # Extras
         options['neutral_wait_time'] = float(self.neutralDelayLineEdit.text())
         options['comport'] = self.ArduinoLineEdit.text() 
-
+        # Result (no exceptions)
         return True 
 
 
@@ -412,7 +395,6 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         self.runAnyButton.setText('Run Anyshift')
         # Ask for confirmation before closing
         confirmation = QMessageBox.question(self, "Confirmation", "Are you sure you want to close the application?", QMessageBox.Yes | QMessageBox.No)
-
         if confirmation == QMessageBox.Yes:
             event.accept()  # Close the app
         else:
