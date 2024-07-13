@@ -143,30 +143,31 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         # Read the actual configuration displayed
         valid = self.readWindow()
         # Check for process running
-        if options['mem_mode'] == True:
-            # Open DosBox process and check for process opened
-            rwm = ReadWriteMemory()
-            try:
-                process = rwm.get_process_by_name(options['process'])
-                process.open()        
-            except:
+        if first_click == True:
+            if options['mem_mode'] == True:
+                # Open DosBox process and check for process opened
+                rwm = ReadWriteMemory()
+                try:
+                    process = rwm.get_process_by_name(options['process'])
+                    process.open()        
+                except:
+                    valid = False
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Critical)
+                    msg.setText("Error")
+                    msg.setInformativeText('Process not found. Open it before Anyshift')
+                    msg.setWindowTitle("Error")
+                    msg.exec()             
+                    return
+            if num_joy == 0:
                 valid = False
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Critical)
                 msg.setText("Error")
-                msg.setInformativeText('Process not found. Open it before Anyshift')
+                msg.setInformativeText('No joystick found. Connect it before Anyshift')
                 msg.setWindowTitle("Error")
                 msg.exec()             
                 return
-        if num_joy == 0:
-            valid = False
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Error")
-            msg.setInformativeText('No joystick found. Connect it before Anyshift')
-            msg.setWindowTitle("Error")
-            msg.exec()             
-            return
         if valid == True:# If it´s the first click of the button, launch anyshift and change the button text       
             if first_click == True:                      
                 first_click = False
