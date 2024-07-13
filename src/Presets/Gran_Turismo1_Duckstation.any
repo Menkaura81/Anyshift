@@ -48,7 +48,7 @@ base address = 0
 ; memory value offset from base addres 
 memory value offset = 0
 ; values that the game uses for each gear
-neutral value = -
+neutral value = 0
 first gear value = 1
 second gear value = 2
 third gear value = 3
@@ -56,7 +56,7 @@ fourth gear value = 4
 fifth gear value = 5
 sixth gear value = 6
 seventh gear value = 7
-reverse gear value = -
+reverse gear value = 0
 ; delays for key presses and releases. tinker with this if game doesnt detect key presses
 presskey timer = 0.08
 releasekey timer = 0.1

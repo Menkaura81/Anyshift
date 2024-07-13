@@ -48,7 +48,7 @@ base address = 0x216FA320
 ; memory value offset from base addres 
 memory value offset = 0
 ; values that the game uses for each gear
-neutral value = -
+neutral value = 0
 first gear value = 1
 second gear value = 2
 third gear value = 3
