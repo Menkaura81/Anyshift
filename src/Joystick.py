@@ -99,7 +99,7 @@ def joystickLoop(options):
         for event in pygame.event.get():
             # Event for end the loop
             if event.type == pygame.QUIT:
-                done = True  
+                Global.done = True  
             # First we check if clutch if pressed or not
             if options['clutch'] == True:
                 if clutch.get_axis(options['clutch_axis']) > clutch_value:  # First we check if clutch if pressed or not
@@ -262,7 +262,7 @@ def joystickLoop(options):
                                 arduino.write(b'6') 
                             sound = False
                 ##################################### SEVENTH GEAR ####################################################
-                if options['seven_gears'] == 'True':  # To avoid invalid button error
+                if options['seven_gears'] == True:  # To avoid invalid button error
                     if shifter.get_button(options['seventh']) == True:
                         if options['clutch'] == False:
                             gear_detected = True
