@@ -241,7 +241,7 @@ def joystickLoop(options):
                             sound = False    
                 ####################################### SIXTH GEAR ####################################################
                 if shifter.get_button(options['sixth']) == True:
-                    if options['clutch'] == 'False':
+                    if options['clutch'] == False:
                         gear_detected = True
                         gear_selected = 6
                         if options['mem_mode'] == True:

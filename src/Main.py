@@ -413,7 +413,7 @@ if __name__ == '__main__':
     elif __file__:
         application_path = os.path.dirname(__file__)   
     # Read options
-    options = iniReader('Anyshift.ini')
+    options = iniReader()
     # Get list of joystick ids and save them into joys list
     joys, num_joy = joystickLister()  # Get joystick list and count     
     # Launch GUI

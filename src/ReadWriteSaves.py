@@ -6,13 +6,14 @@
 ###################################################################################################
 
 import configparser  # Write and read ini files
+import os
 
-def iniReader(file):
+def iniReader():
 
     options = {}
     # Create a config objet and read config values
     config = configparser.ConfigParser()
-    config.read(file)
+    config.read('Anyshift.ini')
     
     # Save values into dictionay
     if config['OPTIONS']['nascar racing mode'] == 'True':
