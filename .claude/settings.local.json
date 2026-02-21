@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(where py:*)",
+      "Bash(C:\\\\Users\\\\berto\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe:*)",
+      "Bash(\"/c/Users/berto/AppData/Local/Programs/Python/Python313/python.exe\":*)"
+    ]
+  }
+}

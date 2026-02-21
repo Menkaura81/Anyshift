@@ -5,6 +5,7 @@
 src/__pycache__
 src/build
 src/dist
+.claude
 # Ignore files
 
 *.pyc
@@ -17,6 +18,7 @@ mempru2.py
 anyshift_backup.py
 window_bk.pyw
 gui_pru.py
+CLAUDE.md
 mempru3.py
 any_pru.py
 BitepointToClutchValue.py
