@@ -27,6 +27,7 @@ def joystickLoop(options):
     ##############################################################################################################
     # INITIALIZE PYGAME
     ##############################################################################################################
+    resetFirstTime()
     pygame.init()
     # Initialize joystick module
     pygame.joystick.init()   
@@ -370,14 +371,14 @@ def joystickLister():
     return joys, num_joy
 
  
-def selectAxis(options):    
+def selectAxis(options):
     pygame.init()
     try:
         clutch = pygame.joystick.Joystick(options['clutch_id'])
         clutch.init()
     except:
         pygame.quit()
-        return    
+        return options
     
     while Global.done == False:
         for event in pygame.event.get():
@@ -391,7 +392,7 @@ def selectAxis(options):
     return options
 
 
-def selectGear(options, gear):    
+def selectGear(options, gear):
     pygame.init()
     try:
         shifter = pygame.joystick.Joystick(int(options['joy_id']))
@@ -399,7 +400,7 @@ def selectGear(options, gear):
         num_buttons = shifter.get_numbuttons()
     except:
         pygame.quit()
-        return
+        return options
     
     while Global.done == False:
         for event in pygame.event.get():

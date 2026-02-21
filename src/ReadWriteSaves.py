@@ -7,13 +7,21 @@
 
 import configparser  # Write and read ini files
 import os
+import sys
 
-def iniReader():
+def iniReader(filepath=None):
+
+    if filepath is None:
+        if getattr(sys, 'frozen', False):
+            app_path = os.path.dirname(sys.executable)
+        else:
+            app_path = os.path.dirname(os.path.abspath(__file__))
+        filepath = os.path.join(app_path, 'Anyshift.ini')
 
     options = {}
     # Create a config objet and read config values
     config = configparser.ConfigParser()
-    config.read('Anyshift.ini')
+    config.read(filepath)
     
     # Save values into dictionay
     if config['OPTIONS']['nascar racing mode'] == 'True':
@@ -198,9 +206,7 @@ def hexConvert(key):
     }
 
     # Convert input keys to hex values. Cheks if the key is in the dictionary and return its hex value
-    if key in keys:
-        result = keys[key]
-    return result
+    return keys.get(key)
 
 
 def charConvert(key):
@@ -246,6 +252,4 @@ def charConvert(key):
     }
 
     # Convert input keys to hex values. Cheks if the key is in the dictionary and return its hex value
-    if key in keys:
-        result = keys[key]
-    return result
+    return keys.get(key)

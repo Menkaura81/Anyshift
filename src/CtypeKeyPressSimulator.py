@@ -110,8 +110,13 @@ def KeyRelease_rev(options):
 
 
 # Function to apply sequential logic to h-shifter inputs, and make the necessary key presses
-# Flag for avoiding first shifting bug when running nascar mode 
+# Flag for avoiding first shifting bug when running nascar mode
 first_time = True
+
+def resetFirstTime():
+    global first_time
+    first_time = True
+
 def sendKeystrokes(gear_selected, actual_gear, options):
     global first_time
     if options['nascar_mode'] == True:

@@ -21,7 +21,6 @@ from Joystick import *
 import Global
 import webbrowser
 from UI import Ui_MainWindow
-from Presets import *
 import os
 
 class MyWindow(QMainWindow, Ui_MainWindow):
@@ -93,7 +92,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         fname = QFileDialog.getOpenFileName(self, 'Open file', 
         path,"Anyshift files (*.any)")
         # read options from the selected file
-        options = iniReader(fname)
+        options = iniReader(fname[0])
         # Update the window
         self.updateWindow()
 
@@ -185,8 +184,10 @@ class MyWindow(QMainWindow, Ui_MainWindow):
     def updateWindow(self):
         global options
         # Joystick group
+        self.shifterComboBox.clear()
         self.shifterComboBox.addItems(joys)
         self.shifterComboBox.setCurrentIndex(int(options['joy_id']))
+        self.ClutchComboBox.clear()
         self.ClutchComboBox.addItems(joys)
         self.ClutchComboBox.setCurrentIndex(int(options['clutch_id']))
         self.bitepointLineEdit.setText(str(options['bitepoint']))
@@ -383,8 +384,7 @@ class MyWindow(QMainWindow, Ui_MainWindow):
         else:
             options['rev_button'] = False        
         # Extras
-        options['neutral_wait_time'] = float(self.neutralDelayLineEdit.text())
-        options['comport'] = self.ArduinoLineEdit.text() 
+        options['comport'] = self.ArduinoLineEdit.text()
         # Result (no exceptions)
         return True 
 
@@ -402,11 +402,11 @@ class MyWindow(QMainWindow, Ui_MainWindow):
             event.ignore()  # Don't close the app   
         
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     global options
-    global first_click    
+    global first_click
     first_click = True
-    # Get path for app location    
+    # Get path for app location
     # determine if application is a script file or frozen exe
     if getattr(sys, 'frozen', False):
         application_path = os.path.dirname(sys.executable)
@@ -415,7 +415,7 @@ if __name__ == '__main__':
     # Read options
     options = iniReader()
     # Get list of joystick ids and save them into joys list
-    joys, num_joy = joystickLister()  # Get joystick list and count     
+    joys, num_joy = joystickLister()  # Get joystick list and count      
     # Launch GUI
     app = QtWidgets.QApplication(sys.argv)
     window = MyWindow()
